@@ -11,11 +11,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Gallery">
+
+        </activity>
+        <activity android:name=".Camera">
+
+        </activity>
+        <activity android:name=".Tutorial">
+
+        </activity>
+        <activity android:name=".EffectsActivity">
+
         </activity>
     </application>
 

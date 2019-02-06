@@ -6,14 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class Effects extends AppCompatActivity {
+public class EffectsActivity extends AppCompatActivity {
 
     private Button button_camera = null;
     private Button button_gallery = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.effects);
+        setContentView(R.layout.activity_effects);
 
         button_gallery = (Button) findViewById(R.id.gallery_effects);
         button_gallery.setOnClickListener(listener_gallery);
@@ -26,7 +26,7 @@ public class Effects extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            Intent intent = new Intent(Effects.this, Gallery.class);
+            Intent intent = new Intent(EffectsActivity.this, Gallery.class);
 
             startActivity(intent);
         }
@@ -36,7 +36,7 @@ public class Effects extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            Intent intent = new Intent(Effects.this, Camera.class);
+            Intent intent = new Intent(EffectsActivity.this, Camera.class);
 
             startActivity(intent);
         }
