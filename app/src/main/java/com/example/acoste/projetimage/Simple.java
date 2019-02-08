@@ -14,4 +14,10 @@ public abstract  class Simple extends Effects {
 
     abstract Bitmap randomHue();
 
+    abstract Bitmap toGrey_RS();
+
+    abstract Bitmap keepColor_RS();
+
+    abstract Bitmap randomHue_RS();
+
 }
