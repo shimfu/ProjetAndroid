@@ -10,6 +10,7 @@ public class EffectsActivity extends AppCompatActivity {
 
     private Button button_camera = null;
     private Button button_gallery = null;
+    private Button button_menu = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,9 @@ public class EffectsActivity extends AppCompatActivity {
 
         button_camera = (Button) findViewById(R.id.camera_effects);
         button_camera.setOnClickListener(listener_camera);
+
+        button_menu = (Button) findViewById(R.id.menu_effects_activty);
+        button_menu.setOnClickListener(listener_menu);
     }
 
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
@@ -37,6 +41,16 @@ public class EffectsActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(EffectsActivity.this, Camera.class);
+
+            startActivity(intent);
+        }
+    };
+
+    private View.OnClickListener listener_menu = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = new Intent(EffectsActivity.this, Main.class);
 
             startActivity(intent);
         }
