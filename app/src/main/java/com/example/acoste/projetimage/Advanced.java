@@ -15,7 +15,11 @@ import com.example.q.renderscriptexample.ScriptC_histEq;
  * Created by acoste on 08/02/19.
  */
 
-public abstract class Advanced extends Effects {
+public class Advanced extends Effects {
+
+    public Advanced(Bitmap bMap){
+        super(bMap);
+    }
 
     int[] blur_data(Bitmap bMap, int k, int[][] mask){// return the colro data of a blured Bitmap
 
@@ -150,6 +154,7 @@ public abstract class Advanced extends Effects {
         return histog;
     }
 
+    /*
     void equalization_contrast_RS(Bitmap image) {
         //Get image size
         int width = image.getWidth();
@@ -180,6 +185,6 @@ public abstract class Advanced extends Effects {
         allocationB.destroy();
         histEqScript.destroy();
         rs.destroy();
-    }
+    }*/
 
 }

@@ -2,6 +2,7 @@ package com.example.acoste.projetimage;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
@@ -19,7 +20,9 @@ import java.util.Random;
 
 public class Simple extends Effects {
 
-
+    public Simple(Bitmap bMap){
+        super(bMap);
+    }
 
     public void grey(){//transform a Bitmap in shades of grey (ARGB color space)
         int[] pixelData = new int[getCurrentImg().getWidth() * getCurrentImg().getHeight()];
@@ -53,11 +56,13 @@ public class Simple extends Effects {
         return color;
     }
 
-    public void keepColor(Bitmap bMap, int hue) {
+    public Bitmap keepColor(Bitmap bMap, int hue) {
         int[] pixelData = new int[bMap.getWidth() * bMap.getHeight()];
-        bMap.getPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
+        Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
+        cpy_bMap.getPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
         pixelData = keepColor_aux(pixelData, hue);
-        bMap.setPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
+        cpy_bMap.setPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
+        return cpy_bMap;
     }
 
     public int[] randomHue_aux(int[] color){//change the Hue of all pixel of an array of Color type (HSV color space)

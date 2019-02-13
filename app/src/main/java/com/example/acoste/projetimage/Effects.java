@@ -14,12 +14,13 @@ public class Effects {
 
     Bitmap initialImg;
     List<Bitmap> stateSave;//we will get an abitrary size of 3
-    String statePath[];//the effects the user apply consecutivly(not implemented)
+    //String statePath[];//the effects the user apply consecutivly(not implemented)
     int currentIndex;
 
     public Effects(Bitmap bMap){
         initialImg = bMap;
         stateSave = new ArrayList<Bitmap>();
+        currentIndex = 0;
     }
 
 

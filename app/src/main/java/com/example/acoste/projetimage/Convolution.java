@@ -23,6 +23,10 @@ public class Convolution {
         }
     }
 
+    static public int[] mirrorBitmap(Bitmap bMap, int k){ //return Color data of a bigger Bitmap where each sides are mirrored k time
+        return mirrorBitmap(bMap,k ,k);
+    }
+
     static int[] mirrorBitmap(Bitmap bMap, int k_line, int k_collumn){ //return Color data of a bigger Bitmap where border line are mirrored k_line time and border collumn k_collumn
         if (k_line < 0 && k_collumn < 0){
             Log.e("ERREUR", "taille matrice non valide");
