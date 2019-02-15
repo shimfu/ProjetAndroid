@@ -13,13 +13,29 @@ import java.util.List;
 public class Effects {
 
     Bitmap initialImg;
+    Bitmap currentImg;
     List<Bitmap> stateSave;//we will get an abitrary size of 3
     //String statePath[];//the effects the user apply consecutivly(not implemented)
     int currentIndex;
 
+    public void setCurrentImg(Bitmap currentImg) {
+        this.currentImg = currentImg;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
     public Effects(Bitmap bMap){
         initialImg = bMap;
+
+        currentImg = bMap;
         stateSave = new ArrayList<Bitmap>();
+
         currentIndex = 0;
     }
 
@@ -44,6 +60,7 @@ public class Effects {
         return currentIndex;
     }
 
+
     public boolean setcurrentIndex(int currentIndex) {
         if(currentIndex >= 0 && currentIndex < 3){//IL FAUT UNE CONSTANTE SIZEMAX (bonus, calculer sizemax)
             this.currentIndex = currentIndex;
@@ -53,7 +70,7 @@ public class Effects {
     }
 
     public Bitmap getCurrentImg(){
-        return stateSave.get(currentIndex);
+        return currentImg;
     }
 
     public Bitmap undo(){

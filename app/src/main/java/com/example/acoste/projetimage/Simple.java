@@ -24,17 +24,19 @@ public class Simple extends Effects {
         super(bMap);
     }
 
-    public void grey(){//transform a Bitmap in shades of grey (ARGB color space)
+    public Bitmap grey(Bitmap bMap){//transform a Bitmap in shades of grey (ARGB color space)
         int[] pixelData = new int[getCurrentImg().getWidth() * getCurrentImg().getHeight()];
+        Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
 
-        getCurrentImg().getPixels(pixelData, 0, getCurrentImg().getWidth(), 0, 0, getCurrentImg().getWidth(), getCurrentImg().getHeight());
+        cpy_bMap.getPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
         for (int i = 0; i < pixelData.length; i++) {
             int grey;
             grey = (int) (0.30 * Color.red(pixelData[i]) + 0.59 * Color.green(pixelData[i]) + 0.11 * Color.blue(pixelData[i]));
             pixelData[i] = Color.argb(Color.alpha(pixelData[i]), grey, grey, grey);
         }
-        getCurrentImg().setPixels(pixelData, 0, getCurrentImg().getWidth(), 0, 0, getCurrentImg().getWidth(), getCurrentImg().getHeight());
+        cpy_bMap.setPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
 
+        return cpy_bMap;
     }
 
     public int[] keepColor_aux ( int[] color, int hue){//color in grey all the color which are 40° or more away from the hue parameter
@@ -80,16 +82,19 @@ public class Simple extends Effects {
         return color;
     }
 
-    public void randomHue(Bitmap bMap){//change the Hue of all pixel of a Bitmap (HSV color space)
+    public Bitmap randomHue(Bitmap bMap){//change the Hue of all pixel of a Bitmap (HSV color space)
 
-        int[] pixelData = new int[bMap.getWidth()*bMap.getHeight()];
-        bMap.getPixels(pixelData,0,bMap.getWidth(),0,0,bMap.getWidth(),bMap.getHeight());
+        Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
+        int[] pixelData = new int[cpy_bMap.getWidth()*cpy_bMap.getHeight()];
+        cpy_bMap.getPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
         pixelData = randomHue_aux(pixelData);
-        bMap.setPixels(pixelData,0,bMap.getWidth(),0,0,bMap.getWidth(),bMap.getHeight());
+        cpy_bMap.setPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
+
+        return cpy_bMap;
 
     }
 
-    private  void  toGreyRS(Bitmap  bmp, Context context) {
+    public void  toGreyRS(Bitmap  bmp, Context context) {
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
         //2)  Creer  des  Allocations  pour  passer  les  donnees
