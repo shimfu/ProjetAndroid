@@ -2,6 +2,7 @@ package com.example.acoste.projetimage;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -129,6 +131,11 @@ public class Camera extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ((BitmapDrawable)imageView.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            intent.putExtra("image", byteArray);
 
             startActivity(intent);
         }
