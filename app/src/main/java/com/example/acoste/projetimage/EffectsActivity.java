@@ -10,24 +10,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+
 public class EffectsActivity extends AppCompatActivity {
 
     private Button button_camera = null;
     private Button button_gallery = null;
     private Button button_menu = null ;
 
+    private int number_of_img = 15;
+
+    private Button img_button[] = new Button[number_of_img];
+    private int name_img_button[] = new int[number_of_img];
+
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
-    private Button button_test = null;
     private ImageView img;
     private Bitmap bmp;
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
 
 
-
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_effects);
+
 
         button_gallery = (Button) findViewById(R.id.gallery_effects);
         button_gallery.setOnClickListener(listener_gallery);
@@ -39,12 +43,19 @@ public class EffectsActivity extends AppCompatActivity {
         button_menu.setOnClickListener(listener_menu);
 
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
-        button_test = (Button) findViewById(R.id.test);
-        button_test.setOnClickListener(listener_test);
+        byte[] byteArray = getIntent().getByteArrayExtra("image");
+        if(byteArray != null)
+            bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
         img = (ImageView) findViewById(R.id.img_to_modify);
-        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
-        img.setImageBitmap(bmp);
+        if(bmp != null)
+            img.setImageBitmap(bmp);
+        else{
+            bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
+            img.setImageBitmap(bmp);
+        }
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
+
     }
 
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
