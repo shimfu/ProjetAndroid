@@ -1,14 +1,17 @@
 package com.example.acoste.projetimage;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.util.Log;
 
+import com.android.rssample.ScriptC_linearContrast;
 import com.example.acoste.projetimage.Convolution;
 import com.example.acoste.projetimage.Histogram;
 import com.example.q.renderscriptexample.ScriptC_histEq;
+//import com.android.rssample.linearContrast;
 
 
 /**
@@ -154,8 +157,8 @@ public class Advanced extends Effects {
         return histog;
     }
 
-    /*
-    void equalization_contrast_RS(Bitmap image) {
+    void linearContrastRS(Bitmap image, Context context) {
+
         //Get image size
         int width = image.getWidth();
         int height = image.getHeight();
@@ -163,7 +166,41 @@ public class Advanced extends Effects {
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
         //Create renderscript
-        RenderScript rs = RenderScript.create(this);
+        RenderScript rs = RenderScript.create(context);
+        //Create allocation from Bitmap
+        Allocation allocationA = Allocation.createFromBitmap(rs, res);
+        //Create allocation with same type
+        Allocation allocationB = Allocation.createTyped(rs, allocationA.getType());
+        //Create script from rs file.
+        ScriptC_linearContrast linearContrastScript = new ScriptC_linearContrast(rs);
+        //Set size in script
+        linearContrastScript.set_size(width*height);
+        //Call the first kernel.
+        linearContrastScript.forEach_create_histog(allocationA, allocationB);
+        //Call the rs method to compute the remap array
+        linearContrastScript.invoke_createLut();
+        //Call the second kernel
+        linearContrastScript.forEach_apply_contrast(allocationB, allocationA);
+        //Copy script result into bitmap
+        allocationA.copyTo(image);
+        //Destroy everything to free memory
+        allocationA.destroy();
+        allocationB.destroy();
+        linearContrastScript.destroy();
+        rs.destroy();
+
+    }
+
+
+    void equalization_contrast_RS(Bitmap image, Context context) {
+        //Get image size
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
         //Create allocation from Bitmap
         Allocation allocationA = Allocation.createFromBitmap(rs, res);
         //Create allocation with same type
@@ -185,6 +222,6 @@ public class Advanced extends Effects {
         allocationB.destroy();
         histEqScript.destroy();
         rs.destroy();
-    }*/
+    }
 
 }
