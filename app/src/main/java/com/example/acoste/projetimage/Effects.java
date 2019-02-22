@@ -6,17 +6,18 @@ package com.example.acoste.projetimage;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Effects {
+public class Effects extends EffectsActivity {
 
-    Bitmap initialImg;
-    Bitmap currentImg;
-    List<Bitmap> stateSave;//we will get an abitrary size of 3
+    static Bitmap initialImg;
+    static Bitmap currentImg;
+    static List<Bitmap> stateSave;//we will get an abitrary size of 3
     //String statePath[];//the effects the user apply consecutivly(not implemented)
-    int currentIndex;
+    static int currentIndex;
 
     public void setCurrentImg(Bitmap currentImg) {
         this.currentImg = currentImg;
@@ -26,7 +27,7 @@ public class Effects {
         this.currentIndex = currentIndex;
     }
 
-    public int getCurrentIndex() {
+    static int getCurrentIndex() {
         return currentIndex;
     }
 
@@ -38,7 +39,6 @@ public class Effects {
 
         currentIndex = 0;
     }
-
 
     public Bitmap getInitialImg() {
         return initialImg;
@@ -56,7 +56,7 @@ public class Effects {
         this.stateSave = stateSave;
     }
 
-    public int getcurrentIndex() {
+    static int getcurrentIndex() {
         return currentIndex;
     }
 
@@ -69,7 +69,7 @@ public class Effects {
         return false;
     }
 
-    public Bitmap getCurrentImg(){
+    static Bitmap getCurrentImg(){
         return currentImg;
     }
 

@@ -24,7 +24,7 @@ public class Simple extends Effects {
         super(bMap);
     }
 
-    public Bitmap grey(Bitmap bMap){//transform a Bitmap in shades of grey (ARGB color space)
+    static Bitmap grey(Bitmap bMap){//transform a Bitmap in shades of grey (ARGB color space)
         int[] pixelData = new int[getCurrentImg().getWidth() * getCurrentImg().getHeight()];
         Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
 
@@ -39,7 +39,7 @@ public class Simple extends Effects {
         return cpy_bMap;
     }
 
-    public int[] keepColor_aux ( int[] color, int hue){//color in grey all the color which are 40° or more away from the hue parameter
+    static int[] keepColor_aux ( int[] color, int hue){//color in grey all the color which are 40° or more away from the hue parameter
         if (hue < 0 && hue > 360) {//wrong parameter hue
             return color;
         }
@@ -58,7 +58,7 @@ public class Simple extends Effects {
         return color;
     }
 
-    public Bitmap keepColor(Bitmap bMap, int hue) {
+    static Bitmap keepColor(Bitmap bMap, int hue) {
         int[] pixelData = new int[bMap.getWidth() * bMap.getHeight()];
         Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
         cpy_bMap.getPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -94,7 +94,7 @@ public class Simple extends Effects {
 
     }
 
-    public void  toGreyRS(Bitmap  bmp, Context context) {
+    static void  toGreyRS(Bitmap  bmp, Context context) {
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
         //2)  Creer  des  Allocations  pour  passer  les  donnees
@@ -115,7 +115,7 @@ public class Simple extends Effects {
         greyScript.destroy (); rs.destroy ();
     }
 
-    void keepColorRS(Bitmap image, int color, Context context) {
+    public static void keepColorRS(Bitmap image, int color, Context context) {
 
         //Create renderscript
         RenderScript rs = RenderScript.create(context);

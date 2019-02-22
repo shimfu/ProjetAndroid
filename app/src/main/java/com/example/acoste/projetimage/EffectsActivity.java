@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.github.chrisbanes.photoview.PhotoView;
 
 
-public class EffectsActivity extends AppCompatActivity {
+public class EffectsActivity extends AppCompatActivity{
 
     private Button button_camera = null;
     private Button button_gallery = null;
@@ -32,6 +32,25 @@ public class EffectsActivity extends AppCompatActivity {
     private Bitmap bmp;
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
 
+    /*public View.OnClickListener setInitialImgListener = new View.OnClickListener() {
+        public void onClick(View v) { Effects.setInitialImg(Effects.initialImg);}
+    };*/
+
+    public View.OnClickListener toGreyListener = new View.OnClickListener() {
+        public void onClick(View v) { Simple.grey(bmp);}
+    };
+
+    /*public View.OnClickListener toGreyRSListener = new View.OnClickListener() {
+        public void onClick(View v) { Simple.toGreyRS(Effects.currentImg, );}
+    };*/
+
+    public View.OnClickListener keepColorListener = new View.OnClickListener() {
+        public void onClick(View v) { Simple.keepColor(bmp, 1);}
+    };
+
+    /*public View.OnClickListener keepColorRSListener = new View.OnClickListener() {
+        public void onClick(View v) { Simple.keepColorRS(Effects.currentImg, );}
+    };*/
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +66,21 @@ public class EffectsActivity extends AppCompatActivity {
         button_menu = (Button) findViewById(R.id.menu_effects_activty);
         button_menu.setOnClickListener(listener_menu);
 
+        Button button0 = (Button) findViewById(R.id.button0);
+        button0.setOnClickListener(toGreyListener);
+
+        /*Button button1 = (Button) findViewById(R.id.button1);
+        button1.setOnClickListener(toGreyRSListener);*/
+
+        Button button2 = (Button) findViewById(R.id.button2);
+        button2.setOnClickListener(keepColorListener);
+
+        /*Button button3 = (Button) findViewById(R.id.button3);
+        button3.setOnClickListener(keepColorRSListener);
+
+        Button button15 = (Button) findViewById(R.id.button15);
+        button15.setOnClickListener(setInitialImgListener);*/
+
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
         byte[] byteArray = getIntent().getByteArrayExtra("image");
         if(byteArray != null)
@@ -61,8 +95,6 @@ public class EffectsActivity extends AppCompatActivity {
         }
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
 
-        /**Test du zoom **/
-
         ImageView mIcon = (ImageView) findViewById(R.id.img_to_modify);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
         RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -70,7 +102,6 @@ public class EffectsActivity extends AppCompatActivity {
         mIcon.setImageDrawable(mDrawable);
 
         mIcon.setOnClickListener(listener_zoom);
-
     }
 
     private View.OnClickListener listener_zoom= new View.OnClickListener() {
