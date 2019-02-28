@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.effect.Effect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.io.IOException;
 
 
 public class EffectsActivity extends AppCompatActivity{
@@ -81,23 +85,30 @@ public class EffectsActivity extends AppCompatActivity{
         Button button15 = (Button) findViewById(R.id.button15);
         button15.setOnClickListener(setInitialImgListener);*/
 
-        /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
-        byte[] byteArray = getIntent().getByteArrayExtra("image");
-        if(byteArray != null)
-            bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-        img = (ImageView) findViewById(R.id.img_to_modify);
-        if(bmp != null)
-            img.setImageBitmap(bmp);
-        else{
-            bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
-            img.setImageBitmap(bmp);
-        }
-        /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
 
         ImageView mIcon = (ImageView) findViewById(R.id.img_to_modify);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
-        RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        RoundedBitmapDrawable mDrawable;
+        /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
+        Uri photoUri = null;
+        if(getIntent() != null)
+            photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+
+        if(photoUri != null) {
+            try {
+                bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(bmp != null)
+             mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmp);
+        else{
+            bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
+            mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmp);
+        }
+        /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
         mDrawable.setCircular(true);
         mIcon.setImageDrawable(mDrawable);
 
