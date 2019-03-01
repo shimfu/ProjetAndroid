@@ -1,47 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50dp"
-            android:text="Gallery">
+            android:text="Gallery"
+            android:textSize="50dp">
 
         </TextView>
 
         <Button
             android:id="@+id/camera_gallery"
-            android:text="Camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp" />
+            android:text="Camera" />
+
         <Button
             android:id="@+id/effects_gallery"
-            android:text="Effects"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp" />
+            android:text="Effects" />
 
         <Button
             android:id="@+id/menu_gallery"
-            android:text="Menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp" />
+            android:text="Menu" />
+
+        <Button
+            android:id="@+id/gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"
+            android:text="Gallery" />
+
 
     </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="168dp"
+        android:layout_height="295dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.525" />
 
 </android.support.constraint.ConstraintLayout>
