@@ -139,7 +139,7 @@ public class Simple extends Effects {
 
     }
 
-    private void randomHueRS(Bitmap bmp, Context context){
+    public void randomHueRS(Bitmap bmp, Context context){
 
         //Get image size
         Random random = new Random();
