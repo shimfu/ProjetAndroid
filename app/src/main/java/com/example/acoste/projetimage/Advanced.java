@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.renderscript.Allocation;
+import android.renderscript.Element;
 import android.renderscript.RenderScript;
+import android.renderscript.Type;
 import android.util.Log;
 
 import com.android.rssample.ScriptC_linearContrast;
@@ -12,6 +14,7 @@ import com.example.acoste.projetimage.Convolution;
 import com.example.acoste.projetimage.Histogram;
 import com.example.q.renderscriptexample.ScriptC_histEq;
 //import com.android.rssample.linearContrast;
+import com.android.rssample.ScriptC_convolution;
 
 
 /**
@@ -223,5 +226,143 @@ public class Advanced extends Effects {
         histEqScript.destroy();
         rs.destroy();
     }
+
+    int convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
+
+        if (mask.length % mask_line_length != 0 && (mask.length / mask_line_length)%2 !=0 && mask_line_length%2 !=0){
+            Log.e("ERROR","Wrong arguments in convolution_RS");
+            return -1;
+        }
+        int mask_collumn_height = mask.length / mask_line_length;
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_convolution convolutionScript = new ScriptC_convolution(rs);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        Allocation img_alloc = Allocation.createFromBitmap(rs, res);
+
+        Allocation mask_alloc = Allocation.createSized(rs, Element.I32(rs), mask.length);
+        mask_alloc.copyFrom(mask);
+        convolutionScript.bind_mask(mask_alloc);
+
+        if (norm != 0)
+            convolutionScript.set_norm(norm);
+
+        convolutionScript.set_height(image.getHeight());
+        convolutionScript.set_width(image.getWidth());
+        convolutionScript.set_mask_collumn_height(mask_collumn_height);
+        convolutionScript.set_mask_line_length(mask_line_length);
+
+        convolutionScript.invoke_map_img(img_alloc, data);
+
+        convolutionScript.bind_data(data);
+
+        convolutionScript.forEach_compute_data(img_alloc,img_alloc);
+
+        img_alloc.copyTo(image);
+
+        data.destroy();
+        img_alloc.destroy();
+        convolutionScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    int blur_moy_RS(Bitmap image, Context context, int intensity){
+
+        if (intensity< 0){
+            return -1;
+        }
+        int[] mask = new int[(intensity*2+1)*(intensity*2+1)];
+        for (int i = 0 ; i < mask.length ; i++){
+            mask[i] = 1;
+        }
+        int norm = mask.length;
+
+        int mask_line_length = intensity*2+1;
+
+        convolution_RS(image, context,  mask,  mask_line_length,  norm);
+
+        return 0;
+    }
+
+    int blur_gaussian5x5_RS(Bitmap image, Context context){
+
+
+        int[] mask = new int[25];
+
+        mask[0] = mask[4] = mask[20] = mask[24] = 1;
+        mask[1] = mask[3] = mask[5] = mask[9] = mask[15] = mask[19] = mask[21] = mask[23] = 4;
+        mask[2] = mask[10] = mask[14] = mask[22] = 7;
+        mask[6] = mask[8] = mask[16] = mask[18] = 16;
+        mask[7] = mask[11] = mask[13] = mask[17] = 26;
+        mask[12] = 41;
+
+        int norm = 273;
+
+        int mask_line_length = 5;
+
+        convolution_RS(image, context, mask, mask_line_length, norm);
+
+        return 0;
+    }
+
+    int sobel_horizontal(Bitmap image, Context context){
+
+        int[] mask = new int[9];
+
+        mask[0] = mask[3] = mask[6] = 1;
+        mask[2] = mask[5] = mask[8] = -1;
+
+        int norm = 3;
+
+        int mask_line_length = 3;
+
+        convolution_RS(image, context, mask, mask_line_length, norm);
+
+        return 0;
+
+    }
+
+    int sobel_vertical(Bitmap image, Context context){
+
+        int[] mask = new int[9];
+
+        mask[0] = mask[1] = mask[2] = 1;
+        mask[6] = mask[7] = mask[8] = -1;
+
+        int norm = 3;
+
+        int mask_line_length = 3;
+
+        convolution_RS(image, context, mask, mask_line_length, norm);
+
+        return 0;
+
+    }
+
+    int laplacian_mask(Bitmap image, Context context){
+
+        int[] mask = new int[9];
+
+        mask[0] = mask[1] = mask[2] = mask[3] = mask[5] = mask[6] = mask[7] = mask[8] = 1;
+        mask[4] = -8;
+
+        int norm = 8;
+
+        int mask_line_length = 3;
+
+        convolution_RS(image, context, mask, mask_line_length, norm);
+
+        return 0;
+
+    }
+
 
 }
