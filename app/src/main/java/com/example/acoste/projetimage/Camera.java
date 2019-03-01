@@ -32,7 +32,7 @@ public class Camera extends AppCompatActivity {
     private Uri photoURI;
     String currentPhotoPath = null;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class Camera extends AppCompatActivity {
 
     }
 
-    static final int REQUEST_TAKE_PHOTO = 1;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -111,24 +110,13 @@ public class Camera extends AppCompatActivity {
         return image;
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
     private View.OnClickListener listener_effects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
-
             if(photoURI != null)
                 intent.putExtra("imageUri", photoURI.toString());
-
-
             startActivity(intent);
         }
     };
@@ -138,7 +126,6 @@ public class Camera extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, Gallery.class);
-
             startActivity(intent);
         }
     };
@@ -148,7 +135,6 @@ public class Camera extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, Main.class);
-
             startActivity(intent);
         }
     };
