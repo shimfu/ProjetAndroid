@@ -54,7 +54,7 @@
             android:id="@+id/img_to_modify"
             android:layout_width="match_parent"
             android:layout_height="311dp"
-            android:layout_below="@+id/camera_effects" />
+            android:layout_below="@+id/camera_effects"/>
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -69,83 +69,88 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button0"
+                    android:id="@+id/button_grey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Grey" />
+                    android:text="grey" />
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/button_greyRs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="grey.rs" />
+                    android:text="greyRS" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/button_keepColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="keep" />
+                    android:text="keepColor" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/button_keepColorRS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="keep.rs" />
+                    android:text="keepColorRS" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/button_randomHue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="randomHue"/>
 
                 <Button
-                    android:id="@+id/button5"
+                    android:id="@+id/button_randomHueRS"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="randomHueRS"/>
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/button_blur"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="blur"/>
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/button_outline"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="outline"/>
 
                 <Button
-                    android:id="@+id/button8"
+                    android:id="@+id/button_linear_contrast_ARGB"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="linear_contrast_ARGB"/>
 
                 <Button
-                    android:id="@+id/button9"
+                    android:id="@+id/button_linear_contrast_HSV"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="linear_contrast_HSV"/>
 
                 <Button
-                    android:id="@+id/button10"
+                    android:id="@+id/button_equalization_contrast_hsv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_hsv"/>
 
                 <Button
-                    android:id="@+id/button11"
+                    android:id="@+id/button_equalization_contrast_argb"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_argb"/>
 
                 <Button
-                    android:id="@+id/button12"
+                    android:id="@+id/button_linearContrastRS"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="linearContrastRS"/>
 
                 <Button
-                    android:id="@+id/button13"
+                    android:id="@+id/button_equalization_contrast_RS"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/button14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_RS"/>
 
 
             </LinearLayout>
