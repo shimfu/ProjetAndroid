@@ -152,6 +152,37 @@
                     android:layout_height="wrap_content"
                     android:text="equalization_contrast_RS"/>
 
+                <Button
+                    android:id="@+id/button_blur_moy_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="blur_moy_RS"/>
+
+                <Button
+                    android:id="@+id/button_blur_gaussian5x5_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="blur_gaussian5x5_RS"/>
+
+                <Button
+                    android:id="@+id/button_sobel_horizontal_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sobel_horizontal_RS"/>
+
+                <Button
+                    android:id="@+id/button_sobel_vertical_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sobel_vertical_RS"/>
+
+                <Button
+                    android:id="@+id/button_laplacian_mask_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="laplacian_mask_RS"/>
+
+
 
             </LinearLayout>
         </HorizontalScrollView>
