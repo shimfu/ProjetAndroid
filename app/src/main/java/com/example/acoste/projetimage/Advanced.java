@@ -6,16 +6,12 @@ import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
-import android.renderscript.Type;
 import android.util.Log;
-
 import com.android.rssample.ScriptC_linearContrast;
-import com.example.acoste.projetimage.Convolution;
+import com.example.acoste.projetimage.Convolution; // we don't know why it works without those two imports
 import com.example.acoste.projetimage.Histogram;
 import com.example.q.renderscriptexample.ScriptC_histEq;
-//import com.android.rssample.linearContrast;
 import com.android.rssample.ScriptC_convolution;
-
 
 /**
  * Created by acoste on 08/02/19.
@@ -191,7 +187,6 @@ public class Advanced extends Effects {
         allocationB.destroy();
         linearContrastScript.destroy();
         rs.destroy();
-
     }
 
 
@@ -320,14 +315,13 @@ public class Advanced extends Effects {
         mask[0] = mask[3] = mask[6] = 1;
         mask[2] = mask[5] = mask[8] = -1;
 
-        int norm = 3;
+        int norm = 1;
 
         int mask_line_length = 3;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
         return 0;
-
     }
 
     int sobel_vertical_RS(Bitmap image, Context context){
@@ -337,14 +331,13 @@ public class Advanced extends Effects {
         mask[0] = mask[1] = mask[2] = 1;
         mask[6] = mask[7] = mask[8] = -1;
 
-        int norm = 3;
+        int norm = 1;
 
         int mask_line_length = 3;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
         return 0;
-
     }
 
     int laplacian_mask_RS(Bitmap image, Context context){
@@ -354,15 +347,12 @@ public class Advanced extends Effects {
         mask[0] = mask[1] = mask[2] = mask[3] = mask[5] = mask[6] = mask[7] = mask[8] = 1;
         mask[4] = -8;
 
-        int norm = 8;
+        int norm = 1;
 
         int mask_line_length = 3;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
         return 0;
-
     }
-
-
 }

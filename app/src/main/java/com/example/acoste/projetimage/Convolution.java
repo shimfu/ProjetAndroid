@@ -23,6 +23,16 @@ public class Convolution {
         }
     }
 
+    static  int[][] mask_moy(int k){
+        int[][] mask = new int[2*k+1][2*k+1];
+        for (int i = 0 ; i < mask.length ; i++){
+            for (int j = 0 ; j < mask.length ; j++){
+                mask[i][j] = 1;
+            }
+        }
+        return mask;
+    }
+
     static public int[] mirrorBitmap(Bitmap bMap, int k){ //return Color data of a bigger Bitmap where each sides are mirrored k time
         return mirrorBitmap(bMap,k ,k);
     }
@@ -66,7 +76,6 @@ public class Convolution {
                 pixelData[(k_line + i) * (width + 2 * k_collumn) + j + k_collumn] = pixelDataBegin[i * width + j];
             }
         }
-
         return pixelData;
     }
 
@@ -95,7 +104,6 @@ public class Convolution {
                 returnedData[(i - half_size) * (width - 2 * half_size) + (j - half_size)][3] = blue_sum;
             }
         }
-
         return returnedData;
     }
 
@@ -125,10 +133,8 @@ public class Convolution {
                 returnedData[i * width + j][1] = red_sum;
                 returnedData[i * width + j][2] = green_sum;
                 returnedData[i * width + j][3] = blue_sum;
-
             }
         }
-
         return returnedData;
     }
 
