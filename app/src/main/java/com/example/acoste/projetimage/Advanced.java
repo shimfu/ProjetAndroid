@@ -313,7 +313,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int sobel_horizontal(Bitmap image, Context context){
+    int sobel_horizontal_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
@@ -330,7 +330,7 @@ public class Advanced extends Effects {
 
     }
 
-    int sobel_vertical(Bitmap image, Context context){
+    int sobel_vertical_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
@@ -347,7 +347,7 @@ public class Advanced extends Effects {
 
     }
 
-    int laplacian_mask(Bitmap image, Context context){
+    int laplacian_mask_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 

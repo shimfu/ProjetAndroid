@@ -102,8 +102,25 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_equalization_contrast_RS = (Button) findViewById(R.id.button_equalization_contrast_RS);
         button_equalization_contrast_RS.setOnClickListener(listener_equalizationContrastRS);
 
+        Button button_blur_moy_RS = (Button) findViewById(R.id.button_blur_moy_RS);
+        button_blur_moy_RS.setOnClickListener(listener_blur_moy_RS);
+
+        Button button_blur_gaussian5x5_RS = (Button) findViewById(R.id.button_blur_gaussian5x5_RS);
+        button_blur_gaussian5x5_RS.setOnClickListener(listener_blur_gaussian5x5_RS);
+
+
+        Button button_sobel_horizontal_RS = (Button) findViewById(R.id.button_sobel_horizontal_RS);
+        button_sobel_horizontal_RS.setOnClickListener(listener_sobel_horizontal_RS);
+
+        Button button_sobel_vertical_RS = (Button) findViewById(R.id.button_sobel_vertical_RS);
+        button_sobel_vertical_RS.setOnClickListener(listener_sobel_vertical_RS);
+
+        Button button_laplacian_mask_RS = (Button) findViewById(R.id.button_laplacian_mask_RS);
+        button_laplacian_mask_RS.setOnClickListener(listener_laplacian_mask_RS);
+
         Button button_reset = (Button) findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
+
 
 
 
@@ -258,13 +275,13 @@ public class EffectsActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             Advanced advanced = new Advanced(bmp);
-            int test [][] = new int [5][5];
-            advanced.blur(bmp, 10 , test );
+            int test [][] = Convolution.mask_moy(5);
+            advanced.blur(bmp, 5 , test );
             img.setImageBitmap(bmp);
         }
     };
 
-private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickListener() {
+    private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Advanced advanced = new Advanced(bmp);
@@ -317,6 +334,52 @@ private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickList
             img.setImageBitmap(bmp);
         }
     };
+
+    private View.OnClickListener listener_blur_moy_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Advanced advanced = new Advanced(bmp);
+            advanced.blur_moy_RS(bmp,getApplicationContext(), 5);
+            img.setImageBitmap(bmp);
+        }
+    };
+
+    private View.OnClickListener listener_blur_gaussian5x5_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Advanced advanced = new Advanced(bmp);
+            advanced.blur_gaussian5x5_RS(bmp,getApplicationContext());
+            img.setImageBitmap(bmp);
+        }
+    };
+
+    private View.OnClickListener listener_sobel_horizontal_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Advanced advanced = new Advanced(bmp);
+            advanced.sobel_horizontal_RS(bmp,getApplicationContext());
+            img.setImageBitmap(bmp);
+        }
+    };
+
+    private View.OnClickListener listener_sobel_vertical_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Advanced advanced = new Advanced(bmp);
+            advanced.sobel_vertical_RS(bmp,getApplicationContext());
+            img.setImageBitmap(bmp);
+        }
+    };
+
+    private View.OnClickListener listener_laplacian_mask_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Advanced advanced = new Advanced(bmp);
+            advanced.laplacian_mask_RS(bmp,getApplicationContext());
+            img.setImageBitmap(bmp);
+        }
+    };
+
 
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
 
