@@ -35,35 +35,17 @@ public class EffectsActivity extends AppCompatActivity{
 
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
     private ImageView img;
+    private Bitmap bmpInit;
     private Bitmap bmp;
-    private Bitmap bmp2;
     private int[] save;
     RoundedBitmapDrawable mDrawable;
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
-
-    /*public View.OnClickListener setInitialImgListener = new View.OnClickListener() {
-        public void onClick(View v) { Effects.setInitialImg(Effects.initialImg);}
-    };*/
-
-   /*public View.OnClickListener toGreyListener = new View.OnClickListener() {
-        public void onClick(View v) { Simple.grey(bmp);}
-    };*/
-
-    /*public View.OnClickListener toGreyRSListener = new View.OnClickListener() {
-        public void onClick(View v) { Simple.toGreyRS(Effects.currentImg, );}
-    };*/
-
-   /* public View.OnClickListener keepColorListener = new View.OnClickListener() {
-        public void onClick(View v) { Simple.keepColor(bmp, 1);}
-    };/*
-    /*public View.OnClickListener keepColorRSListener = new View.OnClickListener() {
-        public void onClick(View v) { Simple.keepColorRS(Effects.currentImg, );}
-    };*/
 
     public void reset(Bitmap bmp){
         bmp.setPixels(save,0, bmp.getWidth(),0 ,0, bmp.getWidth(), bmp.getHeight());
         img.setImageBitmap(bmp);
     }
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,33 +105,34 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_reset = (Button) findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
 
+
+
         img = (ImageView) findViewById(R.id.img_to_modify);
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
-       /* Uri photoUri = null;
+        Uri photoUri = null;
         if(getIntent() != null)
             photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+
         if(photoUri != null) {
             try {
-                bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                bmpInit = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }*/
-
-        if(bmp != null)
-            mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmp);
-        else{
-            bmp = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
-            mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmp);
         }
-        save = new int[bmp.getWidth() * bmp.getHeight()];
-        bmp.getPixels(save, 0, bmp.getWidth(), 0, 0, bmp.getWidth(), bmp.getHeight());
 
-        bmp2 = bmp.copy(bmp.getConfig(), true);
+        if(bmpInit != null)
+            img.setImageBitmap(bmpInit);
+        else{
+            bmpInit = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
+            img.setImageBitmap(bmpInit);
+        }
+        save = new int[bmpInit.getWidth() * bmpInit.getHeight()];
+        bmpInit.getPixels(save, 0, bmpInit.getWidth(), 0, 0, bmpInit.getWidth(), bmpInit.getHeight());
+
+        bmp = bmpInit.copy(bmpInit.getConfig(), true);
 
         /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
-        mDrawable.setCircular(true);
-        img.setImageDrawable(mDrawable);
 
         img.setOnClickListener(listener_zoom);
     }
@@ -157,9 +140,7 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_reset = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            reset(bmp2);
-            /*Effects effects = new Effects(bmp);
-            img.setImageBitmap(effects.getInitialImg());*/
+            reset(bmp);
         }
     };
 
@@ -170,7 +151,7 @@ public class EffectsActivity extends AppCompatActivity{
             View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
             PhotoView photoView = mView.findViewById(R.id.imageView);
             photoView.setImageResource(R.drawable.test0);
-            photoView.setImageBitmap(bmp2);
+            photoView.setImageBitmap(bmp);
             mBuilder.setView(mView);
             AlertDialog mDialog = mBuilder.create();
             mDialog.show();
@@ -212,119 +193,131 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_grey = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            bmp2 = simple.grey(bmp2);
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            bmp = simple.grey(bmp);
+            img.setImageBitmap(bmp);
+
         }
     };
 
     private View.OnClickListener listener_keepColor = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            bmp2 = simple.keepColor(bmp2, 50);
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            bmp = simple.keepColor(bmp, 50);
+            img.setImageBitmap(bmp);
         }
     };
 
     private View.OnClickListener listener_greyRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            simple.toGreyRS(bmp2, getApplicationContext());
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            simple.toGreyRS(bmp, getApplicationContext());
+            img.setImageBitmap(bmp);
         }
     };
 
     private View.OnClickListener listener_keepColorRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            simple.keepColorRS(bmp2,50 ,getApplicationContext());
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            simple.keepColorRS(bmp,50 ,getApplicationContext());
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_randomHue = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            bmp2 = simple.randomHue(bmp2);
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            bmp = simple.randomHue(bmp);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_randomHueRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Simple simple = new Simple(bmp2);
-            simple.randomHueRS(bmp2, getApplicationContext());
-            img.setImageBitmap(bmp2);
+            Simple simple = new Simple(bmp);
+            simple.randomHueRS(bmp, getApplicationContext());
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_outline = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            advanced.outline(bmp2);
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            advanced.outline(bmp);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_blur = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
+            Advanced advanced = new Advanced(bmp);
             int test [][] = new int [5][5];
-            advanced.blur(bmp2, 10 , test );
-            img.setImageBitmap(bmp2);
+            advanced.blur(bmp, 10 , test );
+            img.setImageBitmap(bmp);
         }
     };
-    private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickListener() {
+
+private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            int test[][] = advanced.linear_contrast_ARGB(bmp2);
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            int test[][] = advanced.linear_contrast_ARGB(bmp);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_linearContrast_HSV = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            int test[][] = advanced.linear_contrast_HSV(bmp2, 50);
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            int test[][] = advanced.linear_contrast_HSV(bmp, 50);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_equalizationContrast_HSV = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            int test [][] = advanced.equalization_contrast_hsv(bmp2, 50);
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            int test [][] = advanced.equalization_contrast_hsv(bmp, 50);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_equalizationContrast_ARGB = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            int test [][] = advanced.equalization_contrast_argb(bmp2);
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            int test [][] = advanced.equalization_contrast_argb(bmp);
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_linearContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            advanced.linearContrastRS(bmp2,getApplicationContext());
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            advanced.linearContrastRS(bmp,getApplicationContext());
+            img.setImageBitmap(bmp);
         }
     };
+
     private View.OnClickListener listener_equalizationContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Advanced advanced = new Advanced(bmp2);
-            advanced.equalization_contrast_RS(bmp2, getApplicationContext());
-            img.setImageBitmap(bmp2);
+            Advanced advanced = new Advanced(bmp);
+            advanced.equalization_contrast_RS(bmp, getApplicationContext());
+            img.setImageBitmap(bmp);
         }
     };
+
     /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
 
 }
