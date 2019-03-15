@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="199dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Effects"
+            android:textSize="30dp">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/camera_effects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/menu_effects_activty"
+            android:layout_toRightOf="@+id/menu_effects_activty"
+            android:text="Camera" />
+
+        <Button
+            android:id="@+id/gallery_effects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="100dp"
+            android:text="Gallery" />
+
+
+        <Button
+            android:id="@+id/menu_effects_activty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/gallery_effects"
+            android:layout_toRightOf="@+id/gallery_effects"
+            android:text="Menu" />
+
+        <ImageView
+            android:id="@+id/img_to_modify"
+            android:layout_width="match_parent"
+            android:layout_height="311dp"
+            android:layout_below="@+id/camera_effects"/>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_to_modify"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="grey" />
+
+                <Button
+                    android:id="@+id/button_greyRs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="greyRS" />
+
+                <Button
+                    android:id="@+id/button_keepColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="keepColor" />
+
+                <Button
+                    android:id="@+id/button_keepColorRS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="keepColorRS" />
+
+                <Button
+                    android:id="@+id/button_randomHue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="randomHue"/>
+
+                <Button
+                    android:id="@+id/button_randomHueRS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="randomHueRS"/>
+
+                <Button
+                    android:id="@+id/button_blur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="blur"/>
+
+                <Button
+                    android:id="@+id/button_outline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="outline"/>
+
+                <Button
+                    android:id="@+id/button_linear_contrast_ARGB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="linear_contrast_ARGB"/>
+
+                <Button
+                    android:id="@+id/button_linear_contrast_HSV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="linear_contrast_HSV"/>
+
+                <Button
+                    android:id="@+id/button_equalization_contrast_hsv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_hsv"/>
+
+                <Button
+                    android:id="@+id/button_equalization_contrast_argb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_argb"/>
+
+                <Button
+                    android:id="@+id/button_linearContrastRS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="linearContrastRS"/>
+
+                <Button
+                    android:id="@+id/button_equalization_contrast_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="equalization_contrast_RS"/>
+
+                <Button
+                    android:id="@+id/button_blur_moy_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="blur_moy_RS"/>
+
+                <Button
+                    android:id="@+id/button_blur_gaussian5x5_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="blur_gaussian5x5_RS"/>
+
+                <Button
+                    android:id="@+id/button_sobel_horizontal_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sobel_horizontal_RS"/>
+
+                <Button
+                    android:id="@+id/button_sobel_vertical_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sobel_vertical_RS"/>
+
+                <Button
+                    android:id="@+id/button_laplacian_mask_RS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="laplacian_mask_RS"/>
+
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <Button
+            android:id="@+id/button15"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="19dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginStart="44dp"
+            android:layout_toEndOf="@+id/button16"
+            android:layout_toRightOf="@+id/button16"
+            android:text="Reset" />
+
+        <Button
+            android:id="@+id/button16"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignBaseline="@+id/button15"
+            android:layout_alignBottom="@+id/button15"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_toLeftOf="@+id/menu_effects_activty"
+            android:layout_toStartOf="@+id/menu_effects_activty"
+            android:text="Apply" />
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

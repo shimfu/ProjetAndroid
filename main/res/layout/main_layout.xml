@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/titre_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Face Swapper"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:id="@+id/tuto_main"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom" />
+
+        <ImageView
+            android:id="@+id/base_img"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/titre_main"
+            android:layout_marginTop="19dp" />
+
+
+        <ImageView
+            android:id="@+id/gallery_main"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="21dp" />
+
+
+        <ImageView
+            android:id="@+id/camera_main"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignTop="@+id/gallery_main"
+            android:layout_gravity="bottom"
+            android:layout_toEndOf="@+id/titre_main"
+            android:layout_toRightOf="@+id/titre_main"
+            android:layout_marginRight="20dp"/>
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
