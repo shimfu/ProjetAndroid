@@ -23,17 +23,12 @@ public class EffectsActivity extends AppCompatActivity{
     private Button button_menu = null ;
     private Button button_grey = null;
 
-    private int number_of_img = 15;
 
-    private Button img_button[] = new Button[number_of_img];
-
-    /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
     private ImageView img;
     private Bitmap bmpInit;
     private Bitmap bmp;
     private int[] save;
-    RoundedBitmapDrawable mDrawable;
-    /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
+
 
     public void reset(Bitmap bmp){
         bmp.setPixels(save,0, bmp.getWidth(),0 ,0, bmp.getWidth(), bmp.getHeight());
@@ -45,73 +40,73 @@ public class EffectsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_effects);
 
-        button_gallery = (Button) findViewById(R.id.gallery_effects);
+        button_gallery = findViewById(R.id.gallery_effects);
         button_gallery.setOnClickListener(listener_gallery);
 
-        button_camera = (Button) findViewById(R.id.camera_effects);
+        button_camera =  findViewById(R.id.camera_effects);
         button_camera.setOnClickListener(listener_camera);
 
-        button_menu = (Button) findViewById(R.id.menu_effects_activty);
+        button_menu = findViewById(R.id.menu_effects_activty);
         button_menu.setOnClickListener(listener_menu);
 
-        button_grey = (Button) findViewById(R.id.button_grey);
+        button_grey = findViewById(R.id.button_grey);
         button_grey.setOnClickListener(listener_grey);
 
-        Button button_greyRs = (Button) findViewById(R.id.button_greyRs);
+        Button button_greyRs =  findViewById(R.id.button_greyRs);
         button_greyRs.setOnClickListener(listener_greyRS);
 
-        Button button_keepColorRS = (Button) findViewById(R.id.button_keepColorRS);
+        Button button_keepColorRS =  findViewById(R.id.button_keepColorRS);
         button_keepColorRS.setOnClickListener(listener_keepColorRS);
 
-        Button button_keepColor = (Button) findViewById(R.id.button_keepColor);
+        Button button_keepColor =  findViewById(R.id.button_keepColor);
         button_keepColor.setOnClickListener(listener_keepColor);
 
-        Button button_randomHue = (Button) findViewById(R.id.button_randomHue);
+        Button button_randomHue =  findViewById(R.id.button_randomHue);
         button_randomHue.setOnClickListener(listener_randomHue);
 
-        Button button_randomHueRS = (Button) findViewById(R.id.button_randomHueRS);
+        Button button_randomHueRS = findViewById(R.id.button_randomHueRS);
         button_randomHueRS.setOnClickListener(listener_randomHueRS);
 
-        Button button_blur = (Button) findViewById(R.id.button_blur);
+        Button button_blur =  findViewById(R.id.button_blur);
         button_blur.setOnClickListener(listener_blur);
 
-        Button button_outline = (Button) findViewById(R.id.button_outline);
+        Button button_outline = findViewById(R.id.button_outline);
         button_outline.setOnClickListener(listener_outline);
 
-        Button button_linear_contrast_ARGB = (Button) findViewById(R.id.button_linear_contrast_ARGB);
+        Button button_linear_contrast_ARGB =  findViewById(R.id.button_linear_contrast_ARGB);
         button_linear_contrast_ARGB.setOnClickListener(listener_linearContrast_ARGB);
 
-        Button button_linear_contrast_HSV = (Button) findViewById(R.id.button_linear_contrast_HSV);
+        Button button_linear_contrast_HSV =  findViewById(R.id.button_linear_contrast_HSV);
         button_linear_contrast_HSV.setOnClickListener(listener_linearContrast_HSV);
 
-        Button button_equalization_contrast_hsv = (Button) findViewById(R.id.button_equalization_contrast_hsv);
+        Button button_equalization_contrast_hsv = findViewById(R.id.button_equalization_contrast_hsv);
         button_equalization_contrast_hsv.setOnClickListener(listener_equalizationContrast_HSV);
 
-        Button button_equalization_contrast_argb = (Button) findViewById(R.id.button_equalization_contrast_argb);
+        Button button_equalization_contrast_argb =  findViewById(R.id.button_equalization_contrast_argb);
         button_equalization_contrast_argb.setOnClickListener(listener_equalizationContrast_ARGB);
 
-        Button button_linearContrastRS = (Button) findViewById(R.id.button_linearContrastRS);
+        Button button_linearContrastRS =  findViewById(R.id.button_linearContrastRS);
         button_linearContrastRS.setOnClickListener(listener_linearContrastRS);
 
-        Button button_equalization_contrast_RS = (Button) findViewById(R.id.button_equalization_contrast_RS);
+        Button button_equalization_contrast_RS = findViewById(R.id.button_equalization_contrast_RS);
         button_equalization_contrast_RS.setOnClickListener(listener_equalizationContrastRS);
 	
-	Button button_blur_moy_RS = (Button) findViewById(R.id.button_blur_moy_RS);
+	Button button_blur_moy_RS = findViewById(R.id.button_blur_moy_RS);
         button_blur_moy_RS.setOnClickListener(listener_blur_moy_RS);
 
-        Button button_blur_gaussian5x5_RS = (Button) findViewById(R.id.button_blur_gaussian5x5_RS);
+        Button button_blur_gaussian5x5_RS = findViewById(R.id.button_blur_gaussian5x5_RS);
         button_blur_gaussian5x5_RS.setOnClickListener(listener_blur_gaussian5x5_RS);
 
-        Button button_sobel_horizontal_RS = (Button) findViewById(R.id.button_sobel_horizontal_RS);
+        Button button_sobel_horizontal_RS =  findViewById(R.id.button_sobel_horizontal_RS);
         button_sobel_horizontal_RS.setOnClickListener(listener_sobel_horizontal_RS);
 
-        Button button_sobel_vertical_RS = (Button) findViewById(R.id.button_sobel_vertical_RS);
+        Button button_sobel_vertical_RS = findViewById(R.id.button_sobel_vertical_RS);
         button_sobel_vertical_RS.setOnClickListener(listener_sobel_vertical_RS);
 
-        Button button_laplacian_mask_RS = (Button) findViewById(R.id.button_laplacian_mask_RS);
+        Button button_laplacian_mask_RS =  findViewById(R.id.button_laplacian_mask_RS);
         button_laplacian_mask_RS.setOnClickListener(listener_laplacian_mask_RS);
 
-        Button button_reset = (Button) findViewById(R.id.button15);
+        Button button_reset = findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
 
 
@@ -199,7 +194,6 @@ public class EffectsActivity extends AppCompatActivity{
         }
     };
 
-    /**  1 - TEMPORARY IMPLEMENTATION - 1 **/
 
     private View.OnClickListener listener_grey = new View.OnClickListener() {
         @Override
@@ -374,6 +368,5 @@ public class EffectsActivity extends AppCompatActivity{
         }
     };
 
-    /** 1 - TEMPORARY IMPLEMENTATION - 1 **/
 
 }
