@@ -2,6 +2,7 @@ package com.example.acoste.projetimage;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,116 +13,68 @@ import android.widget.TextView;
 
 public class Tutorial extends AppCompatActivity {
 
-    private Button button_main = null;
-    private Button button_next = null;
-    private Button button_previous = null;
+    private ImageView img_gallery = null;
+    private ImageView img_camera = null;
+    //private ImageView img_effects = null;
+    private ImageView img_menu = null;
+
+    //private Bitmap bitmap_tuto = null;
+    private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_camera = null;
+    private Bitmap bitmap_base_img = null;
+    private Bitmap bitmap_menu = null;
+
     private String test_tuto_string = null;
-    private TextView intro_tuto_textview = null;
-    private TextView indication_tuto_textview = null;
-    private ImageView imgView_left = null;
-    private ImageView imgView_right = null;
-    private int index = 0;
+    private ImageView imageView = null;
+    private TextView test_tuto_textview = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tutorial);
 
-        Intent ii = getIntent();
-        Bundle b = ii.getExtras();
+        img_gallery = findViewById(R.id.gallery_tuto);
+        img_gallery.setOnClickListener(listener_gallery);
+        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
+        img_gallery.setImageBitmap(bitmap_gallery);
 
-        if (b != null) {
-            test_tuto_string = (String) b.get("code_string_main");
-        }
+        img_camera = findViewById(R.id.camera_tuto);
+        img_camera.setOnClickListener(listener_camera);
+        bitmap_camera = BitmapFactory.decodeResource(getResources(), R.drawable.apps_camera_icon);
+        img_camera.setImageBitmap(bitmap_camera);
 
-        intro_tuto_textview = (TextView)findViewById(R.id.intro_tutorial);
-        intro_tuto_textview.setText(getString(R.string.intro_tutorial));
+        img_menu = findViewById(R.id.menu_tuto);
+        img_menu.setOnClickListener(listener_menu);
+        bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
+        img_menu.setImageBitmap(bitmap_menu);
 
-        button_main = (Button) findViewById(R.id.menu_tutorial);
-        button_main.setOnClickListener(listener_main);
-
-        imgView_left = (ImageView)findViewById(R.id.imageView_left);
-        imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test5));
-
-        imgView_right = (ImageView)findViewById(R.id.imageView_right);
-        imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumesgrey));
-
-        indication_tuto_textview = (TextView)findViewById(R.id.indication_tutorial);
-        indication_tuto_textview.setText("Effet : Mise en niveau de gris (grey)");
-
-        button_next = (Button) findViewById(R.id.next);
-        button_next.setOnClickListener(listener_next);
-
-        button_previous = (Button) findViewById(R.id.previous);
-        button_previous.setOnClickListener(listener_previous);
+        imageView = findViewById(R.id.img_tuto);
+        bitmap_base_img = BitmapFactory.decodeResource(getResources(), R.drawable.test6);
+        imageView.setImageBitmap(bitmap_base_img);
     }
 
-    private View.OnClickListener listener_next = new View.OnClickListener() {
+
+    private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            index++;
-            switch(index){
-                case 0:
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test5));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumesgrey));
-                    indication_tuto_textview.setText("Effet : Mise en niveau de gris (grey)");
-                    break;
-                case 1:
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumeskeepcolor));
-                    indication_tuto_textview.setText("Effet : Mise en niveau de gris et conservation d'une couleur (keepColor)");
-                    break;
-                case 2:
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test2));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ville));
-                    indication_tuto_textview.setText("Effet : Amélioration du contraste");
-                    index = -1;
-                    break;
-                case 3:
-                    index = 0;
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test5));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumesgrey));
-                    indication_tuto_textview.setText("Effet : Mise en niveau de gris (grey)");
-                    break;
-            }
 
+            Intent intent = new Intent(Tutorial.this, Gallery.class);
+            startActivity(intent);
         }
     };
 
-    private View.OnClickListener listener_previous = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            index--;
-            switch(index){
-                case -1:
-                    index = 2;
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test2));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ville));
-                    indication_tuto_textview.setText("Effet : Amélioration du contraste");
-                    break;
-                case 0:
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumesgrey));
-                    indication_tuto_textview.setText("Effet : Mise en niveau de gris (grey)");
-                    break;
-                case 1:
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test5));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.legumeskeepcolor));
-                    indication_tuto_textview.setText("Effet : Mise en niveau de gris et conservation d'une couleur (keepColor)");
-                    break;
-                case 2:
-                    imgView_left.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test2));
-                    imgView_right.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ville));
-                    indication_tuto_textview.setText("Effet : Amélioration du contraste");
-                    break;
-            }
-
-        }
-    };
-
-    private View.OnClickListener listener_main = new View.OnClickListener() {
+    private View.OnClickListener listener_menu = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             Intent intent = new Intent(Tutorial.this, Main.class);
+            startActivity(intent);
+        }
+    };
 
+    private View.OnClickListener listener_camera = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Tutorial.this, Camera.class);
             startActivity(intent);
         }
     };
