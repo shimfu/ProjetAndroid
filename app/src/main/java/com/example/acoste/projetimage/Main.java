@@ -21,9 +21,15 @@ import java.util.Random;
 
 public class Main extends AppCompatActivity {
 
-    private Button button_tuto = null;
-    private Button button_gallery = null;
-    private Button button_camera = null;
+    private ImageView img_tuto = null;
+    private ImageView img_gallery = null;
+    private ImageView img_camera = null;
+
+    private ImageView base_img = null;
+    private Bitmap bitmap_base_img = null;
+    private Bitmap bitmap_tuto = null;
+    private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_camera = null;
 
     private String test_main = "Menu 1234";
     private String code_string = "code_string_main";
@@ -35,14 +41,28 @@ public class Main extends AppCompatActivity {
 
 
 
-        button_tuto = (Button) findViewById(R.id.tuto_main);
-        button_tuto.setOnClickListener(listener_tuto);
+        img_tuto =  findViewById(R.id.tuto_main);
+        img_tuto.setOnClickListener(listener_tuto);
+        bitmap_tuto = BitmapFactory.decodeResource(getResources(), R.drawable.tuto_icon);
+        img_tuto.setImageBitmap(bitmap_tuto);
 
-        button_camera = (Button) findViewById(R.id.camera_main);
-        button_camera.setOnClickListener(listener_camera);
+        img_camera =  findViewById(R.id.camera_main);
+        img_camera.setOnClickListener(listener_camera);
+        bitmap_camera = BitmapFactory.decodeResource(getResources(), R.drawable.apps_camera_icon);
+        img_camera.setImageBitmap(bitmap_camera);
 
-        button_gallery = (Button) findViewById(R.id.gallery_main);
-        button_gallery.setOnClickListener(listener_gallery);
+        img_gallery = findViewById(R.id.gallery_main);
+        img_gallery.setOnClickListener(listener_gallery);
+        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
+        img_gallery.setImageBitmap(bitmap_gallery);
+
+        base_img = findViewById(R.id.base_img);
+
+        bitmap_base_img = BitmapFactory.decodeResource(getResources(), R.drawable.test5);
+        base_img.setImageBitmap(bitmap_base_img);
+
+
+
 
 
     }
