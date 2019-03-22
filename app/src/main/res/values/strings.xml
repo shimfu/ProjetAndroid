@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ProjetImage</string>
+    <string name="intro_tutorial">
+        Cette application permet d’appliquer différents filtres sur des images importées depuis la Galerie de votre téléphone ou prises directement
+        par votre Appareil photo. Dans ce tuto nous allons expliciter le fonctionnement de notre application et vous donner un aperçu de quelques filtres disponibles.
+    </string>
+
 </resources>
