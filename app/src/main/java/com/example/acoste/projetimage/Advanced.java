@@ -7,23 +7,18 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.util.Log;
-import com.android.rssample.ScriptC_linearContrast;
-import com.example.acoste.projetimage.Convolution; // we don't know why it works without those two imports
-import com.example.acoste.projetimage.Histogram;
-import com.example.q.renderscriptexample.ScriptC_histEq;
+
 import com.android.rssample.ScriptC_convolution;
+import com.android.rssample.ScriptC_linearContrast;
+import com.example.q.renderscriptexample.ScriptC_histEq;
 
 /**
  * Created by acoste on 08/02/19.
  */
 
-public class Advanced extends Effects {
+public class Advanced{
 
-    public Advanced(Bitmap bMap){
-        super(bMap);
-    }
-
-    int[] blur_data(Bitmap bMap, int k, int[][] mask){// return the colro data of a blured Bitmap
+    private static int[] blur_aux(Bitmap bMap, int k, int[][] mask){// return the colro data of a blured Bitmap
 
         int norme = Convolution.norm_for_blurmask(mask);
 
@@ -42,13 +37,12 @@ public class Advanced extends Effects {
         return pixelDataFinal;
     }
 
-    void blur(Bitmap bMap , int k, int[][] mask){// apply blur on a Bitmap
-
-        int[] pixelData = blur_data(bMap, k, mask);
+    static void blur(Bitmap bMap , int k, int[][] mask){// apply blur on a Bitmap
+        int[] pixelData = blur_aux(bMap, k, mask);
         bMap.setPixels(pixelData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
     }
 
-    void outline(Bitmap bMap){//apply the outline detection algorithm
+    static void outline(Bitmap bMap){//apply the outline detection algorithm
         int width = bMap.getWidth();
         int height = bMap.getHeight();
         int[] pixelData = new int[width*height];
@@ -58,7 +52,7 @@ public class Advanced extends Effects {
 
     }
 
-    public int[][] linear_contrast_ARGB(Bitmap bMap){//apply linear contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
+    static int [][] linear_contrast_ARGB(Bitmap bMap){//apply linear contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
         int[][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
         bMap.getPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -99,7 +93,7 @@ public class Advanced extends Effects {
         return histog;
     }
 
-    public int[][] linear_contrast_HSV(Bitmap bMap, int precision){//apply linear contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
+    static void linear_contrast_HSV(Bitmap bMap, int precision){//apply linear contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
         bMap.getPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -114,10 +108,10 @@ public class Advanced extends Effects {
             colorData[i]= Color.HSVToColor(Color.alpha(colorData[i]), HSV);
         }
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-        return histog;
+
     }
 
-    public int[][] equalization_contrast_hsv(Bitmap bMap, int precision){//apply plane contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
+    static void equalization_contrast_HSV(Bitmap bMap, int precision){//apply plane contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
         bMap.getPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -131,10 +125,9 @@ public class Advanced extends Effects {
             colorData[i] = Color.HSVToColor(Color.alpha(colorData[1]), HSV);
         }
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-        return histog;
     }
 
-    public int[][] equalization_contrast_argb(Bitmap bMap){//apply plane contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
+    static void equalization_contrast_ARGB(Bitmap bMap){//apply plane contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
         bMap.getPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -153,10 +146,9 @@ public class Advanced extends Effects {
             colorData[i]= Color.argb(Color.alpha(colorData[i]), red, green, blue);//on met a jour les data qu'on vas utilisé dans set pixel
         }
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-        return histog;
     }
 
-    void linearContrastRS(Bitmap image, Context context) {
+    static void linearContrastRS(Bitmap image, Context context) {
 
         //Get image size
         int width = image.getWidth();
@@ -190,7 +182,7 @@ public class Advanced extends Effects {
     }
 
 
-    void equalization_contrast_RS(Bitmap image, Context context) {
+    static void equalization_contrast_RS(Bitmap image, Context context) {
         //Get image size
         int width = image.getWidth();
         int height = image.getHeight();
@@ -222,7 +214,7 @@ public class Advanced extends Effects {
         rs.destroy();
     }
 
-    int convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
+    static int convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
 
         if (mask.length % mask_line_length != 0 && (mask.length / mask_line_length)%2 !=0 && mask_line_length%2 !=0){
             Log.e("ERROR","Wrong arguments in convolution_RS");
@@ -269,7 +261,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int blur_moy_RS(Bitmap image, Context context, int intensity){
+    static int blur_moy_RS(Bitmap image, Context context, int intensity){
 
         if (intensity< 0){
             return -1;
@@ -287,7 +279,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int blur_gaussian5x5_RS(Bitmap image, Context context){
+    static int blur_gaussian5x5_RS(Bitmap image, Context context){
 
 
         int[] mask = new int[25];
@@ -308,7 +300,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int sobel_horizontal_RS(Bitmap image, Context context){
+    static int sobel_horizontal_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
@@ -324,7 +316,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int sobel_vertical_RS(Bitmap image, Context context){
+    static int sobel_vertical_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
@@ -340,7 +332,7 @@ public class Advanced extends Effects {
         return 0;
     }
 
-    int laplacian_mask_RS(Bitmap image, Context context){
+    static int laplacian_mask_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 

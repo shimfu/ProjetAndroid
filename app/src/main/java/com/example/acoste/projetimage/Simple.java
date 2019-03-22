@@ -2,15 +2,14 @@ package com.example.acoste.projetimage;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.util.Log;
 
-import com.android.rssample.ScriptC_toGrey;
-import com.android.rssample.ScriptC_randomHue;
 import com.android.rssample.ScriptC_keepColor;
+import com.android.rssample.ScriptC_randomHue;
+import com.android.rssample.ScriptC_toGrey;
 
 import java.util.Random;
 
@@ -18,14 +17,10 @@ import java.util.Random;
  * Created by acoste on 01/02/19.
  */
 
-public class Simple extends Effects {
-
-    public Simple(Bitmap bMap){
-        super(bMap);
-    }
+public class Simple{
 
     static Bitmap grey(Bitmap bMap){//transform a Bitmap in shades of grey (ARGB color space)
-        int[] pixelData = new int[getCurrentImg().getWidth() * getCurrentImg().getHeight()];
+        int[] pixelData = new int[bMap.getWidth() * bMap.getHeight()];
         Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
 
         cpy_bMap.getPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
@@ -67,7 +62,7 @@ public class Simple extends Effects {
         return cpy_bMap;
     }
 
-    public int[] randomHue_aux(int[] color){//change the Hue of all pixel of an array of Color type (HSV color space)
+    static int[] randomHue_aux(int[] color){//change the Hue of all pixel of an array of Color type (HSV color space)
 
         Random rn = new Random();
         int hue = rn.nextInt(361);
@@ -82,7 +77,7 @@ public class Simple extends Effects {
         return color;
     }
 
-    public Bitmap randomHue(Bitmap bMap){//change the Hue of all pixel of a Bitmap (HSV color space)
+    static Bitmap randomHue(Bitmap bMap){//change the Hue of all pixel of a Bitmap (HSV color space)
 
         Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
         int[] pixelData = new int[cpy_bMap.getWidth()*cpy_bMap.getHeight()];
@@ -91,7 +86,6 @@ public class Simple extends Effects {
         cpy_bMap.setPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
 
         return cpy_bMap;
-
     }
 
     static void  toGreyRS(Bitmap  bmp, Context context) {
@@ -115,7 +109,7 @@ public class Simple extends Effects {
         greyScript.destroy (); rs.destroy ();
     }
 
-    public static void keepColorRS(Bitmap image, int color, Context context) {
+    static void keepColorRS(Bitmap image, int color, Context context) {
 
         //Create renderscript
         RenderScript rs = RenderScript.create(context);
@@ -136,10 +130,9 @@ public class Simple extends Effects {
         output.destroy();
         keepColorScript.destroy();
         rs.destroy();
-
     }
 
-    public void randomHueRS(Bitmap bmp, Context context){
+    static void randomHueRS(Bitmap bmp, Context context){
 
         //Get image size
         Random random = new Random();
@@ -165,7 +158,6 @@ public class Simple extends Effects {
         allocationB.destroy();
         randomHueScript.destroy();
         rs.destroy();
-
     }
 
 }
