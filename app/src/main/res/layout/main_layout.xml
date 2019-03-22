@@ -17,49 +17,75 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Face Swapper"
+            android:text="PhotoFun"
             android:textSize="30dp" />
 
         <ImageView
             android:id="@+id/tuto_main"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"/>
 
         <ImageView
             android:id="@+id/base_img"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/titre_main"
-            android:layout_marginTop="19dp" />
+            android:layout_below="@+id/tuto_main" />
 
 
         <ImageView
             android:id="@+id/gallery_main"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="18dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="21dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="20dp" />
 
 
         <ImageView
             android:id="@+id/camera_main"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/gallery_main"
             android:layout_gravity="bottom"
-            android:layout_toEndOf="@+id/titre_main"
-            android:layout_toRightOf="@+id/titre_main"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/gallery_main"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/gallery_main"
+            android:layout_marginLeft="14dp"
+            android:layout_marginStart="14dp"
+            android:text="Gallery"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView4"
+            android:layout_alignBottom="@+id/textView4"
+            android:layout_alignEnd="@+id/camera_main"
+            android:layout_alignRight="@+id/camera_main"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:text="Camera"
+            android:textSize="15dp" />
 
 
     </RelativeLayout>

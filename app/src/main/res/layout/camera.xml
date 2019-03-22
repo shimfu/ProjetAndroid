@@ -14,66 +14,91 @@
         tools:layout_editor_absoluteY="16dp">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:text="Camera"
-            android:textSize="50dp"
-            android:id="@+id/textView2">
+            android:textSize="35dp">
 
         </TextView>
 
         <ImageView
+            android:id="@+id/camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp" />
+
+        <ImageView
             android:id="@+id/gallery_camera"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp" />
 
 
         <ImageView
             android:id="@+id/effects_camera"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="20dp"
             android:layout_alignTop="@+id/gallery_camera"
             android:layout_centerHorizontal="true" />
 
 
         <ImageView
             android:id="@+id/menu_camera"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/effects_camera"
             android:layout_marginLeft="12dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="12dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/menu_camera"
+            android:layout_alignParentBottom="true"
 
-        <ImageView
-            android:id="@+id/camera"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@+id/textView2"
+            android:layout_alignStart="@+id/menu_camera"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp"
+            android:text="Menu"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="18dp" />
+            android:text="Effects"
+            android:textSize="15dp"
+            android:id="@+id/textView3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView3"
+            android:layout_alignBottom="@+id/textView3"
+            android:layout_alignLeft="@+id/gallery_camera"
+            android:layout_alignStart="@+id/gallery_camera"
+            android:layout_marginLeft="15dp"
+            android:text="Gallery"
+            android:textSize="15dp" />
+
 
 
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="168dp"
-        android:layout_height="295dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.525" />
 
 </android.support.constraint.ConstraintLayout>
