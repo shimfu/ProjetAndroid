@@ -21,6 +21,19 @@ public class Gallery extends AppCompatActivity{
     private Button button_effects = null;
     private Button button_menu = null ;
     private Button button_gallery = null ;
+
+    //private ImageView img_tuto = null;
+    private ImageView img_gallery = null;
+    private ImageView img_camera = null;
+    private ImageView img_effects = null;
+    private ImageView img_menu = null;
+
+    //private Bitmap bitmap_tuto = null;
+    private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_camera = null;
+    private Bitmap bitmap_effects = null;
+    private Bitmap bitmap_menu = null;
+
     static final int RESULT_LOAD_IMG = 1;
     private Bitmap selectedImage = null;
     private ImageView imgView = null;
@@ -29,17 +42,25 @@ public class Gallery extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery);
 
-        button_effects = (Button) findViewById(R.id.effects_gallery);
-        button_effects.setOnClickListener(listener_effects);
+        img_camera =  findViewById(R.id.camera_gallery);
+        img_camera.setOnClickListener(listener_camera);
+        bitmap_camera = BitmapFactory.decodeResource(getResources(), R.drawable.apps_camera_icon);
+        img_camera.setImageBitmap(bitmap_camera);
 
-        button_camera = (Button) findViewById(R.id.camera_gallery);
-        button_camera.setOnClickListener(listener_camera);
+        img_gallery = findViewById(R.id.gallery);
+        img_gallery.setOnClickListener(listener_gallery);
+        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
+        img_gallery.setImageBitmap(bitmap_gallery);
 
-        button_menu = (Button) findViewById(R.id.menu_gallery);
-        button_menu.setOnClickListener(listener_menu);
+        img_effects = findViewById(R.id.effects_gallery);
+        img_effects.setOnClickListener(listener_effects);
+        bitmap_effects = BitmapFactory.decodeResource(getResources(), R.drawable.effect_logo);
+        img_effects.setImageBitmap(bitmap_effects);
 
-        button_gallery = (Button) findViewById(R.id.gallery);
-        button_gallery.setOnClickListener(listener_gallery);
+        img_menu = findViewById(R.id.menu_gallery);
+        img_menu.setOnClickListener(listener_menu);
+        bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
+        img_menu.setImageBitmap(bitmap_menu);
 
         imgView = findViewById(R.id.imageView);
 

@@ -2,6 +2,7 @@ package com.example.acoste.projetimage;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,10 +25,18 @@ public class Camera extends AppCompatActivity {
 
 
 
-    private Button button_gallery = null;
-    private Button button_effects = null;
-    private Button button_menu = null ;
-    private Button button_camera = null ;
+    //private ImageView img_tuto = null;
+    private ImageView img_gallery = null;
+    //private ImageView img_camera = null;
+    private ImageView img_effects = null;
+    private ImageView img_menu = null;
+
+    //private Bitmap bitmap_tuto = null;
+    private Bitmap bitmap_gallery = null;
+   // private Bitmap bitmap_camera = null;
+    private Bitmap bitmap_effects = null;
+    private Bitmap bitmap_menu = null;
+
     private ImageView imageView = null;
     private Uri photoURI;
     String currentPhotoPath = null;
@@ -39,17 +48,21 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
 
-        button_effects = (Button) findViewById(R.id.effects_camera);
-        button_effects.setOnClickListener(listener_effects);
 
-        button_gallery = (Button) findViewById(R.id.galery_camera);
-        button_gallery.setOnClickListener(listener_gallery);
+        img_gallery = findViewById(R.id.gallery_camera);
+        img_gallery.setOnClickListener(listener_gallery);
+        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
+        img_gallery.setImageBitmap(bitmap_gallery);
 
-        button_menu = (Button) findViewById(R.id.menu_camera);
-        button_menu.setOnClickListener(listener_menu);
+        img_effects = findViewById(R.id.effects_camera);
+        img_effects.setOnClickListener(listener_effects);
+        bitmap_effects = BitmapFactory.decodeResource(getResources(), R.drawable.effect_logo);
+        img_effects.setImageBitmap(bitmap_effects);
 
-        button_camera = (Button) findViewById(R.id.camera);
-        button_camera.setOnClickListener(listener_camera);
+        img_menu = findViewById(R.id.menu_camera);
+        img_menu.setOnClickListener(listener_menu);
+        bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
+        img_menu.setImageBitmap(bitmap_menu);
 
         imageView = findViewById(R.id.imageView);
 
