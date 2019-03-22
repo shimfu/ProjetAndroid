@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Effects {
 
@@ -107,8 +108,16 @@ public class Effects {
         setCurrentImg(Simple.keepColor(getCurrentImg(), param));
     }
 
+    public void comboEffects (Context context, int param){
+        Advanced.blur_moy_RS(getCurrentImg(), context, param);
+        Simple.randomHueRS(getCurrentImg(), context,10);
+        Advanced.equalization_contrast_ARGB(getCurrentImg());
+    }
+
     public void randomHue(){
-        setCurrentImg(Simple.randomHue(getCurrentImg()));
+        Random rn = new Random();
+        int hue = rn.nextInt(361);
+        setCurrentImg(Simple.randomHue(getCurrentImg(),hue));
     }
 
     public void toGreyRS(Context context){
@@ -120,7 +129,9 @@ public class Effects {
     }
 
     public void randomHueRS(Context context){
-        Simple.randomHueRS(getCurrentImg(), context);
+        Random random = new Random();
+        int r = random.nextInt(361);
+        Simple.randomHueRS(getCurrentImg(), context,r);
     }
 
     public void blur(int param, int mask[][]){

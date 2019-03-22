@@ -5,13 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
-import android.util.Log;
 
 import com.android.rssample.ScriptC_keepColor;
 import com.android.rssample.ScriptC_randomHue;
 import com.android.rssample.ScriptC_toGrey;
-
-import java.util.Random;
 
 /**
  * Created by acoste on 01/02/19.
@@ -62,27 +59,24 @@ public class Simple{
         return cpy_bMap;
     }
 
-    static int[] randomHue_aux(int[] color){//change the Hue of all pixel of an array of Color type (HSV color space)
-
-        Random rn = new Random();
-        int hue = rn.nextInt(361);
+    static int[] randomHue_aux(int[] color, int r){//change the Hue of all pixel of an array of Color type (HSV color space)
 
         float[] HSV = new float[3];
         for (int i = 0; i < color.length;i++){
             Color.colorToHSV(color[i], HSV);
-            HSV[0] = hue;
+            HSV[0] = r;
             color[i] = Color.HSVToColor(HSV);
         }
 
         return color;
     }
 
-    static Bitmap randomHue(Bitmap bMap){//change the Hue of all pixel of a Bitmap (HSV color space)
+    static Bitmap randomHue(Bitmap bMap, int r){//change the Hue of all pixel of a Bitmap (HSV color space)
 
         Bitmap cpy_bMap = bMap.copy(bMap.getConfig(), true);
         int[] pixelData = new int[cpy_bMap.getWidth()*cpy_bMap.getHeight()];
         cpy_bMap.getPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
-        pixelData = randomHue_aux(pixelData);
+        pixelData = randomHue_aux(pixelData, r);
         cpy_bMap.setPixels(pixelData, 0, cpy_bMap.getWidth(), 0, 0, cpy_bMap.getWidth(), cpy_bMap.getHeight());
 
         return cpy_bMap;
@@ -132,12 +126,12 @@ public class Simple{
         rs.destroy();
     }
 
-    static void randomHueRS(Bitmap bmp, Context context){
+    static void randomHueRS(Bitmap bmp, Context context, int r){
 
         //Get image size
-        Random random = new Random();
+        /*Random random = new Random();
         int rdNumber = random.nextInt(361);
-        Log.e("rdNumber", Integer.toString(rdNumber));
+        Log.e("rdNumber", Integer.toString(rdNumber));*/
         //Create renderscript
         RenderScript rs = RenderScript.create(context);
         //Create allocation from Bitmap
@@ -147,7 +141,7 @@ public class Simple{
         //Create script from rs file.
         ScriptC_randomHue randomHueScript = new ScriptC_randomHue(rs);
         //Set size in script
-        randomHueScript.set_hue(rdNumber);
+        randomHueScript.set_hue(r);
         //Call the first kernel.
         randomHueScript.forEach_randomHue(allocationA, allocationB);
 

@@ -57,6 +57,9 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_keepColor = findViewById(R.id.button_keepColor);
         button_keepColor.setOnClickListener(listener_keepColor);
 
+        Button button_comboEffects = findViewById(R.id.button_comboEffects);
+        button_comboEffects.setOnClickListener(listener_comboEffects);
+
         Button button_randomHue = findViewById(R.id.button_randomHue);
         button_randomHue.setOnClickListener(listener_randomHue);
 
@@ -222,6 +225,14 @@ public class EffectsActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             effect.keepColorRS(50, getApplicationContext());
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+
+    private View.OnClickListener listener_comboEffects = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.comboEffects(getApplicationContext(), 5);
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
