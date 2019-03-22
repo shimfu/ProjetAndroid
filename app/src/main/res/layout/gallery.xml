@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,48 +17,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gallery"
-            android:textSize="50dp">
+            android:textSize="50dp"
+            android:id="@+id/textView2">
 
         </TextView>
 
-        <Button
+        <ImageView
             android:id="@+id/camera_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Camera" />
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/gallery"
+            android:layout_marginEnd="27dp"
+            android:layout_marginRight="27dp"
+            android:layout_marginTop="22dp" />
 
-        <Button
+
+        <ImageView
             android:id="@+id/effects_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Effects" />
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignTop="@+id/camera_gallery"
+            android:layout_marginLeft="55dp"
+            android:layout_marginStart="55dp"
+            android:layout_toEndOf="@+id/menu_gallery"
+            android:layout_toRightOf="@+id/menu_gallery" />
 
-        <Button
+
+        <ImageView
             android:id="@+id/menu_gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Menu" />
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/effects_gallery"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp" />
 
-        <Button
+
+        <ImageView
             android:id="@+id/gallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Gallery" />
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <ImageView

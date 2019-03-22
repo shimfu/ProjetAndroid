@@ -5,49 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="121dp">
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/titre_main"
-            android:text="Menu Principal"
-            android:textSize="50dp"/>
-
-
-        <Button
-            android:id="@+id/gallery_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tuto_main"
-            android:layout_marginLeft="50dp"
-            android:text="Gallery" />
+            android:layout_centerHorizontal="true"
+            android:text="Face Swapper"
+            android:textSize="30dp" />
 
-        <Button
+        <ImageView
             android:id="@+id/tuto_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Tuto" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom" />
+
+        <ImageView
+            android:id="@+id/base_img"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/titre_main"
+            android:layout_marginTop="19dp" />
 
 
-        <Button
+        <ImageView
+            android:id="@+id/gallery_main"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="21dp" />
+
+
+        <ImageView
             android:id="@+id/camera_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignTop="@+id/gallery_main"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="50dp"
-            android:text="Camera" />
+            android:layout_toEndOf="@+id/titre_main"
+            android:layout_toRightOf="@+id/titre_main"
+            android:layout_marginRight="20dp"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
