@@ -2,6 +2,10 @@ package com.example.acoste.projetimage;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -16,7 +20,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class Main extends AppCompatActivity {
@@ -60,11 +73,6 @@ public class Main extends AppCompatActivity {
 
         bitmap_base_img = BitmapFactory.decodeResource(getResources(), R.drawable.test5);
         base_img.setImageBitmap(bitmap_base_img);
-
-
-
-
-
     }
 
     private View.OnClickListener listener_tuto = new View.OnClickListener() {

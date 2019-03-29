@@ -17,11 +17,6 @@ import java.io.InputStream;
 
 public class Gallery extends AppCompatActivity{
 
-    private Button button_camera = null;
-    private Button button_effects = null;
-    private Button button_menu = null ;
-    private Button button_gallery = null ;
-
     //private ImageView img_tuto = null;
     private ImageView img_gallery = null;
     private ImageView img_camera = null;
@@ -36,7 +31,6 @@ public class Gallery extends AppCompatActivity{
 
     static final int RESULT_LOAD_IMG = 1;
     private Bitmap selectedImage = null;
-    private ImageView imgView = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +43,6 @@ public class Gallery extends AppCompatActivity{
 
         img_gallery = findViewById(R.id.gallery);
         img_gallery.setOnClickListener(listener_gallery);
-        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
-        img_gallery.setImageBitmap(bitmap_gallery);
 
         img_effects = findViewById(R.id.effects_gallery);
         img_effects.setOnClickListener(listener_effects);
@@ -62,7 +54,9 @@ public class Gallery extends AppCompatActivity{
         bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
         img_menu.setImageBitmap(bitmap_menu);
 
-        imgView = findViewById(R.id.imageView);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
 
     }
 
@@ -92,7 +86,7 @@ public class Gallery extends AppCompatActivity{
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
                 selectedImage = getResizedBitmap(selectedImage, 500);
-                imgView.setImageBitmap(selectedImage);
+                img_gallery.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Une erreur s'est produite",Toast.LENGTH_LONG).show();
@@ -101,6 +95,7 @@ public class Gallery extends AppCompatActivity{
             Toast.makeText(getApplicationContext(),"Vous n'avez pas choisi d'image", Toast.LENGTH_LONG).show();
         }
     }
+
 
     private View.OnClickListener listener_effects = new View.OnClickListener() {
         @Override

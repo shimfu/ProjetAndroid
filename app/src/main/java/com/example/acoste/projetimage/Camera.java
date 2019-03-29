@@ -27,27 +27,26 @@ public class Camera extends AppCompatActivity {
 
     //private ImageView img_tuto = null;
     private ImageView img_gallery = null;
-    //private ImageView img_camera = null;
+    private ImageView img_camera = null;
     private ImageView img_effects = null;
     private ImageView img_menu = null;
 
     //private Bitmap bitmap_tuto = null;
     private Bitmap bitmap_gallery = null;
-   // private Bitmap bitmap_camera = null;
+    private Bitmap bitmap_camera = null;
     private Bitmap bitmap_effects = null;
     private Bitmap bitmap_menu = null;
 
-    private ImageView imageView = null;
-    private Uri photoURI;
+    private Uri photoUri;
     String currentPhotoPath = null;
-
     static final int REQUEST_TAKE_PHOTO = 1;
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
 
+        img_camera = findViewById(R.id.camera);
+        img_camera.setOnClickListener(listener_camera);
 
         img_gallery = findViewById(R.id.gallery_camera);
         img_gallery.setOnClickListener(listener_gallery);
@@ -64,10 +63,8 @@ public class Camera extends AppCompatActivity {
         bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
         img_menu.setImageBitmap(bitmap_menu);
 
-        imageView = findViewById(R.id.imageView);
-
+        dispatchTakePictureIntent();
     }
-
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -83,29 +80,27 @@ public class Camera extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                photoURI = FileProvider.getUriForFile(this,
+                photoUri = FileProvider.getUriForFile(this,
                         "com.example.android.fileproviderProjetAndroid",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoURI);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            imageView.setImageBitmap(bitmap);
+            img_camera.setImageBitmap(bitmap);
         }
     }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -128,8 +123,8 @@ public class Camera extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
-            if(photoURI != null)
-                intent.putExtra("imageUri", photoURI.toString());
+            if(photoUri != null)
+                intent.putExtra("imageUri", photoUri.toString());
             startActivity(intent);
         }
     };
@@ -152,10 +147,12 @@ public class Camera extends AppCompatActivity {
         }
     };
 
+
     private View.OnClickListener listener_camera = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             dispatchTakePictureIntent();
         }
     };
+
 }
