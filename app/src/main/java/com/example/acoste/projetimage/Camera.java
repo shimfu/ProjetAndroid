@@ -44,6 +44,9 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
 
+        /***************************************
+         Initialisation des boutons de navigation
+         ***************************************/
         img_camera = findViewById(R.id.camera);
         img_camera.setOnClickListener(listener_camera);
 
@@ -117,10 +120,12 @@ public class Camera extends AppCompatActivity {
         return image;
     }
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_effects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
             //Envoie la photoUri à l'intent pour retrouver l'image stockée dans EffectsActivity
             if(photoUri != null)
@@ -129,9 +134,6 @@ public class Camera extends AppCompatActivity {
         }
     };
 
-    /***************************************
-     Listener des boutons de navigation
-     ***************************************/
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

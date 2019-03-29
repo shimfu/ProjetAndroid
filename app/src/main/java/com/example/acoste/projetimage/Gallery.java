@@ -97,12 +97,13 @@ public class Gallery extends AppCompatActivity{
     }
 
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_effects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Gallery.this, EffectsActivity.class);
-
             //Convertit la bitmap de l'image en tableau de byte et l'envoie à l'intent pour le retrouver dans EffectsActivity
             if(selectedImage != null){
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -114,9 +115,6 @@ public class Gallery extends AppCompatActivity{
         }
     };
 
-    /***************************************
-     Listener des boutons de navigation
-     ***************************************/
     private View.OnClickListener listener_camera = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

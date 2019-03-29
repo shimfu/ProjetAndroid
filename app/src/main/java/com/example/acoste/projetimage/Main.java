@@ -51,6 +51,9 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
+        /***************************************
+         Initialisation des boutons de navigation
+         ***************************************/
         img_tuto =  findViewById(R.id.tuto_main);
         img_tuto.setOnClickListener(listener_tuto);
         bitmap_tuto = BitmapFactory.decodeResource(getResources(), R.drawable.tuto_icon);
@@ -67,7 +70,6 @@ public class Main extends AppCompatActivity {
         img_gallery.setImageBitmap(bitmap_gallery);
 
         base_img = findViewById(R.id.base_img);
-
         bitmap_base_img = BitmapFactory.decodeResource(getResources(), R.drawable.test5);
         base_img.setImageBitmap(bitmap_base_img);
     }

@@ -36,6 +36,9 @@ public class EffectsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_effects);
 
+        /***************************************
+         Initialisation des boutons de navigation
+         ***************************************/
         button_gallery = findViewById(R.id.gallery_effects);
         button_gallery.setOnClickListener(listener_gallery);
 
@@ -48,6 +51,9 @@ public class EffectsActivity extends AppCompatActivity{
         button_grey = findViewById(R.id.button_grey);
         button_grey.setOnClickListener(listener_grey);
 
+        /***************************************
+         Initialisation des boutons des différents effets
+         ***************************************/
         Button button_greyRs = findViewById(R.id.button_greyRs);
         button_greyRs.setOnClickListener(listener_greyRS);
 
@@ -199,7 +205,7 @@ public class EffectsActivity extends AppCompatActivity{
 
 
     /***************************************
-    Listener des différents effets
+    Listener des boutons des différents effets
      ***************************************/
     private View.OnClickListener listener_grey = new View.OnClickListener() {
         @Override
