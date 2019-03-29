@@ -19,10 +19,13 @@ import java.io.IOException;
 
 public class EffectsActivity extends AppCompatActivity{
 
-    private Button button_camera = null;
-    private Button button_gallery = null;
-    private Button button_menu = null ;
-    private Button button_grey = null;
+    private ImageView img_gallery = null;
+    private ImageView img_camera = null;
+    private ImageView img_menu = null;
+
+    private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_camera = null;
+    private Bitmap bitmap_menu = null;
 
     private Effects effect;
 
@@ -30,6 +33,13 @@ public class EffectsActivity extends AppCompatActivity{
     private Bitmap bmpInit;
     private Bitmap bmp;
     private int[] save;
+
+    private ImageView img_greyRS;
+    private ImageView img_keepColorRS;
+    private ImageView img_comboEffects;
+    private ImageView img_randomHueRS;
+    private ImageView img_blur;
+    private ImageView img_outline;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -39,44 +49,94 @@ public class EffectsActivity extends AppCompatActivity{
         /***************************************
          Initialisation des boutons de navigation
          ***************************************/
-        button_gallery = findViewById(R.id.gallery_effects);
-        button_gallery.setOnClickListener(listener_gallery);
+        img_camera =  findViewById(R.id.camera);
+        img_camera.setOnClickListener(listener_camera);
+        bitmap_camera = BitmapFactory.decodeResource(getResources(), R.drawable.apps_camera_icon);
+        img_camera.setImageBitmap(bitmap_camera);
 
-        button_camera = findViewById(R.id.camera_effects);
-        button_camera.setOnClickListener(listener_camera);
+        img_gallery = findViewById(R.id.gallery);
+        img_gallery.setOnClickListener(listener_gallery);
+        bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
+        img_gallery.setImageBitmap(bitmap_gallery);
 
-        button_menu = findViewById(R.id.menu_effects_activty);
-        button_menu.setOnClickListener(listener_menu);
+        img_menu = findViewById(R.id.menu);
+        img_menu.setOnClickListener(listener_menu);
+        bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
+        img_menu.setImageBitmap(bitmap_menu);
 
-        button_grey = findViewById(R.id.button_grey);
-        button_grey.setOnClickListener(listener_grey);
+        img = findViewById(R.id.img_to_modify);
+
+        //Récupère l'Uri envoyé via Camera.activity et le convertit en bitmap
+        Uri photoUri;
+        if(getIntent().getStringExtra("imageUri") != null){
+            photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+            try {
+                bmpInit = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        //Récupère le tableau de byte envoyé via Gallery.activity et le convertit en bitmap
+        else if(getIntent().getByteArrayExtra("imageGallery") != null){
+            byte[] byteArray = getIntent().getByteArrayExtra("imageGallery");
+            bmpInit = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        //Applique une photo par défaut à la bitmap si aucune n'a été envoyée depuis la caméra ou la gallerie
+        else
+            bmpInit = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
+
+        img.setImageBitmap(bmpInit);
+
+        save = new int[bmpInit.getWidth() * bmpInit.getHeight()];
+        bmpInit.getPixels(save, 0, bmpInit.getWidth(), 0, 0, bmpInit.getWidth(), bmpInit.getHeight());
+
+        bmp = bmpInit.copy(bmpInit.getConfig(), true);
+
+        effect = new Effects(bmp);
+
+        img.setOnClickListener(listener_zoom);
 
         /***************************************
          Initialisation des boutons des différents effets
          ***************************************/
-        Button button_greyRs = findViewById(R.id.button_greyRs);
-        button_greyRs.setOnClickListener(listener_greyRS);
+        img_greyRS =  findViewById(R.id.img_greyRs);
+        img_greyRS.setOnClickListener(listener_greyRS);
+        effect.toGreyRS(getApplicationContext());
+        img_greyRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_keepColorRS = findViewById(R.id.button_keepColorRS);
-        button_keepColorRS.setOnClickListener(listener_keepColorRS);
 
-        Button button_keepColor = findViewById(R.id.button_keepColor);
-        button_keepColor.setOnClickListener(listener_keepColor);
+        img_keepColorRS =  findViewById(R.id.img_keepColorRS);
+        img_keepColorRS.setOnClickListener(listener_keepColorRS);
+        effect.keepColorRS(50, getApplicationContext());
+        img_keepColorRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_comboEffects = findViewById(R.id.button_comboEffects);
-        button_comboEffects.setOnClickListener(listener_comboEffects);
+        img_comboEffects =  findViewById(R.id.img_comboEffects);
+        img_comboEffects.setOnClickListener(listener_comboEffects);
+        effect.comboEffects(getApplicationContext(), 5);
+        img_comboEffects.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_randomHue = findViewById(R.id.button_randomHue);
-        button_randomHue.setOnClickListener(listener_randomHue);
+        img_randomHueRS =  findViewById(R.id.img_randomHueRS);
+        img_randomHueRS.setOnClickListener(listener_randomHueRS);
+        effect.randomHueRS(getApplicationContext());
+        img_randomHueRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_randomHueRS = findViewById(R.id.button_randomHueRS);
-        button_randomHueRS.setOnClickListener(listener_randomHueRS);
+        img_blur =  findViewById(R.id.img_blur);
+        img_blur.setOnClickListener(listener_blur);
+        int mask[][] = Convolution.mask_moy(5);
+        effect.blur(5, mask);
+        img_blur.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_blur = findViewById(R.id.button_blur);
-        button_blur.setOnClickListener(listener_blur);
-
-        Button button_outline = findViewById(R.id.button_outline);
-        button_outline.setOnClickListener(listener_outline);
+        img_outline =  findViewById(R.id.img_outline);
+        img_outline.setOnClickListener(listener_outline);
+        effect.outline();
+        img_outline.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
         Button button_linear_contrast_ARGB = findViewById(R.id.button_linear_contrast_ARGB);
         button_linear_contrast_ARGB.setOnClickListener(listener_linearContrast_ARGB);
@@ -114,38 +174,7 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_reset = findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
 
-        img = findViewById(R.id.img_to_modify);
 
-        //Récupère l'Uri envoyé via Camera.activity et le convertit en bitmap
-        Uri photoUri;
-        if(getIntent().getStringExtra("imageUri") != null){
-            photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
-            try {
-                bmpInit = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        //Récupère le tableau de byte envoyé via Gallery.activity et le convertit en bitmap
-        else if(getIntent().getByteArrayExtra("imageGallery") != null){
-            byte[] byteArray = getIntent().getByteArrayExtra("imageGallery");
-            bmpInit = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        }
-        //Applique une photo par défaut à la bitmap si aucune n'a été envoyée depuis la caméra ou la gallerie
-        else
-            bmpInit = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
-
-        img.setImageBitmap(bmpInit);
-
-        save = new int[bmpInit.getWidth() * bmpInit.getHeight()];
-        bmpInit.getPixels(save, 0, bmpInit.getWidth(), 0, 0, bmpInit.getWidth(), bmpInit.getHeight());
-
-        bmp = bmpInit.copy(bmpInit.getConfig(), true);
-
-        effect = new Effects(bmp);
-
-        img.setOnClickListener(listener_zoom);
     }
 
     private View.OnClickListener listener_reset = new View.OnClickListener() {
@@ -207,26 +236,10 @@ public class EffectsActivity extends AppCompatActivity{
     /***************************************
     Listener des boutons des différents effets
      ***************************************/
-    private View.OnClickListener listener_grey = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.grey();
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
     private View.OnClickListener listener_greyRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             effect.toGreyRS(getApplicationContext());
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_keepColor = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.keepColor(50);
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
@@ -243,14 +256,6 @@ public class EffectsActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
             effect.comboEffects(getApplicationContext(), 5);
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_randomHue = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.randomHue();
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
