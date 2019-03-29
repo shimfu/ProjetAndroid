@@ -22,39 +22,24 @@
 
         </TextView>
 
-        <Button
-            android:id="@+id/camera_effects"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/menu_effects_activty"
-            android:layout_toRightOf="@+id/menu_effects_activty"
-            android:text="Camera" />
 
         <Button
-            android:id="@+id/gallery_effects"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="100dp"
-            android:text="Gallery" />
-
-
-        <Button
-            android:id="@+id/menu_effects_activty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/gallery_effects"
-            android:layout_toRightOf="@+id/gallery_effects"
-            android:text="Menu" />
+            android:id="@+id/button15"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignBaseline="@+id/textView"
+            android:layout_alignBottom="@+id/textView"
+            android:layout_alignLeft="@+id/camera"
+            android:layout_alignStart="@+id/camera"
+            android:text="Reset" />
 
         <ImageView
             android:id="@+id/img_to_modify"
             android:layout_width="match_parent"
             android:layout_height="311dp"
-            android:layout_below="@+id/camera_effects"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -68,59 +53,36 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/button_grey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="grey" />
-
-                <Button
-                    android:id="@+id/button_greyRs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/img_greyRs"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:text="greyRS" />
 
-                <Button
-                    android:id="@+id/button_keepColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="keepColor" />
+                <ImageView
+                    android:id="@+id/img_keepColorRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_keepColorRS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="keepColorRS" />
+                <ImageView
+                    android:id="@+id/img_comboEffects"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_comboEffects"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="comboEffects" />
+                <ImageView
+                    android:id="@+id/img_randomHueRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_randomHue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="randomHue"/>
+                <ImageView
+                    android:id="@+id/img_blur"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_randomHueRS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="randomHueRS"/>
-
-                <Button
-                    android:id="@+id/button_blur"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="blur"/>
-
-                <Button
-                    android:id="@+id/button_outline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="outline"/>
+                <ImageView
+                    android:id="@+id/img_outline"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
                 <Button
                     android:id="@+id/button_linear_contrast_ARGB"
@@ -193,30 +155,38 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <Button
-            android:id="@+id/button15"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="19dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginStart="44dp"
-            android:layout_toEndOf="@+id/button16"
-            android:layout_toRightOf="@+id/button16"
-            android:text="Reset" />
+            android:layout_marginEnd="39dp"
+            android:layout_marginRight="39dp" />
 
-        <Button
-            android:id="@+id/button16"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignBaseline="@+id/button15"
-            android:layout_alignBottom="@+id/button15"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_toLeftOf="@+id/menu_effects_activty"
-            android:layout_toStartOf="@+id/menu_effects_activty"
-            android:text="Apply" />
 
+        <ImageView
+            android:id="@+id/gallery"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignTop="@+id/camera"
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_toLeftOf="@+id/menu"
+            android:layout_toStartOf="@+id/menu" />
+
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignTop="@+id/gallery"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/camera"
+            android:layout_toStartOf="@+id/camera" />
 
     </RelativeLayout>
 
