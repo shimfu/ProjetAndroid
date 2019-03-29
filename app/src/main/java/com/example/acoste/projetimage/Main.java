@@ -51,9 +51,6 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-
-
-
         img_tuto =  findViewById(R.id.tuto_main);
         img_tuto.setOnClickListener(listener_tuto);
         bitmap_tuto = BitmapFactory.decodeResource(getResources(), R.drawable.tuto_icon);
@@ -75,14 +72,14 @@ public class Main extends AppCompatActivity {
         base_img.setImageBitmap(bitmap_base_img);
     }
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_tuto = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Main.this, Tutorial.class);
-
             intent.putExtra(code_string, test_main);
-
             startActivity(intent);
         }
     };
@@ -90,9 +87,7 @@ public class Main extends AppCompatActivity {
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Main.this, Gallery.class);
-
             startActivity(intent);
         }
     };
@@ -100,9 +95,7 @@ public class Main extends AppCompatActivity {
     private View.OnClickListener listener_camera = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Main.this, Camera.class);
-
             startActivity(intent);
         }
     };

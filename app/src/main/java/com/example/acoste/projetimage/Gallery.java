@@ -103,6 +103,7 @@ public class Gallery extends AppCompatActivity{
 
             Intent intent = new Intent(Gallery.this, EffectsActivity.class);
 
+            //Convertit la bitmap de l'image en tableau de byte et l'envoie à l'intent pour le retrouver dans EffectsActivity
             if(selectedImage != null){
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 selectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -113,12 +114,13 @@ public class Gallery extends AppCompatActivity{
         }
     };
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_camera = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Gallery.this, Camera.class);
-
             startActivity(intent);
         }
     };
@@ -126,9 +128,7 @@ public class Gallery extends AppCompatActivity{
     private View.OnClickListener listener_menu = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Gallery.this, Main.class);
-
             startActivity(intent);
         }
     };
@@ -136,7 +136,6 @@ public class Gallery extends AppCompatActivity{
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);

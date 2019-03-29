@@ -108,11 +108,9 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_reset = findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
 
-
-
         img = findViewById(R.id.img_to_modify);
 
-        //Via camera
+        //Récupère l'Uri envoyé via Camera.activity et le convertit en bitmap
         Uri photoUri;
         if(getIntent().getStringExtra("imageUri") != null){
             photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
@@ -123,11 +121,12 @@ public class EffectsActivity extends AppCompatActivity{
             }
 
         }
-        //Via gallery
+        //Récupère le tableau de byte envoyé via Gallery.activity et le convertit en bitmap
         else if(getIntent().getByteArrayExtra("imageGallery") != null){
             byte[] byteArray = getIntent().getByteArrayExtra("imageGallery");
             bmpInit = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         }
+        //Applique une photo par défaut à la bitmap si aucune n'a été envoyée depuis la caméra ou la gallerie
         else
             bmpInit = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
 
@@ -165,6 +164,9 @@ public class EffectsActivity extends AppCompatActivity{
         }
     };
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -196,6 +198,9 @@ public class EffectsActivity extends AppCompatActivity{
     };
 
 
+    /***************************************
+    Listener des différents effets
+     ***************************************/
     private View.OnClickListener listener_grey = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -203,7 +208,6 @@ public class EffectsActivity extends AppCompatActivity{
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
-
 
     private View.OnClickListener listener_greyRS = new View.OnClickListener() {
         @Override

@@ -38,7 +38,6 @@ public class Camera extends AppCompatActivity {
     private Bitmap bitmap_menu = null;
 
     private Uri photoUri;
-    String currentPhotoPath = null;
     static final int REQUEST_TAKE_PHOTO = 1;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -63,9 +62,11 @@ public class Camera extends AppCompatActivity {
         bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
         img_menu.setImageBitmap(bitmap_menu);
 
+        //Lance la camera dès que l'utilisateur arrive sur Camera.activity
         dispatchTakePictureIntent();
     }
 
+    //Donne le chemin où l'image sera stockée à photoFile et lance la caméra
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -89,6 +90,7 @@ public class Camera extends AppCompatActivity {
         }
     }
 
+    //Permet de valider la photo qui a été prise
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
@@ -102,8 +104,8 @@ public class Camera extends AppCompatActivity {
         }
     }
 
+    //Renvoie le chemin du fichier où l'image sera stockée
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -112,9 +114,6 @@ public class Camera extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -123,16 +122,19 @@ public class Camera extends AppCompatActivity {
         public void onClick(View v) {
 
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
+            //Envoie la photoUri à l'intent pour retrouver l'image stockée dans EffectsActivity
             if(photoUri != null)
                 intent.putExtra("imageUri", photoUri.toString());
             startActivity(intent);
         }
     };
 
+    /***************************************
+     Listener des boutons de navigation
+     ***************************************/
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Camera.this, Gallery.class);
             startActivity(intent);
         }
@@ -141,7 +143,6 @@ public class Camera extends AppCompatActivity {
     private View.OnClickListener listener_menu = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Camera.this, Main.class);
             startActivity(intent);
         }
