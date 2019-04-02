@@ -54,7 +54,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/img_greyRs"
+                    android:id="@+id/img_greyRS"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:text="greyRS" />
@@ -65,7 +65,7 @@
                     android:layout_height="75dp"/>
 
                 <ImageView
-                    android:id="@+id/img_comboEffects"
+                    android:id="@+id/img_bilateralRS"
                     android:layout_width="75dp"
                     android:layout_height="75dp"/>
 
@@ -75,80 +75,41 @@
                     android:layout_height="75dp"/>
 
                 <ImageView
-                    android:id="@+id/img_blur"
+                    android:id="@+id/img_blurRS"
                     android:layout_width="75dp"
                     android:layout_height="75dp"/>
 
                 <ImageView
-                    android:id="@+id/img_outline"
+                    android:id="@+id/img_colorPartitionRS"
                     android:layout_width="75dp"
                     android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_linear_contrast_ARGB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="linear_contrast_ARGB"/>
+                <ImageView
+                    android:id="@+id/img_drawOutlineRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
+                <ImageView
+                    android:id="@+id/img_histEqRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
+                <ImageView
+                    android:id="@+id/img_linearContrastRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
+                <ImageView
+                    android:id="@+id/img_medianFilterRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
+                <ImageView
+                    android:id="@+id/img_minFilterRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
+                <ImageView
+                    android:id="@+id/img_sobelGradientRS"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"/>
 
-                <Button
-                    android:id="@+id/button_linear_contrast_HSV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="linear_contrast_HSV"/>
 
-                <Button
-                    android:id="@+id/button_equalization_contrast_hsv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="equalization_contrast_hsv"/>
-
-                <Button
-                    android:id="@+id/button_equalization_contrast_argb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="equalization_contrast_argb"/>
-
-                <Button
-                    android:id="@+id/button_linearContrastRS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="linearContrastRS"/>
-
-                <Button
-                    android:id="@+id/button_equalization_contrast_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="equalization_contrast_RS"/>
-
-                <Button
-                    android:id="@+id/button_blur_moy_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="blur_moy_RS"/>
-
-                <Button
-                    android:id="@+id/button_blur_gaussian5x5_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="blur_gaussian5x5_RS"/>
-
-                <Button
-                    android:id="@+id/button_sobel_horizontal_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="sobel_horizontal_RS"/>
-
-                <Button
-                    android:id="@+id/button_sobel_vertical_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="sobel_vertical_RS"/>
-
-                <Button
-                    android:id="@+id/button_laplacian_mask_RS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="laplacian_mask_RS"/>
 
 
 
