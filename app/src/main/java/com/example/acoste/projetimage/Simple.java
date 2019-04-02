@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 
+import com.android.rssample.ScriptC_colorPartition;
 import com.android.rssample.ScriptC_keepColor;
 import com.android.rssample.ScriptC_randomHue;
 import com.android.rssample.ScriptC_toGrey;
@@ -152,6 +153,34 @@ public class Simple{
         allocationB.destroy();
         randomHueScript.destroy();
         rs.destroy();
+    }
+
+    static int colorPartition_RS(Bitmap image, Context context, int color_precision, int shade_precision, int color_shift) {
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_colorPartition colorPartitionScript = new ScriptC_colorPartition(rs);
+
+        Allocation img_alloc = Allocation.createFromBitmap(rs, res);
+
+        int color_family_size = 360/color_precision;
+        colorPartitionScript.set_color_family_size(color_family_size);
+        colorPartitionScript.set_color_shift(color_shift);
+        float luminance_family_size = (float)(0.90/(float)shade_precision);
+        colorPartitionScript.set_luminance_family_size(luminance_family_size);
+
+        colorPartitionScript.forEach_colorPartition(img_alloc,img_alloc);
+
+        img_alloc.copyTo(image);
+
+        img_alloc.destroy();
+        colorPartitionScript.destroy();
+        rs.destroy();
+
+        return 0;
     }
 
 }

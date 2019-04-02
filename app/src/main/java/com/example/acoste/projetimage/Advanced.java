@@ -7,10 +7,20 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.util.Log;
+import com.example.acoste.projetimage.Simple;
 
-import com.android.rssample.ScriptC_convolution;
 import com.android.rssample.ScriptC_linearContrast;
+import com.android.rssample.ScriptC_medianFilter;
+import com.example.acoste.projetimage.Convolution; // we don't know why it works without those two imports
+import com.example.acoste.projetimage.Histogram;
 import com.example.q.renderscriptexample.ScriptC_histEq;
+import com.android.rssample.ScriptC_convolution;
+import com.android.rssample.ScriptC_bilateralFilter;
+import com.android.rssample.ScriptC_minFilter;
+import com.android.rssample.ScriptC_medianFilter;
+import com.android.rssample.ScriptC_sobelGradient;
+import com.android.rssample.ScriptC_colorPartition;
+import com.android.rssample.ScriptC_drawOutline;
 
 /**
  * Created by acoste on 08/02/19.
@@ -256,6 +266,189 @@ public class Advanced{
         data.destroy();
         img_alloc.destroy();
         convolutionScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int bilateralfilter_RS(Bitmap image, Context context, int intensity) {
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_bilateralFilter bilateralFilterScript = new ScriptC_bilateralFilter(rs);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        Allocation img_alloc = Allocation.createFromBitmap(rs, res);
+
+        bilateralFilterScript.set_height(image.getHeight());
+        bilateralFilterScript.set_width(image.getWidth());
+        bilateralFilterScript.set_intensity(intensity);
+        float sigma = (float)(intensity/2.7);
+        bilateralFilterScript.set_sigma(sigma);
+
+        bilateralFilterScript.invoke_map_img(img_alloc, data);
+
+        bilateralFilterScript.bind_data(data);
+
+        bilateralFilterScript.forEach_compute_data(img_alloc,img_alloc);
+
+        img_alloc.copyTo(image);
+
+        data.destroy();
+        img_alloc.destroy();
+        bilateralFilterScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int minfilter_RS(Bitmap image, Context context, int intensity) {
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_minFilter minFilterScript = new ScriptC_minFilter(rs);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        Allocation img_alloc = Allocation.createFromBitmap(rs, res);
+
+        minFilterScript.set_height(image.getHeight());
+        minFilterScript.set_width(image.getWidth());
+        minFilterScript.set_intensity(intensity);
+
+        minFilterScript.invoke_map_img(img_alloc, data);
+
+        minFilterScript.bind_data(data);
+
+        minFilterScript.forEach_compute_data(img_alloc,img_alloc);
+
+        img_alloc.copyTo(image);
+
+        data.destroy();
+        img_alloc.destroy();
+        minFilterScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int medianfilter_RS(Bitmap image, Context context, int intensity) {
+
+        //Create new bitmap
+        Bitmap res = image.copy(image.getConfig(), true);
+        //Create renderscript
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_medianFilter medianFilterScript = new ScriptC_medianFilter(rs);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        Allocation img_alloc = Allocation.createFromBitmap(rs, res);
+
+        medianFilterScript.set_height(image.getHeight());
+        medianFilterScript.set_width(image.getWidth());
+        medianFilterScript.set_intensity(intensity);
+
+        medianFilterScript.invoke_map_img(img_alloc, data);
+
+        medianFilterScript.bind_data(data);
+
+        medianFilterScript.forEach_compute_data(img_alloc,img_alloc);
+
+        img_alloc.copyTo(image);
+
+        data.destroy();
+        img_alloc.destroy();
+        medianFilterScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int sobelGradient_RS(Bitmap image, Context context){
+
+        Simple.toGreyRS(image,context);
+
+        Bitmap copy = image.copy(image.getConfig(),true);
+
+        sobel_horizontal_RS(image, context);
+        sobel_vertical_RS(copy,context);
+
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_sobelGradient sobelGradientScript = new ScriptC_sobelGradient(rs);
+
+        Allocation img_alloc_horiz = Allocation.createFromBitmap(rs, image);
+
+        Allocation img_alloc_verti = Allocation.createFromBitmap(rs, copy);
+
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        sobelGradientScript.set_width(image.getWidth());
+        sobelGradientScript.set_height(image.getHeight());
+
+        sobelGradientScript.invoke_map_img(img_alloc_verti, data);
+        sobelGradientScript.bind_data(data);
+
+        //sobelGradientScript.forEach_computemaxGradient(img_alloc_horiz);
+
+        sobelGradientScript.forEach_outline(img_alloc_horiz,img_alloc_horiz);
+
+        img_alloc_horiz.copyTo(image);
+
+        img_alloc_horiz.destroy();
+        sobelGradientScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int drawOutline_RS(Bitmap image, Context context, float edge_intensity){
+
+        Bitmap copy = image.copy(image.getConfig(),true);
+
+        sobelGradient_RS(copy, context);
+        minfilter_RS(copy,context,1);
+
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_drawOutline drawOutlineScript = new ScriptC_drawOutline(rs);
+
+
+        Allocation img = Allocation.createFromBitmap(rs , image);
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+        Allocation edges = Allocation.createFromBitmap(rs , copy);
+
+        drawOutlineScript.set_width(image.getWidth());
+        drawOutlineScript.set_height(image.getHeight());
+
+        if(edge_intensity < 0.0 && edge_intensity > 1.0) {
+            drawOutlineScript.set_edge_intensity((float)0.5);
+        }
+        drawOutlineScript.set_edge_intensity(edge_intensity);
+
+        drawOutlineScript.invoke_map_img(edges, data);
+        drawOutlineScript.bind_data(data);
+
+        //sobelGradientScript.forEach_computemaxGradient(img_alloc_horiz);
+
+        drawOutlineScript.forEach_draw(img,img);
+
+        img.copyTo(image);
+
+        img.destroy();
+        data.destroy();
+        edges.destroy();
+
+        drawOutlineScript.destroy();
         rs.destroy();
 
         return 0;

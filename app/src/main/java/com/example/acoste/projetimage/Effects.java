@@ -185,4 +185,30 @@ public class Effects {
     public void laplacian_mask_RS(Context context){
         Advanced.laplacian_mask_RS(getCurrentImg(), context);
     }
+
+    public void bilateral_filter_RS( Context context, int intensity){
+        Advanced.bilateralfilter_RS(getCurrentImg(), context, intensity);
+    }
+
+    public void drawOutline_RS(Context context, float edge_intensity ){
+        Advanced.drawOutline_RS(getCurrentImg(), context, edge_intensity);
+    }
+
+    public void sobelGradient_RS(Context context){
+        Advanced.sobelGradient_RS(getCurrentImg(), context);
+    }
+
+    public void medianfilter_RS(Context context, int intensity){
+        Advanced.medianfilter_RS(getCurrentImg(), context, intensity);
+    }
+
+    public void minfilter_RS(Context context, int intensity ){
+        Advanced.minfilter_RS(getCurrentImg(), context, intensity);
+    }
+
+    public void colorPartition_RS (Context context, int color_precision, int shade_precision, int color_shift){
+        Simple.colorPartition_RS(getCurrentImg(), context, color_precision, shade_precision, color_shift);
+    }
+
+
 }

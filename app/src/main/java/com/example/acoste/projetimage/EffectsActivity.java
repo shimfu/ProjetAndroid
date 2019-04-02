@@ -36,10 +36,17 @@ public class EffectsActivity extends AppCompatActivity{
 
     private ImageView img_greyRS;
     private ImageView img_keepColorRS;
-    private ImageView img_comboEffects;
+    private ImageView img_bilateralRS;
     private ImageView img_randomHueRS;
-    private ImageView img_blur;
-    private ImageView img_outline;
+    private ImageView img_blurRS;
+    private ImageView img_colorPartitionRS;
+    private ImageView img_drawOutlineRS;
+    private ImageView img_histEqRS;
+    private ImageView img_linearContrastRS;
+    private ImageView img_medianFilterRS;
+    private ImageView img_minFilterRS;
+    private ImageView img_sobelGradientRS;
+
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -88,6 +95,7 @@ public class EffectsActivity extends AppCompatActivity{
 
         img.setImageBitmap(bmpInit);
 
+
         save = new int[bmpInit.getWidth() * bmpInit.getHeight()];
         bmpInit.getPixels(save, 0, bmpInit.getWidth(), 0, 0, bmpInit.getWidth(), bmpInit.getHeight());
 
@@ -100,23 +108,22 @@ public class EffectsActivity extends AppCompatActivity{
         /***************************************
          Initialisation des boutons des différents effets
          ***************************************/
-        img_greyRS =  findViewById(R.id.img_greyRs);
+        img_greyRS =  findViewById(R.id.img_greyRS);
         img_greyRS.setOnClickListener(listener_greyRS);
         effect.toGreyRS(getApplicationContext());
         img_greyRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
-
         img_keepColorRS =  findViewById(R.id.img_keepColorRS);
         img_keepColorRS.setOnClickListener(listener_keepColorRS);
-        effect.keepColorRS(50, getApplicationContext());
+        effect.keepColorRS(40, getApplicationContext());
         img_keepColorRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
-        img_comboEffects =  findViewById(R.id.img_comboEffects);
-        img_comboEffects.setOnClickListener(listener_comboEffects);
-        effect.comboEffects(getApplicationContext(), 5);
-        img_comboEffects.setImageBitmap(effect.getCurrentImg());
+        img_bilateralRS =  findViewById(R.id.img_bilateralRS);
+        img_bilateralRS.setOnClickListener(listener_bilateralRS);
+        effect.bilateral_filter_RS(getApplicationContext(), 1);
+        img_bilateralRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
         img_randomHueRS =  findViewById(R.id.img_randomHueRS);
@@ -125,51 +132,54 @@ public class EffectsActivity extends AppCompatActivity{
         img_randomHueRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
-        img_blur =  findViewById(R.id.img_blur);
-        img_blur.setOnClickListener(listener_blur);
-        int mask[][] = Convolution.mask_moy(5);
-        effect.blur(5, mask);
-        img_blur.setImageBitmap(effect.getCurrentImg());
+        img_blurRS =  findViewById(R.id.img_blurRS);
+        img_blurRS.setOnClickListener(listener_blur_moy_RS);
+        effect.blur_moy_RS(getApplicationContext(), 3);
+        img_blurRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
-        img_outline =  findViewById(R.id.img_outline);
-        img_outline.setOnClickListener(listener_outline);
-        effect.outline();
-        img_outline.setImageBitmap(effect.getCurrentImg());
+        img_colorPartitionRS =  findViewById(R.id.img_colorPartitionRS);
+        img_colorPartitionRS.setOnClickListener(listener_colorPartition_RS);
+        effect.colorPartition_RS(getApplicationContext(), 9 , 3 ,0);
+        img_colorPartitionRS.setImageBitmap(effect.getCurrentImg());
         effect.reset();
 
-        Button button_linear_contrast_ARGB = findViewById(R.id.button_linear_contrast_ARGB);
-        button_linear_contrast_ARGB.setOnClickListener(listener_linearContrast_ARGB);
+        img_drawOutlineRS =  findViewById(R.id.img_drawOutlineRS);
+        img_drawOutlineRS.setOnClickListener(listener_drawOutline_RS);
+        effect.drawOutline_RS(getApplicationContext(), 0.3f);
+        img_drawOutlineRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_linear_contrast_HSV = findViewById(R.id.button_linear_contrast_HSV);
-        button_linear_contrast_HSV.setOnClickListener(listener_linearContrast_HSV);
+        img_histEqRS =  findViewById(R.id.img_histEqRS);
+        img_histEqRS.setOnClickListener(listener_equalizationContrastRS);
+        effect.equalization_contrast_RS(getApplicationContext());
+        img_histEqRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_equalization_contrast_hsv = findViewById(R.id.button_equalization_contrast_hsv);
-        button_equalization_contrast_hsv.setOnClickListener(listener_equalizationContrast_HSV);
+        img_linearContrastRS =  findViewById(R.id.img_linearContrastRS);
+        img_linearContrastRS.setOnClickListener(listener_linearContrastRS);
+        effect.linearContrastRS(getApplicationContext());
+        img_linearContrastRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_equalization_contrast_argb = findViewById(R.id.button_equalization_contrast_argb);
-        button_equalization_contrast_argb.setOnClickListener(listener_equalizationContrast_ARGB);
+        img_medianFilterRS =  findViewById(R.id.img_medianFilterRS);
+        img_medianFilterRS.setOnClickListener(listener_medianfilter_RS);
+        effect.medianfilter_RS(getApplicationContext(),6);
+        img_medianFilterRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_linearContrastRS = findViewById(R.id.button_linearContrastRS);
-        button_linearContrastRS.setOnClickListener(listener_linearContrastRS);
+        img_minFilterRS =  findViewById(R.id.img_minFilterRS);
+        img_minFilterRS.setOnClickListener(listener_minfilter_RS);
+        effect.minfilter_RS(getApplicationContext(), 2);
+        img_minFilterRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_equalization_contrast_RS = findViewById(R.id.button_equalization_contrast_RS);
-        button_equalization_contrast_RS.setOnClickListener(listener_equalizationContrastRS);
+        img_sobelGradientRS =  findViewById(R.id.img_sobelGradientRS);
+        img_sobelGradientRS.setOnClickListener(listener_sobelGradient_RS);
+        effect.sobelGradient_RS(getApplicationContext());
+        img_sobelGradientRS.setImageBitmap(effect.getCurrentImg());
+        effect.reset();
 
-        Button button_blur_moy_RS = findViewById(R.id.button_blur_moy_RS);
-        button_blur_moy_RS.setOnClickListener(listener_blur_moy_RS);
-
-        Button button_blur_gaussian5x5_RS = findViewById(R.id.button_blur_gaussian5x5_RS);
-        button_blur_gaussian5x5_RS.setOnClickListener(listener_blur_gaussian5x5_RS);
-
-        Button button_sobel_horizontal_RS = findViewById(R.id.button_sobel_horizontal_RS);
-        button_sobel_horizontal_RS.setOnClickListener(listener_sobel_horizontal_RS);
-
-        Button button_sobel_vertical_RS = findViewById(R.id.button_sobel_vertical_RS);
-        button_sobel_vertical_RS.setOnClickListener(listener_sobel_vertical_RS);
-
-        Button button_laplacian_mask_RS = findViewById(R.id.button_laplacian_mask_RS);
-        button_laplacian_mask_RS.setOnClickListener(listener_laplacian_mask_RS);
 
         Button button_reset = findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
@@ -247,15 +257,62 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_keepColorRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effect.keepColorRS(50, getApplicationContext());
+            effect.keepColorRS(40, getApplicationContext());
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
 
-    private View.OnClickListener listener_comboEffects = new View.OnClickListener() {
+    /*private View.OnClickListener listener_comboEffects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             effect.comboEffects(getApplicationContext(), 5);
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };*/
+
+    private View.OnClickListener listener_drawOutline_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.drawOutline_RS( getApplicationContext(), 0.3f);
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+
+    private View.OnClickListener listener_colorPartition_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.colorPartition_RS( getApplicationContext(), 9, 3, 0);
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+
+    private View.OnClickListener listener_bilateralRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.bilateral_filter_RS( getApplicationContext(), 1);
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+    private View.OnClickListener listener_sobelGradient_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.sobelGradient_RS(getApplicationContext());
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+
+    private View.OnClickListener listener_medianfilter_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.medianfilter_RS(getApplicationContext(), 5);
+            img.setImageBitmap(effect.getCurrentImg());
+        }
+    };
+
+    private View.OnClickListener listener_minfilter_RS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect.minfilter_RS(getApplicationContext(), 1);
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
@@ -268,54 +325,6 @@ public class EffectsActivity extends AppCompatActivity{
         }
     };
 
-    private View.OnClickListener listener_outline = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.outline();
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_blur = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int mask[][] = Convolution.mask_moy(5);
-            effect.blur(5, mask);
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_linearContrast_ARGB = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.linear_contrast_ARGB();
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_linearContrast_HSV = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.linear_contrast_HSV(50);
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_equalizationContrast_HSV = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.equalization_contrast_HSV(300);
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
-
-    private View.OnClickListener listener_equalizationContrast_ARGB = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            effect.equalization_contrast_ARGB();
-            img.setImageBitmap(effect.getCurrentImg());
-        }
-    };
 
     private View.OnClickListener listener_linearContrastRS = new View.OnClickListener() {
         @Override
@@ -372,5 +381,7 @@ public class EffectsActivity extends AppCompatActivity{
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
+
+
 
 }
