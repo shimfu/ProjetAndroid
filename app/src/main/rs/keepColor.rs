@@ -26,15 +26,6 @@ uchar4  RS_KERNEL  keepColor(uchar4  in) {
         h = (int)(60*((rb-gb)/delta)+240);
     }
 
-    int s;
-    if(cMax == 0){
-        s = 0;
-    }else{
-        s = 1 - cMin/cMax;
-    }
-
-    int v = cMax;
-
     if(hue <= 40){
         hue = hue + 360;
     }

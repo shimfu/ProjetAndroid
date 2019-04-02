@@ -69,7 +69,7 @@ uchar4  RS_KERNEL  apply_contrast(uchar4  in) {
      float s = pixelf.g;
      float v = pixelf.b;
 
-     float value = (float)(lut[(int)(v*1000)])/1000;
+     float value = (float)(lut[(int32_t)(v*999)])/1000;
 
      float r ; float g ; float b;
 
