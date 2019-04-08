@@ -1,20 +1,33 @@
 package com.example.acoste.projetimage;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 
 public class EffectsActivity extends AppCompatActivity{
@@ -46,7 +59,6 @@ public class EffectsActivity extends AppCompatActivity{
     private ImageView img_medianFilterRS;
     private ImageView img_minFilterRS;
     private ImageView img_sobelGradientRS;
-
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -184,7 +196,52 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_reset = findViewById(R.id.button15);
         button_reset.setOnClickListener(listener_reset);
 
+        Button button_save = findViewById(R.id.save);
+        button_save.setOnClickListener(listener_save);
 
+
+    }
+
+    public void startSave (Bitmap bitmap) {
+
+        int check = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+        }
+            FileOutputStream fileOutputStream = null;
+            File file = getDisc();
+            Log.i("Path : ", "Storage = " + file.toString());
+            if(!file.exists() && !file.mkdirs()){
+                Toast.makeText(this, "Can't create directory to save image", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
+            String date = simpleDateFormat.format(new Date());
+            String name = "Img"+date+".jpg";
+            String file_name = file.getAbsolutePath()+"/"+name;
+            File new_file = new File (file_name);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+            try {
+                fileOutputStream = new FileOutputStream(new_file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                Toast.makeText(this, "Save image succes", Toast.LENGTH_SHORT).show();
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            refreshGallery(new_file);
+    }
+    public void refreshGallery(File file){
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
+    }
+    private File getDisc() {
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        return new File(file, "Photo Fun");
     }
 
     private View.OnClickListener listener_reset = new View.OnClickListener() {
@@ -192,6 +249,14 @@ public class EffectsActivity extends AppCompatActivity{
         public void onClick(View v) {
             effect.reset();
             img.setImageBitmap(effect.getInitialImg());
+        }
+    };
+
+    private View.OnClickListener listener_save = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            startSave(bmp);
         }
     };
 
@@ -381,6 +446,7 @@ public class EffectsActivity extends AppCompatActivity{
             img.setImageBitmap(effect.getCurrentImg());
         }
     };
+
 
 
 
