@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -27,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
+
 
 
 public class EffectsActivity extends AppCompatActivity{
@@ -114,17 +115,23 @@ public class EffectsActivity extends AppCompatActivity{
         else
             bmpInit = BitmapFactory.decodeResource(getResources(), R.drawable.test0);
 
-        img.setImageBitmap(bmpInit);
+        //img.setImageBitmap(bmpInit);
 
 
         effectImage = new Effects(bmpInit);
 
+
+
         bmpResize = Bitmap.createScaledBitmap(bmpInit, 100, 100, false);
+        img.setImageBitmap(effectImage.getCurrentImg());
+
         effectButton = new Effects(bmpResize);
 
-        img.setImageBitmap(bmpInit);
+
+        //img.setImageBitmap(bmpInit);
 
         img.setOnClickListener(listener_zoom);
+
 
         /***************************************
          Initialisation des boutons des différents effets
@@ -202,7 +209,7 @@ public class EffectsActivity extends AppCompatActivity{
         effectButton.reset();
 
 
-        Button button_reset = findViewById(R.id.button15);
+        Button button_reset = findViewById(R.id.reset);
         button_reset.setOnClickListener(listener_reset);
 
         Button button_save = findViewById(R.id.save);
@@ -211,47 +218,6 @@ public class EffectsActivity extends AppCompatActivity{
 
     }
 
-    public void startSave (Bitmap bitmap) {
-
-        int check = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
-        }
-            FileOutputStream fileOutputStream = null;
-            File file = getDisc();
-            Log.i("Path : ", "Storage = " + file.toString());
-            if(!file.exists() && !file.mkdirs()){
-                Toast.makeText(this, "Can't create directory to save image", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
-            String date = simpleDateFormat.format(new Date());
-            String name = "Img"+date+".jpg";
-            String file_name = file.getAbsolutePath()+"/"+name;
-            File new_file = new File (file_name);
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
-            try {
-                fileOutputStream = new FileOutputStream(new_file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-                Toast.makeText(this, "Save image succes", Toast.LENGTH_SHORT).show();
-                fileOutputStream.flush();
-                fileOutputStream.close();
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            refreshGallery(new_file);
-    }
-    public void refreshGallery(File file){
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(Uri.fromFile(file));
-        sendBroadcast(intent);
-    }
-    private File getDisc() {
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        return new File(file, "Photo Fun");
-    }
 
     private View.OnClickListener listener_reset = new View.OnClickListener() {
         @Override
@@ -336,84 +302,83 @@ public class EffectsActivity extends AppCompatActivity{
 
 
     /***************************************
-    Listener des boutons des différents effets
+     Listener des boutons des différents effets
      ***************************************/
     private View.OnClickListener listener_greyRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.toGreyRS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+
+            switch_effects("toGreyRS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_keepColorRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.keepColorRS(40, getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("keepColorRs", 40, 0, 0, 0);
         }
     };
 
     /*private View.OnClickListener listener_comboEffects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.comboEffects(getApplicationContext(), 5);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            effect.comboEffects(getApplicationContext(), 5);
+            img.setImageBitmap(effect.getCurrentImg());
         }
     };*/
 
     private View.OnClickListener listener_drawOutline_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.drawOutline_RS( getApplicationContext(), 0.3f);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("drawOutline_RS", 0, 0, 0, 0.3f);
         }
     };
 
     private View.OnClickListener listener_colorPartition_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.colorPartition_RS( getApplicationContext(), 9, 3, 0);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("colorPartition_RS", 9, 3, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_bilateralRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.bilateral_filter_RS( getApplicationContext(), 1);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("bilateral_filter_RS", 1, 0, 0, 0);
+
         }
     };
     private View.OnClickListener listener_sobelGradient_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.sobelGradient_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("sobelGradient_RS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_medianfilter_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.medianfilter_RS(getApplicationContext(), 5);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("medianfilter_RS", 5, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_minfilter_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.minfilter_RS(getApplicationContext(), 1);
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("minfilter_RS", 1, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_randomHueRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.randomHueRS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("randomHueRS", 0, 0, 0, 0);
+
         }
     };
 
@@ -421,58 +386,220 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_linearContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.linearContrastRS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("linearContrastRS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_equalizationContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.equalization_contrast_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("equalization_contrast_RS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_blur_moy_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.blur_moy_RS(getApplicationContext(), 3); //to correct later
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("blur_moy_RS", 3, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_blur_gaussian5x5_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.blur_gaussian5x5_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("blur_gaussian5x5_RS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_sobel_horizontal_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.sobel_horizontal_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("sobel_horizontal_RS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_sobel_vertical_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.sobel_vertical_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("sobel_vertical_RS", 0, 0, 0, 0);
+
         }
     };
 
     private View.OnClickListener listener_laplacian_mask_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effectImage.laplacian_mask_RS(getApplicationContext());
-            img.setImageBitmap(effectImage.getCurrentImg());
+            switch_effects("laplacian_mask_RS", 0, 0, 0, 0);
+
         }
     };
+
+    public void startSave (Bitmap bitmap) {
+
+        int check = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+        }
+        FileOutputStream fileOutputStream = null;
+        File file = getDisc();
+        Log.i("Path : ", "Storage = " + file.toString());
+        if(!file.exists() && !file.mkdirs()){
+            Toast.makeText(this, "Can't create directory to save image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
+        String date = simpleDateFormat.format(new Date());
+        String name = "Img"+date+".jpg";
+        String file_name = file.getAbsolutePath()+"/"+name;
+        File new_file = new File (file_name);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+        try {
+            fileOutputStream = new FileOutputStream(new_file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            Toast.makeText(this, "Save image succes", Toast.LENGTH_SHORT).show();
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        refreshGallery(new_file);
+    }
+    public void refreshGallery(File file){
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
+    }
+    private File getDisc() {
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        return new File(file, "Photo Fun");
+    }
+
+    public void switch_effects(String name_effect, int param_1, int param_2, int param_3, float param_f){
+        switch(name_effect){
+            case "toGreyRS" :
+                effectImage.toGreyRS(getApplicationContext());
+                break;
+            case "keepColorRS" :
+                effectImage.keepColorRS(param_1, getApplicationContext());
+                break;
+            case "randomHueRS" :
+                effectImage.randomHueRS(getApplicationContext());
+                break;
+            case "linearContrastRS" :
+                effectImage.linearContrastRS(getApplicationContext());
+                break;
+            case "equalization_contrast_RS":
+                effectImage.equalization_contrast_RS(getApplicationContext());
+                break;
+            case "blur_moy_RS" :
+                effectImage.blur_moy_RS(getApplicationContext(), param_1);
+                break;
+            case "blur_gaussian5x5_RS" :
+                effectImage.blur_gaussian5x5_RS(getApplicationContext());
+                break;
+            case "sobel_horizontal_RS" :
+                effectImage.sobel_horizontal_RS(getApplicationContext());
+                break;
+            case "sobel_vertical_RS" :
+                effectImage.sobel_vertical_RS(getApplicationContext());
+                break;
+            case "laplacian_mask_RS" :
+                effectImage.laplacian_mask_RS(getApplicationContext());
+                break;
+            case "bilateral_filter_RS" :
+                effectImage.bilateral_filter_RS(getApplicationContext(), param_1);
+                break;
+            case "drawOutline_RS" :
+                effectImage.drawOutline_RS(getApplicationContext(), param_f);
+                break;
+            case "sobelGradient_RS" :
+                effectImage.sobelGradient_RS(getApplicationContext());
+                break;
+            case "medianfilter_RS" :
+                effectImage.medianfilter_RS(getApplicationContext(), param_1);
+                break;
+            case "minfilter_RS" :
+                effectImage.minfilter_RS(getApplicationContext(), param_1);
+                break;
+            case "colorPartition_RS" :
+                effectImage.colorPartition_RS(getApplicationContext(), param_1, param_2, param_3);
+                break;
+
+
+        }
+        img.setImageBitmap(effectImage.getCurrentImg());
+        update_preview();
+
+
+    }
+
+    public void update_preview(){
+
+        //effectButton.set_Init(Bitmap.createScaledBitmap(effectImage.getCurrentImg(), 100, 100, true));
+        Effects  effectButton = new Effects(effectImage.getCurrentImg());
+
+        effectButton.toGreyRS(getApplicationContext());
+        img_greyRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.keepColorRS(40, getApplicationContext());
+        img_keepColorRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.bilateral_filter_RS(getApplicationContext(), 1);
+        img_bilateralRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.randomHueRS(getApplicationContext());
+        img_randomHueRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.blur_moy_RS(getApplicationContext(), 3);
+        img_blurRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.colorPartition_RS(getApplicationContext(), 9 , 3 ,0);
+        img_colorPartitionRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.drawOutline_RS(getApplicationContext(), 0.3f);
+        img_drawOutlineRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.equalization_contrast_RS(getApplicationContext());
+        img_histEqRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.linearContrastRS(getApplicationContext());
+        img_linearContrastRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.medianfilter_RS(getApplicationContext(),6);
+        img_medianFilterRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.minfilter_RS(getApplicationContext(), 2);
+        img_minFilterRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+
+        effectButton.sobelGradient_RS(getApplicationContext());
+        img_sobelGradientRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+    }
 
 
 
