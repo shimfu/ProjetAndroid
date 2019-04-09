@@ -96,6 +96,15 @@
             android:text="Gallery"
             android:textSize="15dp" />
 
+        <ImageView
+            android:id="@+id/rotate"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/gallery_camera"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/gallery_camera"
+            android:layout_marginTop="13dp" />
+
 
 
     </RelativeLayout>

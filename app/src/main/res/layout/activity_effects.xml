@@ -163,6 +163,16 @@
             android:layout_toStartOf="@+id/camera"
             android:layout_toLeftOf="@+id/camera" />
 
+        <ImageView
+            android:id="@+id/rotate"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/camera"
+            android:layout_alignRight="@+id/camera"
+            android:layout_alignTop="@+id/button15"
+            android:layout_marginEnd="56dp"
+            android:layout_marginRight="56dp" />
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
