@@ -23,16 +23,12 @@ import java.util.Date;
 
 public class Camera extends AppCompatActivity {
 
-
-
-    //private ImageView img_tuto = null;
     private ImageView img_gallery = null;
     private ImageView img_rotate = null;
     private ImageView img_camera = null;
     private ImageView img_effects = null;
     private ImageView img_menu = null;
 
-    //private Bitmap bitmap_tuto = null;
     private Bitmap bitmap_gallery = null;
     private Bitmap bitmap_rotate = null;
     private Bitmap bitmap_camera = null;
@@ -40,43 +36,49 @@ public class Camera extends AppCompatActivity {
     private Bitmap bitmap_menu = null;
 
     private Uri photoUri;
+
+    //Constant used in the onActivityResult function
     static final int REQUEST_TAKE_PHOTO = 1;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
 
-        /***************************************
-         Initialisation des boutons de navigation
-         ***************************************/
+        //Initializing button to lauch camera
         img_camera = findViewById(R.id.camera);
         img_camera.setOnClickListener(listener_camera);
 
+        //Initializing button to rotate image
         img_rotate = findViewById(R.id.rotate);
         img_rotate.setOnClickListener(listener_rotate);
         bitmap_rotate = BitmapFactory.decodeResource(getResources(), R.drawable.fleche);
         img_rotate.setImageBitmap(bitmap_rotate);
 
+        //Initializing button to lauch gallery activity
         img_gallery = findViewById(R.id.gallery_camera);
         img_gallery.setOnClickListener(listener_gallery);
         bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
         img_gallery.setImageBitmap(bitmap_gallery);
 
+        //Initializing button to lauch effect activity
         img_effects = findViewById(R.id.effects_camera);
         img_effects.setOnClickListener(listener_effects);
         bitmap_effects = BitmapFactory.decodeResource(getResources(), R.drawable.effect_logo);
         img_effects.setImageBitmap(bitmap_effects);
 
+        //Initializing button to lauch menu activity
         img_menu = findViewById(R.id.menu_camera);
         img_menu.setOnClickListener(listener_menu);
         bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
         img_menu.setImageBitmap(bitmap_menu);
 
-        //Lance la camera dès que l'utilisateur arrive sur Camera.activity
+        //Launches the camera as soon as the user arrives on the camera activity
         dispatchTakePictureIntent();
     }
 
-    //Donne le chemin où l'image sera stockée à photoFile et lance la caméra
+    /***
+     *Gives the path where the image will be stored at photoFile and launches the camera
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -87,7 +89,6 @@ public class Camera extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -99,10 +100,16 @@ public class Camera extends AppCompatActivity {
             }
         }
     }
-
-    //Permet de valider la photo qui a été prise
+    
+    /***
+     *
+     * @param requestCode Request requested by the code (==1 to take a photo)
+     * @param resultCode Result returned by code
+     * @param data Intent launched by the function call (not used)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to and Make sure the request was successful
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             try {
                 bitmap_camera = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoUri);
@@ -113,7 +120,11 @@ public class Camera extends AppCompatActivity {
         }
     }
 
-    //Renvoie le chemin du fichier où l'image sera stockée
+    /***
+     *
+     * @return File path where the image will be stored
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -126,9 +137,9 @@ public class Camera extends AppCompatActivity {
         return image;
     }
 
-    /***************************************
-     Listener des boutons de navigation
-     ***************************************/
+    /***
+     * Send to the effects activity
+     */
     private View.OnClickListener listener_effects = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -140,6 +151,9 @@ public class Camera extends AppCompatActivity {
         }
     };
 
+    /***
+     * Rotates the image 90 degrees
+     */
     private View.OnClickListener listener_rotate = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -147,6 +161,9 @@ public class Camera extends AppCompatActivity {
         }
     };
 
+    /***
+     * Send to the gallery activity
+     */
     private View.OnClickListener listener_gallery = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -155,6 +172,9 @@ public class Camera extends AppCompatActivity {
         }
     };
 
+    /***
+     * Send to the menu activity
+     */
     private View.OnClickListener listener_menu = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -163,7 +183,9 @@ public class Camera extends AppCompatActivity {
         }
     };
 
-
+    /***
+     * Launch the camera
+     */
     private View.OnClickListener listener_camera = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
