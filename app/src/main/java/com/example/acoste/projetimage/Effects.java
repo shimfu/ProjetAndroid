@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class Effects {
 
-    static Bitmap initialImg;
-    static Bitmap currentImg;
+    private Bitmap initialImg = null;
+    private Bitmap currentImg = null;
 
     static List<Bitmap> stateSave;//we will get an arbitrary size of 3
     //String statePath[];//the effects the user apply consecutivly(not implemented)
@@ -36,13 +36,13 @@ public class Effects {
     public Effects(Bitmap bMap){
         initialImg = bMap;
 
-        currentImg = initialImg.copy(initialImg.getConfig(), true);;
+        currentImg = initialImg.copy(initialImg.getConfig(), true);
         stateSave = new ArrayList<Bitmap>();
 
         currentIndex = 0;
     }
 
-    static Bitmap getInitialImg() {
+    public Bitmap getInitialImg() {
         return initialImg;
     }
 

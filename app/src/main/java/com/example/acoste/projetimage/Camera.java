@@ -27,12 +27,14 @@ public class Camera extends AppCompatActivity {
 
     //private ImageView img_tuto = null;
     private ImageView img_gallery = null;
+    private ImageView img_rotate = null;
     private ImageView img_camera = null;
     private ImageView img_effects = null;
     private ImageView img_menu = null;
 
     //private Bitmap bitmap_tuto = null;
     private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_rotate = null;
     private Bitmap bitmap_camera = null;
     private Bitmap bitmap_effects = null;
     private Bitmap bitmap_menu = null;
@@ -49,6 +51,11 @@ public class Camera extends AppCompatActivity {
          ***************************************/
         img_camera = findViewById(R.id.camera);
         img_camera.setOnClickListener(listener_camera);
+
+        img_rotate = findViewById(R.id.rotate);
+        img_rotate.setOnClickListener(listener_rotate);
+        bitmap_rotate = BitmapFactory.decodeResource(getResources(), R.drawable.fleche);
+        img_rotate.setImageBitmap(bitmap_rotate);
 
         img_gallery = findViewById(R.id.gallery_camera);
         img_gallery.setOnClickListener(listener_gallery);
@@ -97,13 +104,12 @@ public class Camera extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoUri);
+                bitmap_camera = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photoUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            img_camera.setImageBitmap(bitmap);
+            img_camera.setImageBitmap(bitmap_camera);
         }
     }
 
@@ -131,6 +137,13 @@ public class Camera extends AppCompatActivity {
             if(photoUri != null)
                 intent.putExtra("imageUri", photoUri.toString());
             startActivity(intent);
+        }
+    };
+
+    private View.OnClickListener listener_rotate = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            img_camera.setRotation(img_camera.getRotation()+90);
         }
     };
 
