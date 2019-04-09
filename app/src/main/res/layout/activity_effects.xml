@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,36 +21,23 @@
 
         </TextView>
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/img_to_modify"
+            android:text="Progress" />
 
-        <Button
-            android:id="@+id/button15"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignBaseline="@+id/textView"
-            android:layout_alignStart="@+id/camera"
-            android:layout_alignLeft="@+id/camera"
-            android:layout_alignBottom="@+id/textView"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:text="Reset" />
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginRight="47dp"
-            android:layout_toStartOf="@+id/button15"
-            android:layout_toLeftOf="@+id/button15"
-            android:text="Save" />
 
         <ImageView
             android:id="@+id/img_to_modify"
             android:layout_width="match_parent"
             android:layout_height="311dp"
-            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_below="@+id/textView" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -130,48 +116,90 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <ImageView
-            android:id="@+id/camera"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="39dp"
-            android:layout_marginRight="39dp"
-            android:layout_marginBottom="19dp" />
+            android:layout_marginEnd="37dp"
+            android:layout_marginRight="37dp"
+            android:text="Reset" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/reset"
+            android:layout_marginEnd="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_toLeftOf="@+id/apply"
+            android:layout_toStartOf="@+id/apply"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/apply"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/save"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/reset"
+            android:layout_toStartOf="@+id/reset"
+            android:text="Apply" />
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/img_to_modify"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            tools:layout_editor_absoluteX="286dp"
+            tools:layout_editor_absoluteY="0dp" />
 
 
         <ImageView
             android:id="@+id/gallery"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@+id/camera"
             android:layout_marginEnd="26dp"
             android:layout_marginRight="26dp"
-            android:layout_toStartOf="@+id/menu"
-            android:layout_toLeftOf="@+id/menu" />
+            android:layout_toLeftOf="@+id/menu"
+            android:layout_toStartOf="@+id/menu" />
 
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@+id/gallery"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/camera"
             android:layout_toStartOf="@+id/camera"
-            android:layout_toLeftOf="@+id/camera" />
+            android:contextClickable="false" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="220dp"
+            android:layout_height="13dp"
+            android:layout_alignBottom="@+id/textView5"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:max="360"
+            android:progress="1" />
 
         <ImageView
             android:id="@+id/rotate"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignEnd="@+id/camera"
-            android:layout_alignRight="@+id/camera"
-            android:layout_alignTop="@+id/button15"
-            android:layout_marginEnd="56dp"
-            android:layout_marginRight="56dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/save"
+            android:layout_toStartOf="@+id/save" />
+
 
     </RelativeLayout>
 
