@@ -4,7 +4,7 @@
 
 #include "rs_debug.rsh"
 
-uint32_t intensity;//half of the size of the side of the suare mask (mask is simuled with functions "f" & "g")
+uint32_t intensity;//maximum distance around the enhanced pixel (Uniform norm)
 
 int32_t width;//width of the Bitmap image
 int32_t height;//height of the Bitmap image
@@ -13,19 +13,15 @@ uchar4 *data;// 1D array wich contain all the values of each pixel of the Bitmap
 
 
 void map_img(rs_allocation bmp, rs_allocation data) {//this function fill dada with the values of the Bitmap
-    rsDebug("START MAPPING", 0.000000000000000);
     for(int i = 0 ; i<width ; i++){//for each collumn
         for(int j = 0 ; j<height ; j++){//for each line
             uchar4 copy = rsGetElementAt_uchar4(bmp, i, j);//we get the Bitmap "bmp" value (Bitmap "bmp" has 2 Dimension)
             rsSetElementAt_uchar4(data, copy, j*width + i);//we copy it in data (data has 1 Dimension)
         }
     }
-    rsDebug("END MAPPING", 0.000000000000000);
-
 }
 
 static float4 median(float4 pixel_list[], int list_size){
-    //rsDebug("DREAM IS HERE !",pixel_list[intensity + 1]);
     if(list_size%2 == 0){
         return pixel_list[(list_size/2)];
     }else{
@@ -44,7 +40,6 @@ static float grey(float4 color){
 
 static void merge(float4 list[],int i1,int j1,int i2,int j2)
 {
-    //rsDebug("MERGE START",0.0);
 	float4 temp[(2*intensity + 1)*(2*intensity + 1)];	//array used for merging
 	int i=i1;	//beginning of the first list
 	int j=i2;	//beginning of the second list
@@ -83,8 +78,6 @@ static void merge(float4 list[],int i1,int j1,int i2,int j2)
 
 static void mergesort(float4 list[],int i,int j)
 {
-    //rsDebug("MERGESORT ___START___",0.0);
-
 	int mid;
 
 	if(i<j)
@@ -94,7 +87,6 @@ static void mergesort(float4 list[],int i,int j)
 		mergesort(list,mid+1,j);	//right recursion
 		merge(list,i,mid,mid+1,j);	//merging of two sorted sub-arrays
 	}
-
 }
 
 uchar4 RS_KERNEL compute_data(uchar4 in, uint32_t x, uint32_t y) {//For each pixel at once

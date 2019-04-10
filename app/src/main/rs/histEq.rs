@@ -6,6 +6,7 @@
 
 int32_t histo[256];
 float remapArray[256];
+float intensity;
 int size;
 
 //Method to keep the result between 0 and 1
@@ -41,7 +42,7 @@ uchar4 __attribute__((kernel)) remaptoRGB(uchar4 in, uint32_t x, uint32_t y) {
     //Get Y value between 0 and 255 (included)
     int32_t val = Y * 255;
     //Get Y new value in the map array
-    Y = remapArray[val];
+    Y = Y*(1.0-intensity) + remapArray[val]*intensity;
 
     //Get value for U and V channel (back to their original values)
     float U = (2*f4.g)-1;

@@ -8,7 +8,8 @@ int32_t histo[1000];
 int32_t lut[1000];
 int32_t maxi = 0;
 int32_t mini = 1000;
-int size;
+int new_max;
+int new_min;
 
 
 
@@ -114,7 +115,7 @@ uchar4  RS_KERNEL  apply_contrast(uchar4  in) {
 
 void createLut(){
     for (int i = 0; i < 1000; i++) {
-        lut[i] =(int)((999)*(i - mini) / (maxi - mini));
+        lut[i] =(int)( ((new_max)*(i - mini) + new_min) / (maxi - mini) );
     }
 }
 

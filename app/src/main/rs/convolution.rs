@@ -31,21 +31,43 @@ uchar4 RS_KERNEL compute_data(uchar4 in, uint32_t x, uint32_t y) {//For each pix
     float new_b = 0;//the future blue component of this pixel
     float new_a = 0;//the future alphan component of this pixel
 
-    for(int i = x-mask_line_length/2 ; i < x+mask_line_length/2+1 ; i++){//for each collumn of the mask
-        for(int j = y-mask_collumn_height/2 ; j < y+mask_collumn_height/2+1; j++){//for each line of the mask
-            if(i >= 0 && j >= 0 && i < width && j < height){//checking if we are in the limits of the image
+    int i_bis;
+    int j_bis;
 
-                pixeldata = rsUnpackColor8888(data[j*width + i]);//we get the values of 1 pixel in the mask
-                float add_r = pixeldata.r*mask[((mask_collumn_height/2)-y+j)*mask_line_length - x + i + mask_line_length/2]/norm;//computing the next values to add,
-                float add_g = pixeldata.g*mask[((mask_collumn_height/2)-y+j)*mask_line_length - x + i + mask_line_length/2]/norm;//we multiply by
-                float add_b = pixeldata.b*mask[((mask_collumn_height/2)-y+j)*mask_line_length - x + i + mask_line_length/2]/norm;//the value of the mask
-                float add_a = pixeldata.a*mask[((mask_collumn_height/2)-y+j)*mask_line_length - x + i + mask_line_length/2]/norm;//then normalize
+    for(int i = x ; i < x+mask_line_length ; i++){//for each collumn of the mask
+        for(int j = y ; j < y+mask_collumn_height; j++){//for each line of the mask
 
-                new_r = new_r + add_r;//update of future values, normalized
-                new_g = new_g + add_g;
-                new_b = new_b + add_b;
-                new_a = new_a + add_a;
+            i_bis = i - mask_line_length/2;
+            j_bis = j - mask_collumn_height/2;
+
+            if(i_bis >= 0 && j_bis >= 0 && i_bis < width && j_bis < height){//checking if we are in the limits of the image
+
+            }else{
+                if(i_bis < 0){
+                    i_bis = 0;
+                }
+                if(i_bis >= width){
+                    i_bis = width - 1;
+                }
+                if(j_bis < 0){
+                    j_bis = 0;
+                }
+                if(j_bis >= height){
+                    j_bis = height - 1;
+                }
             }
+
+            pixeldata = rsUnpackColor8888(data[(j_bis)*width + i_bis ]);//we get the values of 1 pixel in the mask
+
+            float add_r = pixeldata.r*mask[((mask_collumn_height/2)-y+j_bis)*mask_line_length - x + i_bis + mask_line_length/2]/norm;//computing the next values to add,
+            float add_g = pixeldata.g*mask[((mask_collumn_height/2)-y+j_bis)*mask_line_length - x + i_bis + mask_line_length/2]/norm;//we multiply by
+            float add_b = pixeldata.b*mask[((mask_collumn_height/2)-y+j_bis)*mask_line_length - x + i_bis + mask_line_length/2]/norm;//the value of the mask
+            float add_a = pixeldata.a*mask[((mask_collumn_height/2)-y+j_bis)*mask_line_length - x + i_bis + mask_line_length/2]/norm;//then normalize
+
+            new_r = new_r + add_r;//update of future values, normalized
+            new_g = new_g + add_g;
+            new_b = new_b + add_b;
+            new_a = new_a + add_a;
         }
     }
 
