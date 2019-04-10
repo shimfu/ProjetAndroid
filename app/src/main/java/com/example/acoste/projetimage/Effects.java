@@ -158,12 +158,12 @@ public class Effects {
         Advanced.equalization_contrast_ARGB(getCurrentImg());
     }
 
-    public void linearContrastRS(Context context){
-        Advanced.linearContrastRS(getCurrentImg(), context);
+    public void linearContrastRS(Context context, int new_min, int new_max){
+        Advanced.linearContrastRS(getCurrentImg(), context, new_min,new_max);
     }
 
-    public void equalization_contrast_RS(Context context){
-        Advanced.equalization_contrast_RS(getCurrentImg(), context);
+    public void equalization_contrast_RS(Context context, float intensity){
+        Advanced.equalization_contrast_RS(getCurrentImg(), context, intensity);
     }
 
     public void blur_moy_RS(Context context, int param){
@@ -190,8 +190,8 @@ public class Effects {
         Advanced.bilateralfilter_RS(getCurrentImg(), context, intensity);
     }
 
-    public void drawOutline_RS(Context context, float edge_intensity ){
-        Advanced.drawOutline_RS(getCurrentImg(), context, edge_intensity);
+    public void drawOutline_RS(Context context, float edge_intensity, int outline_size ){
+        Advanced.drawOutline_RS(getCurrentImg(), context, edge_intensity, outline_size);
     }
 
     public void sobelGradient_RS(Context context){
@@ -208,6 +208,29 @@ public class Effects {
 
     public void colorPartition_RS (Context context, int color_precision, int shade_precision, int color_shift){
         Simple.colorPartition_RS(getCurrentImg(), context, color_precision, shade_precision, color_shift);
+    }
+
+    public void luminosity_RS(Context context, float intensity){//intensity between 0.0...1.0, substract luminosity if intensity < 0.5, add if > 0.5, change nothing at 0.5
+        Simple.luminosityRS(getCurrentImg(), context, intensity);
+    }
+
+    public void pixelise_RS(Context context, int pixel_size){
+        Advanced.pixelise_RS(getCurrentImg(), context, pixel_size);
+    }
+
+    public void negative_RS(Context context){
+        Simple.negativeRS(getCurrentImg(), context);
+    }
+
+    public void pencil_RS(Context context, int blur_intensity){
+        Advanced.pencil_RS(getCurrentImg(), context, blur_intensity);
+    }
+
+    public void cartoon_RS(Context context, int first_medianfilter_size,int minfilter_size, int final_medianfilter_size,
+                           float edge_precision, int outline_size, int color_precision, int shade_precision, int color_shift){
+
+        Advanced.cartoon_RS(getCurrentImg(),context,first_medianfilter_size,minfilter_size,
+                final_medianfilter_size,edge_precision,outline_size,color_precision,shade_precision,color_shift);
     }
 
 
