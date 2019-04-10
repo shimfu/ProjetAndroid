@@ -65,6 +65,11 @@ public class EffectsActivity extends AppCompatActivity{
     private ImageView img_minFilterRS;
     private ImageView img_sobelGradientRS;
 
+    private TextView textView5, textView6 ;
+    private SeekBar seekbar, seekbar2 ;
+
+
+
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -216,6 +221,56 @@ public class EffectsActivity extends AppCompatActivity{
         Button button_save = findViewById(R.id.save);
         button_save.setOnClickListener(listener_save);
 
+        seekbar = findViewById(R.id.seekBar);
+        textView5 = findViewById(R.id.textView5);
+
+        seekbar2 = findViewById(R.id.seekBar2);
+        textView6 = findViewById(R.id.textView6);
+
+        hide_param(false, false);
+
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+                progress = progressValue;
+                textView5.setText("Progress: " + progressValue + "/" + seekBar.getMax());
+                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+                progress = progressValue;
+                textView6.setText("Progress: " + progressValue + "/" + seekBar.getMax());
+                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -601,6 +656,27 @@ public class EffectsActivity extends AppCompatActivity{
         effectButton.sobelGradient_RS(getApplicationContext());
         img_sobelGradientRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
+    }
+
+    public void hide_param (boolean visible, boolean visible_2){
+        if (!visible) {
+            seekbar.setVisibility(View.INVISIBLE);
+            textView5.setVisibility(View.INVISIBLE);
+        }
+        else if (visible){
+            seekbar.setVisibility(View.VISIBLE);
+            textView5.setVisibility(View.VISIBLE);
+        }
+
+        if (!visible_2) {
+
+            seekbar2.setVisibility(View.INVISIBLE);
+            textView6.setVisibility(View.INVISIBLE);
+        }
+        else if (visible_2){
+            seekbar2.setVisibility(View.VISIBLE);
+            textView6.setVisibility(View.VISIBLE);
+        }
     }
 
 
