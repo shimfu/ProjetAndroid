@@ -21,6 +21,8 @@ import com.android.rssample.ScriptC_medianFilter;
 import com.android.rssample.ScriptC_sobelGradient;
 import com.android.rssample.ScriptC_colorPartition;
 import com.android.rssample.ScriptC_drawOutline;
+import com.android.rssample.ScriptC_blendDivide;
+import com.android.rssample.ScriptC_pixelise;
 
 /**
  * Created by acoste on 08/02/19.
@@ -158,11 +160,7 @@ public class Advanced{
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
     }
 
-    static void linearContrastRS(Bitmap image, Context context) {
-
-        //Get image size
-        int width = image.getWidth();
-        int height = image.getHeight();
+    static void linearContrastRS(Bitmap image, Context context, int new_min, int new_max) {// new_min in [0...new_max] ; new_max in [new_min+1...999]
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -174,8 +172,10 @@ public class Advanced{
         Allocation allocationB = Allocation.createTyped(rs, allocationA.getType());
         //Create script from rs file.
         ScriptC_linearContrast linearContrastScript = new ScriptC_linearContrast(rs);
-        //Set size in script
-        linearContrastScript.set_size(width*height);
+
+        linearContrastScript.set_new_max(new_max);
+        linearContrastScript.set_new_min(new_min);
+
         //Call the first kernel.
         linearContrastScript.forEach_create_histog(allocationA, allocationB);
         //Call the rs method to compute the remap array
@@ -192,7 +192,7 @@ public class Advanced{
     }
 
 
-    static void equalization_contrast_RS(Bitmap image, Context context) {
+    static void equalization_contrast_RS(Bitmap image, Context context, float intensity) {
         //Get image size
         int width = image.getWidth();
         int height = image.getHeight();
@@ -209,6 +209,7 @@ public class Advanced{
         ScriptC_histEq histEqScript = new ScriptC_histEq(rs);
         //Set size in script
         histEqScript.set_size(width*height);
+        histEqScript.set_intensity(intensity);
         //Call the first kernel.
         histEqScript.forEach_root(allocationA, allocationB);
         //Call the rs method to compute the remap array
@@ -411,12 +412,92 @@ public class Advanced{
         return 0;
     }
 
-    static int drawOutline_RS(Bitmap image, Context context, float edge_intensity){
+    static int blendDivide_RS(Bitmap image, Context context, Bitmap divider){
+
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_blendDivide blendDivideScript = new ScriptC_blendDivide(rs);
+
+        Allocation img = Allocation.createFromBitmap(rs , image);
+        Allocation div = Allocation.createFromBitmap(rs , divider);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),divider.getHeight()*divider.getWidth());
+
+        blendDivideScript.set_height(image.getHeight());
+        blendDivideScript.set_width(image.getWidth());
+        blendDivideScript.invoke_map_img(div, data);
+        blendDivideScript.bind_data(data);
+
+        blendDivideScript.forEach_compute_data(img, img);
+
+        img.copyTo(image);
+
+        img.destroy();
+        data.destroy();
+
+        blendDivideScript.destroy();
+        rs.destroy();
+
+        return 0;
+    }
+
+    static int pixelise_RS(Bitmap image, Context context, int pixel_size){
+
+        //1)  Creer un  contexte  RenderScript
+        RenderScript rs = RenderScript.create(context);
+        //2)  Creer  des  Allocations  pour  passer  les  donnees
+        Allocation input = Allocation.createFromBitmap(rs , image);
+        Allocation  output = Allocation.createTyped(rs , input.getType ());
+        //3)  Creer le  script
+        ScriptC_pixelise pixeliseScript = new  ScriptC_pixelise(rs);
+        //4)  Copier  les  donnees  dans  les  Allocations
+        Allocation lut = Allocation.createSized(rs, Element.F32_4(rs),image.getHeight()/pixel_size*image.getWidth()/pixel_size);
+        pixeliseScript.set_height(image.getHeight());
+        pixeliseScript.set_width(image.getWidth());
+        pixeliseScript.set_pixel_size(pixel_size);
+        pixeliseScript.invoke_map_lut(input, lut);
+        pixeliseScript.bind_lut(lut);
+
+        //6)  Lancer  le noyau
+        pixeliseScript.forEach_compute_data(input , input);
+        //7)  Recuperer  les  donnees  des  Allocation(s)
+        input.copyTo(image);
+        //8)  Detruire  le context , les  Allocation(s) et le  script
+        input.destroy (); output.destroy ();
+        pixeliseScript.destroy (); rs.destroy ();
+
+        return 0;
+
+    }
+
+    static int cartoon_RS(Bitmap image, Context context, int first_medianfilter_size,int minfilter_size, int final_medianfilter_size,
+                          float edge_precision, int outline_size, int color_precision, int shade_precision, int color_shift){
+
+        medianfilter_RS(image,context,first_medianfilter_size);
+        bilateralfilter_RS(image,context,1);
+        drawOutline_RS(image,context,edge_precision,outline_size);
+        minfilter_RS(image,context,minfilter_size);
+        Simple.colorPartition_RS(image,context,color_precision,shade_precision,color_shift);
+        medianfilter_RS(image,context,final_medianfilter_size);
+
+        return 0;
+    }
+
+    /***
+     *
+     * @param image the image to modify
+     * @param context
+     * @param edge_precision belong to [0.0...1.0], increase this value to draw only harder edge, 0.0 draw all edge, 1.0 draw no edge
+     * @param outline_size Integer wich define how the width of outline will be increased (in pixels)
+     *
+     * @return
+     */
+    static int drawOutline_RS(Bitmap image, Context context, float edge_precision, int outline_size){
 
         Bitmap copy = image.copy(image.getConfig(),true);
 
         sobelGradient_RS(copy, context);
-        minfilter_RS(copy,context,1);
+        minfilter_RS(copy,context,outline_size);
 
         RenderScript rs = RenderScript.create(context);
 
@@ -430,10 +511,10 @@ public class Advanced{
         drawOutlineScript.set_width(image.getWidth());
         drawOutlineScript.set_height(image.getHeight());
 
-        if(edge_intensity < 0.0 && edge_intensity > 1.0) {
+        if(edge_precision < 0.0 && edge_precision > 1.0) {
             drawOutlineScript.set_edge_intensity((float)0.5);
         }
-        drawOutlineScript.set_edge_intensity(edge_intensity);
+        drawOutlineScript.set_edge_intensity(edge_precision);
 
         drawOutlineScript.invoke_map_img(edges, data);
         drawOutlineScript.bind_data(data);
@@ -450,6 +531,56 @@ public class Advanced{
 
         drawOutlineScript.destroy();
         rs.destroy();
+
+        return 0;
+    }
+
+    static int light_grey_RS(Bitmap image, Context context, int blur_intensity){
+        Simple.toGreyRS(image,context);
+
+        Bitmap inv_div_copy = image.copy(image.getConfig(),true);
+
+        Advanced.blur_moy_RS(inv_div_copy,context,blur_intensity);
+
+        blendDivide_RS( image,context,inv_div_copy);
+
+        return 0;
+    }
+
+    static int pencil_RS(Bitmap image, Context context, int blur_intensity){
+
+        Simple.toGreyRS(image,context);
+
+        Bitmap inv_div_copy = image.copy(image.getConfig(),true);
+
+        Simple.negativeRS(inv_div_copy, context);
+
+        Advanced.blur_moy_RS(inv_div_copy,context,blur_intensity);
+
+        blendDivide_RS( image,context,inv_div_copy);
+
+        return 0;
+    }
+
+    static int aura_aux_RS(Bitmap image, Context context, int blur_intensity){
+
+        Simple.toGreyRS(image,context);
+
+        Bitmap inv_div_copy = image.copy(image.getConfig(),true);
+
+        Advanced.blur_moy_RS(inv_div_copy,context,blur_intensity);
+
+        Simple.negativeRS(image, context);
+
+        blendDivide_RS( image,context,inv_div_copy);
+
+        return 0;
+    }
+
+    static int aura_RS(Bitmap image, Context context, int blur_intensity){
+
+        aura_aux_RS( image,  context,  blur_intensity);
+        aura_aux_RS( image,  context,  blur_intensity);
 
         return 0;
     }
@@ -471,6 +602,9 @@ public class Advanced{
 
         return 0;
     }
+
+
+
 
     static int blur_gaussian5x5_RS(Bitmap image, Context context){
 
