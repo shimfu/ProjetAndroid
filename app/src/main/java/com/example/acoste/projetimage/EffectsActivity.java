@@ -68,6 +68,7 @@ public class EffectsActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_effects);
 
         /***************************************
@@ -224,6 +225,7 @@ public class EffectsActivity extends AppCompatActivity{
         public void onClick(View v) {
             effectImage.reset();
             img.setImageBitmap(effectImage.getInitialImg());
+            update_preview();
         }
     };
 

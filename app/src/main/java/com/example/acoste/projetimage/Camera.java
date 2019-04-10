@@ -42,6 +42,7 @@ public class Camera extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.camera);
 
         //Initializing button to lauch camera
