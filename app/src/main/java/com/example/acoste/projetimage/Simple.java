@@ -85,11 +85,16 @@ public class Simple{
         return cpy_bMap;
     }
 
-    static void  toGreyRS(Bitmap  bmp, Context context) {
+    /***
+     * change the image to its grey scale
+     * @param image image to modify
+     * @param context context of Activity
+     */
+    static void  toGreyRS(Bitmap  image, Context context) {
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
         //2)  Creer  des  Allocations  pour  passer  les  donnees
-        Allocation input = Allocation.createFromBitmap(rs , bmp);
+        Allocation input = Allocation.createFromBitmap(rs , image);
         Allocation  output = Allocation.createTyped(rs , input.getType ());
         //3)  Creer le  script
         ScriptC_toGrey greyScript = new  ScriptC_toGrey(rs);
@@ -100,17 +105,22 @@ public class Simple{
         //6)  Lancer  le noyau
         greyScript.forEach_toGrey(input , output);
         //7)  Recuperer  les  donnees  des  Allocation(s)
-        output.copyTo(bmp);
+        output.copyTo(image);
         //8)  Detruire  le context , les  Allocation(s) et le  script
         input.destroy (); output.destroy ();
         greyScript.destroy (); rs.destroy ();
     }
 
-    static void  negativeRS(Bitmap  bmp, Context context) {
+    /***
+     * change the image to its negative
+     * @param image image to modify
+     * @param context context of Activity
+     */
+    static void  negativeRS(Bitmap  image, Context context) {
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
         //2)  Creer  des  Allocations  pour  passer  les  donnees
-        Allocation input = Allocation.createFromBitmap(rs , bmp);
+        Allocation input = Allocation.createFromBitmap(rs , image);
         Allocation  output = Allocation.createTyped(rs , input.getType ());
         //3)  Creer le  script
         ScriptC_negative negativeScript = new  ScriptC_negative(rs);
@@ -121,17 +131,25 @@ public class Simple{
         //6)  Lancer  le noyau
         negativeScript.forEach_toGrey(input , output);
         //7)  Recuperer  les  donnees  des  Allocation(s)
-        output.copyTo(bmp);
+        output.copyTo(image);
         //8)  Detruire  le context , les  Allocation(s) et le  script
         input.destroy (); output.destroy ();
         negativeScript.destroy (); rs.destroy ();
     }
 
-    static void  luminosityRS(Bitmap  bmp, Context context, float intensity) {
+    /***
+     * change the luminosity of an image
+     * @param image image to modify
+     * @param context context of Activity
+     * @param intensity describe how the luminosity will change - belong to [0.0...1.0]
+     *                  0.5 mean no change ; less mean darker image (0.0 is pure black) ; more mean lighter image (1.0 is pure white)
+     *
+     */
+    static void  luminosityRS(Bitmap  image, Context context, float intensity) {
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
         //2)  Creer  des  Allocations  pour  passer  les  donnees
-        Allocation input = Allocation.createFromBitmap(rs , bmp);
+        Allocation input = Allocation.createFromBitmap(rs , image);
         Allocation  output = Allocation.createTyped(rs , input.getType ());
         //3)  Creer le  script
         ScriptC_luminosity luminosityScript = new  ScriptC_luminosity(rs);
@@ -142,13 +160,19 @@ public class Simple{
         //6)  Lancer  le noyau
         luminosityScript.forEach_luminosity(input , output);
         //7)  Recuperer  les  donnees  des  Allocation(s)
-        output.copyTo(bmp);
+        output.copyTo(image);
         //8)  Detruire  le context , les  Allocation(s) et le  script
         input.destroy (); output.destroy ();
         luminosityScript.destroy (); rs.destroy ();
     }
 
-    static void keepColorRS(Bitmap image, int color, Context context) {
+    /***
+     * change to grey each pixel of an image which aren't of a specific hue
+     * @param image image to modify
+     * @param context context of Activity
+     * @param hue the hue we choose to keep
+     */
+    static void keepColorRS(Bitmap image, Context context, int hue) {
 
         //Create renderscript
         RenderScript rs = RenderScript.create(context);
@@ -159,7 +183,7 @@ public class Simple{
         //Create script from rs file.
         ScriptC_keepColor keepColorScript = new ScriptC_keepColor(rs);
         //Set size in script
-        keepColorScript.set_hue(color);
+        keepColorScript.set_hue(hue);
         //Call the first kernel.
         keepColorScript.forEach_keepColor(input, output);
         //Copy script result into bitmap
@@ -171,7 +195,13 @@ public class Simple{
         rs.destroy();
     }
 
-    static void randomHueRS(Bitmap bmp, Context context, int r){
+    /***
+     * colorize an image with a chosen hue
+     * @param image image to modify
+     * @param context context of Activity
+     * @param hue the hue we choose to colorize
+     */
+    static void randomHueRS(Bitmap image, Context context, int hue){
 
         //Get image size
         /*Random random = new Random();
@@ -180,18 +210,18 @@ public class Simple{
         //Create renderscript
         RenderScript rs = RenderScript.create(context);
         //Create allocation from Bitmap
-        Allocation allocationA = Allocation.createFromBitmap(rs, bmp);
+        Allocation allocationA = Allocation.createFromBitmap(rs, image);
         //Create allocation with same type
         Allocation allocationB = Allocation.createTyped(rs, allocationA.getType());
         //Create script from rs file.
         ScriptC_randomHue randomHueScript = new ScriptC_randomHue(rs);
         //Set size in script
-        randomHueScript.set_hue(r);
+        randomHueScript.set_hue(hue);
         //Call the first kernel.
         randomHueScript.forEach_randomHue(allocationA, allocationB);
 
         //Copy script result into bitmap
-        allocationB.copyTo(bmp);
+        allocationB.copyTo(image);
         //Destroy everything to free memory
         allocationA.destroy();
         allocationB.destroy();
@@ -199,7 +229,16 @@ public class Simple{
         rs.destroy();
     }
 
-    static int colorPartition_RS(Bitmap image, Context context, int color_precision, int shade_precision, int color_shift) {
+    /***
+     * color segmentation and shade segmentation of the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param color_precision number of color segment -
+     *                        -belong to the set of the divider of 360 [1,2,3,4,5,6,8,9,10,12,15,18,20,24,30,36,40,45,60,72,90,120,180,360]
+     * @param shade_precision number of shade segment
+     * @param color_shift shift the color segment in HSV space - belong to [0 ... 360/color_precision]
+     */
+    static void colorPartition_RS(Bitmap image, Context context, int color_precision, int shade_precision, int color_shift) {
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -224,7 +263,6 @@ public class Simple{
         colorPartitionScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
 }

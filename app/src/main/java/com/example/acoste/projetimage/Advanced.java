@@ -64,6 +64,11 @@ public class Advanced{
 
     }
 
+    /***
+     * increase linearly cantrast of an image using RGB space
+     * @param bMap image to modify
+     * @return unused function return histogram to have the possibility of displaying them later
+     */
     static int [][] linear_contrast_ARGB(Bitmap bMap){//apply linear contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
         int[][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
@@ -105,6 +110,11 @@ public class Advanced{
         return histog;
     }
 
+    /***
+     * increase linearly cantrast of an image using HSV space
+     * @param bMap image to modify
+     * @param precision number of different valur of the LUT
+     */
     static void linear_contrast_HSV(Bitmap bMap, int precision){//apply linear contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
@@ -123,6 +133,11 @@ public class Advanced{
 
     }
 
+    /***
+     * equalize luminosity histogram of an image in java using HSV space
+     * @param bMap image to modify
+     * @param precision number of different valur of the LUT
+     */
     static void equalization_contrast_HSV(Bitmap bMap, int precision){//apply plane contrast (HSV color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
@@ -139,6 +154,10 @@ public class Advanced{
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
     }
 
+    /***
+     * equalize luminosity histogram of an image in java using RGB space
+     * @param bMap image to modify
+     */
     static void equalization_contrast_ARGB(Bitmap bMap){//apply plane contrast (ARGB color space) on a Bitmap and return original histogram and associated LUT
         int [][] histog = new int[2][];//allowing memory for returned value wich are histogram
         int[] colorData = new int[bMap.getHeight() * bMap.getWidth()];
@@ -160,7 +179,14 @@ public class Advanced{
         bMap.setPixels(colorData, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
     }
 
-    static void linearContrastRS(Bitmap image, Context context, int new_min, int new_max) {// new_min in [0...new_max] ; new_max in [new_min+1...999]
+    /***
+     * change the contrast of the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param new_min new_min belong to [0...new_max]
+     * @param new_max new_max belong to [new_min+1...999]
+     */
+    static void linearContrastRS(Bitmap image, Context context, int new_min, int new_max) {
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -191,7 +217,12 @@ public class Advanced{
         rs.destroy();
     }
 
-
+    /***
+     * increase the contrast of a image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param intensity belong to [0.0...1.0], 0.0 has no effect, 1.0 is fully equalized luminosity histogram
+     */
     static void equalization_contrast_RS(Bitmap image, Context context, float intensity) {
         //Get image size
         int width = image.getWidth();
@@ -225,12 +256,20 @@ public class Advanced{
         rs.destroy();
     }
 
-    static int convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
+    /***
+     * apply a convolution with dynamic mask on the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param mask the mask to use in a 1D array
+     * @param mask_line_length the length if each line used to simulate a 2D array mask
+     * @param norm the value used to normalize
+     */
+    static void convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
 
         if (mask.length % mask_line_length != 0 && (mask.length / mask_line_length)%2 !=0 && mask_line_length%2 !=0){
             Log.e("ERROR","Wrong arguments in convolution_RS");
-            return -1;
         }
+
         int mask_collumn_height = mask.length / mask_line_length;
 
         //Create new bitmap
@@ -269,10 +308,15 @@ public class Advanced{
         convolutionScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int bilateralfilter_RS(Bitmap image, Context context, int intensity) {
+    /***
+     * apply a bilateral filter on the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param intensity define the size of the mask to apply (intensity * intensity)
+     */
+    static void bilateralfilter_RS(Bitmap image, Context context, int intensity) {
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -304,10 +348,15 @@ public class Advanced{
         bilateralFilterScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int minfilter_RS(Bitmap image, Context context, int intensity) {
+    /***
+     * apply a min filter on the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param intensity define the size of the mask to apply (intensity * intensity)
+     */
+    static void minfilter_RS(Bitmap image, Context context, int intensity) {
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -337,10 +386,15 @@ public class Advanced{
         minFilterScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int medianfilter_RS(Bitmap image, Context context, int intensity) {
+    /***
+     * apply a median filter on the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param intensity define the size of the mask to apply (intensity * intensity)
+     */
+    static void medianfilter_RS(Bitmap image, Context context, int intensity) {
 
         //Create new bitmap
         Bitmap res = image.copy(image.getConfig(), true);
@@ -370,17 +424,21 @@ public class Advanced{
         medianFilterScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int sobelGradient_RS(Bitmap image, Context context){
+    /***
+     * get the edge of an image and draw them on a white layer
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void sobelGradient_RS(Bitmap image, Context context){
 
-        Simple.toGreyRS(image,context);
+        Simple.toGreyRS(image,context);// we want to work on luminosity
 
         Bitmap copy = image.copy(image.getConfig(),true);
 
-        sobel_horizontal_RS(image, context);
-        sobel_vertical_RS(copy,context);
+        sobel_horizontal_RS(image, context);//get horizontal gradient
+        sobel_vertical_RS(copy,context);//get vertical gradient
 
         RenderScript rs = RenderScript.create(context);
 
@@ -390,7 +448,6 @@ public class Advanced{
 
         Allocation img_alloc_verti = Allocation.createFromBitmap(rs, copy);
 
-
         Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
 
         sobelGradientScript.set_width(image.getWidth());
@@ -398,8 +455,6 @@ public class Advanced{
 
         sobelGradientScript.invoke_map_img(img_alloc_verti, data);
         sobelGradientScript.bind_data(data);
-
-        //sobelGradientScript.forEach_computemaxGradient(img_alloc_horiz);
 
         sobelGradientScript.forEach_outline(img_alloc_horiz,img_alloc_horiz);
 
@@ -409,10 +464,15 @@ public class Advanced{
         sobelGradientScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int blendDivide_RS(Bitmap image, Context context, Bitmap divider){
+    /***
+     * blend divide an image with another image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param divider the image which divide
+     */
+    static void blendDivide_RS(Bitmap image, Context context, Bitmap divider){
 
         RenderScript rs = RenderScript.create(context);
 
@@ -438,10 +498,15 @@ public class Advanced{
         blendDivideScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int pixelise_RS(Bitmap image, Context context, int pixel_size){
+    /***
+     * pixelise an image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param pixel_size the size chosen for pixels
+     */
+    static void pixelise_RS(Bitmap image, Context context, int pixel_size){
 
         //1)  Creer un  contexte  RenderScript
         RenderScript rs = RenderScript.create(context);
@@ -466,11 +531,22 @@ public class Advanced{
         input.destroy (); output.destroy ();
         pixeliseScript.destroy (); rs.destroy ();
 
-        return 0;
-
     }
 
-    static int cartoon_RS(Bitmap image, Context context, int first_medianfilter_size,int minfilter_size, int final_medianfilter_size,
+    /***
+     * apply a cartoon effect on the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param first_medianfilter_size param of first auxiliary function "medianfilter_RS"
+     * @param minfilter_size param of auxiliary function "minfilter_RS"
+     * @param final_medianfilter_size param of final auxiliary function "medianfilter_RS"
+     * @param edge_precision param of auxiliary function "drawOutline_RS"
+     * @param outline_size param of auxiliary function "drawOutline_RS"
+     * @param color_precision param of auxiliary function "colorPartition_RS"
+     * @param shade_precision param of auxiliary function "colorPartition_RS"
+     * @param color_shift param of auxiliary function "colorPartition_RS"
+     */
+    static void cartoon_RS(Bitmap image, Context context, int first_medianfilter_size,int minfilter_size, int final_medianfilter_size,
                           float edge_precision, int outline_size, int color_precision, int shade_precision, int color_shift){
 
         medianfilter_RS(image,context,first_medianfilter_size);
@@ -480,19 +556,16 @@ public class Advanced{
         Simple.colorPartition_RS(image,context,color_precision,shade_precision,color_shift);
         medianfilter_RS(image,context,final_medianfilter_size);
 
-        return 0;
     }
 
     /***
-     *
+     * detect the edges of an image then draw them in black on the image
      * @param image the image to modify
-     * @param context
-     * @param edge_precision belong to [0.0...1.0], increase this value to draw only harder edge, 0.0 draw all edge, 1.0 draw no edge
-     * @param outline_size Integer wich define how the width of outline will be increased (in pixels)
-     *
-     * @return
+     * @param context context of Activity
+     * @param edge_precision belong to [0.0...1.0], increase this value to draw only harder edge, 0.0 draw no edge, 1.0 give black screen ("everything is an edge")
+     * @param outline_size Integer which define how the width of the outline will be increased (in pixels)
      */
-    static int drawOutline_RS(Bitmap image, Context context, float edge_precision, int outline_size){
+    static void drawOutline_RS(Bitmap image, Context context, float edge_precision, int outline_size){
 
         Bitmap copy = image.copy(image.getConfig(),true);
 
@@ -532,10 +605,15 @@ public class Advanced{
         drawOutlineScript.destroy();
         rs.destroy();
 
-        return 0;
     }
 
-    static int light_grey_RS(Bitmap image, Context context, int blur_intensity){
+    /***
+     * apply a grey effect with some enhanced region of the image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param blur_intensity param of auxiliary function "blur_moy_RS"
+     */
+    static void light_grey_RS(Bitmap image, Context context, int blur_intensity){
         Simple.toGreyRS(image,context);
 
         Bitmap inv_div_copy = image.copy(image.getConfig(),true);
@@ -544,10 +622,15 @@ public class Advanced{
 
         blendDivide_RS( image,context,inv_div_copy);
 
-        return 0;
     }
 
-    static int pencil_RS(Bitmap image, Context context, int blur_intensity){
+    /***
+     * apply a pencil effect on image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param blur_intensity param of auxiliary function "blur_moy_RS"
+     */
+    static void pencil_RS(Bitmap image, Context context, int blur_intensity){
 
         Simple.toGreyRS(image,context);
 
@@ -559,10 +642,15 @@ public class Advanced{
 
         blendDivide_RS( image,context,inv_div_copy);
 
-        return 0;
     }
 
-    static int aura_aux_RS(Bitmap image, Context context, int blur_intensity){
+    /***
+     * auxiliary function used in "dark_aura_RS"
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param blur_intensity param of auxiliary function "blur_moy_RS"
+     */
+    static void dark_aura_aux_RS(Bitmap image, Context context, int blur_intensity){
 
         Simple.toGreyRS(image,context);
 
@@ -574,21 +662,32 @@ public class Advanced{
 
         blendDivide_RS( image,context,inv_div_copy);
 
-        return 0;
     }
 
-    static int aura_RS(Bitmap image, Context context, int blur_intensity){
+    /***
+     * apply dark aura effect by applying two times dark_aura_aux_RS
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param blur_intensity define the size of the mask to apply which is a part of this effect
+     */
+    static void dark_aura_RS(Bitmap image, Context context, int blur_intensity){
 
-        aura_aux_RS( image,  context,  blur_intensity);
-        aura_aux_RS( image,  context,  blur_intensity);
+        dark_aura_aux_RS( image,  context,  blur_intensity);
+        dark_aura_aux_RS( image,  context,  blur_intensity);
 
-        return 0;
     }
 
-    static int blur_moy_RS(Bitmap image, Context context, int intensity){
+
+    /***
+     * apply an average blur mask of size (intensity x intensity) to image
+     * @param image the image to modify
+     * @param context context of Activity
+     * @param intensity define the size of the mask to apply (intensity * intensity)
+     */
+    static void blur_moy_RS(Bitmap image, Context context, int intensity){
 
         if (intensity< 0){
-            return -1;
+            intensity = 0;
         }
         int[] mask = new int[(intensity*2+1)*(intensity*2+1)];
         for (int i = 0 ; i < mask.length ; i++){
@@ -600,14 +699,15 @@ public class Advanced{
 
         convolution_RS(image, context,  mask,  mask_line_length,  norm);
 
-        return 0;
     }
 
 
-
-
-    static int blur_gaussian5x5_RS(Bitmap image, Context context){
-
+    /***
+     * apply a gaussian blur mask of size 5x5 to image
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void blur_gaussian5x5_RS(Bitmap image, Context context){
 
         int[] mask = new int[25];
 
@@ -624,15 +724,21 @@ public class Advanced{
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
-        return 0;
     }
 
-    static int sobel_horizontal_RS(Bitmap image, Context context){
+    /***
+     * apply a sobel mask to image
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void sobel_horizontal_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
-        mask[0] = mask[3] = mask[6] = 1;
-        mask[2] = mask[5] = mask[8] = -1;
+        mask[0] =  mask[6] = 1;
+        mask[3] = 2;
+        mask[2] =  mask[8] = -1;
+        mask[5] = -2;
 
         int norm = 1;
 
@@ -640,38 +746,46 @@ public class Advanced{
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
-        return 0;
     }
 
-    static int sobel_vertical_RS(Bitmap image, Context context){
+    /***
+     * apply a sobel mask to image
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void sobel_vertical_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
-        mask[0] = mask[1] = mask[2] = 1;
-        mask[6] = mask[7] = mask[8] = -1;
+        mask[0] = mask[2] = 1;
+        mask[1] = 2;
+        mask[6] = mask[8] = -1;
+        mask[7] = -2;
 
-        int norm = 1;
+        int norm = 3;
 
         int mask_line_length = 3;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
-        return 0;
     }
 
-    static int laplacian_mask_RS(Bitmap image, Context context){
+    /***
+     * apply a laplacian mask to image
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void laplacian_mask_RS(Bitmap image, Context context){
 
         int[] mask = new int[9];
 
         mask[0] = mask[1] = mask[2] = mask[3] = mask[5] = mask[6] = mask[7] = mask[8] = 1;
         mask[4] = -8;
 
-        int norm = 1;
+        int norm = 3;
 
         int mask_line_length = 3;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
-
-        return 0;
     }
 }
