@@ -180,19 +180,19 @@ public class EffectsActivity extends AppCompatActivity{
 
         img_drawOutlineRS =  findViewById(R.id.img_drawOutlineRS);
         img_drawOutlineRS.setOnClickListener(listener_drawOutline_RS);
-        effectButton.drawOutline_RS(getApplicationContext(), 0.3f);
+        effectButton.drawOutline_RS(getApplicationContext(), 0.3f, 40);
         img_drawOutlineRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
         img_histEqRS =  findViewById(R.id.img_histEqRS);
         img_histEqRS.setOnClickListener(listener_equalizationContrastRS);
-        effectButton.equalization_contrast_RS(getApplicationContext());
+        effectButton.equalization_contrast_RS(getApplicationContext(), 0.3f);
         img_histEqRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
         img_linearContrastRS =  findViewById(R.id.img_linearContrastRS);
         img_linearContrastRS.setOnClickListener(listener_linearContrastRS);
-        effectButton.linearContrastRS(getApplicationContext());
+        effectButton.linearContrastRS(getApplicationContext(), 0, 3);
         img_linearContrastRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
@@ -550,10 +550,10 @@ public class EffectsActivity extends AppCompatActivity{
                 effectImage.randomHueRS(getApplicationContext());
                 break;
             case "linearContrastRS" :
-                effectImage.linearContrastRS(getApplicationContext());
+                effectImage.linearContrastRS(getApplicationContext(), 0, 3);
                 break;
             case "equalization_contrast_RS":
-                effectImage.equalization_contrast_RS(getApplicationContext());
+                effectImage.equalization_contrast_RS(getApplicationContext(), 0.3f);
                 break;
             case "blur_moy_RS" :
                 effectImage.blur_moy_RS(getApplicationContext(), param_1);
@@ -574,7 +574,7 @@ public class EffectsActivity extends AppCompatActivity{
                 effectImage.bilateral_filter_RS(getApplicationContext(), param_1);
                 break;
             case "drawOutline_RS" :
-                effectImage.drawOutline_RS(getApplicationContext(), param_f);
+                effectImage.drawOutline_RS(getApplicationContext(), param_f, param_1);
                 break;
             case "sobelGradient_RS" :
                 effectImage.sobelGradient_RS(getApplicationContext());
@@ -629,16 +629,16 @@ public class EffectsActivity extends AppCompatActivity{
         effectButton.reset();
 
 
-        effectButton.drawOutline_RS(getApplicationContext(), 0.3f);
+        effectButton.drawOutline_RS(getApplicationContext(), 0.3f, 40);
         img_drawOutlineRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
 
-        effectButton.equalization_contrast_RS(getApplicationContext());
+        effectButton.equalization_contrast_RS(getApplicationContext(), 0.3f);
         img_histEqRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
-        effectButton.linearContrastRS(getApplicationContext());
+        effectButton.linearContrastRS(getApplicationContext(), 0 , 3);
         img_linearContrastRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 

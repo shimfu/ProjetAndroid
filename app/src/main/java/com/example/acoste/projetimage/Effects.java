@@ -125,7 +125,7 @@ public class Effects {
     }
 
     public void keepColorRS(int param, Context context){
-        Simple.keepColorRS(getCurrentImg(), param, context);
+        Simple.keepColorRS(getCurrentImg(), context, param);
     }
 
     public void randomHueRS(Context context){
