@@ -45,7 +45,7 @@ public class Camera extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.camera);
 
-        //Initializing button to lauch camera
+        //Initializing button to launch camera
         img_camera = findViewById(R.id.camera);
         img_camera.setOnClickListener(listener_camera);
 
@@ -55,19 +55,19 @@ public class Camera extends AppCompatActivity {
         bitmap_rotate = BitmapFactory.decodeResource(getResources(), R.drawable.fleche);
         img_rotate.setImageBitmap(bitmap_rotate);
 
-        //Initializing button to lauch gallery activity
+        //Initializing button to launch gallery activity
         img_gallery = findViewById(R.id.gallery_camera);
         img_gallery.setOnClickListener(listener_gallery);
         bitmap_gallery = BitmapFactory.decodeResource(getResources(), R.drawable.gallery_icon);
         img_gallery.setImageBitmap(bitmap_gallery);
 
-        //Initializing button to lauch effect activity
+        //Initializing button to launch effect activity
         img_effects = findViewById(R.id.effects_camera);
         img_effects.setOnClickListener(listener_effects);
         bitmap_effects = BitmapFactory.decodeResource(getResources(), R.drawable.effect_logo);
         img_effects.setImageBitmap(bitmap_effects);
 
-        //Initializing button to lauch menu activity
+        //Initializing button to launch menu activity
         img_menu = findViewById(R.id.menu_camera);
         img_menu.setOnClickListener(listener_menu);
         bitmap_menu = BitmapFactory.decodeResource(getResources(), R.drawable.menu_logo);
@@ -103,7 +103,7 @@ public class Camera extends AppCompatActivity {
     }
     
     /***
-     *
+     * Converts the Uri of the image into bitmap and assign the bitmap to the image view
      * @param requestCode Request requested by the code (==1 to take a photo)
      * @param resultCode Result returned by code
      * @param data Intent launched by the function call (not used)
@@ -122,7 +122,7 @@ public class Camera extends AppCompatActivity {
     }
 
     /***
-     *
+     * Creates the file path where the image will be stored
      * @return File path where the image will be stored
      * @throws IOException
      */
@@ -145,7 +145,7 @@ public class Camera extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(Camera.this, EffectsActivity.class);
-            //Envoie la photoUri à l'intent pour retrouver l'image stockée dans EffectsActivity
+            //Send the photoUri to the intent to find the image stored in EffectsActivity
             if(photoUri != null)
                 intent.putExtra("imageUri", photoUri.toString());
             startActivity(intent);
