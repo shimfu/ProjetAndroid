@@ -467,6 +467,44 @@ public class Advanced{
     }
 
     /***
+     * get the edge of an image and draw them on a white layer
+     * @param image the image to modify
+     * @param context context of Activity
+     */
+    static void sobelGradientColored_RS(Bitmap image, Context context){
+
+        Bitmap copy = image.copy(image.getConfig(),true);
+
+        sobel_horizontal_RS(image, context);//get horizontal gradient
+        sobel_vertical_RS(copy,context);//get vertical gradient
+
+        RenderScript rs = RenderScript.create(context);
+
+        ScriptC_sobelGradient sobelGradientScript = new ScriptC_sobelGradient(rs);
+
+        Allocation img_alloc_horiz = Allocation.createFromBitmap(rs, image);
+
+        Allocation img_alloc_verti = Allocation.createFromBitmap(rs, copy);
+
+        Allocation data = Allocation.createSized(rs, Element.U8_4(rs),image.getHeight()*image.getWidth());
+
+        sobelGradientScript.set_width(image.getWidth());
+        sobelGradientScript.set_height(image.getHeight());
+
+        sobelGradientScript.invoke_map_img(img_alloc_verti, data);
+        sobelGradientScript.bind_data(data);
+
+        sobelGradientScript.forEach_outline(img_alloc_horiz,img_alloc_horiz);
+
+        img_alloc_horiz.copyTo(image);
+
+        img_alloc_horiz.destroy();
+        sobelGradientScript.destroy();
+        rs.destroy();
+
+    }
+
+    /***
      * blend divide an image with another image
      * @param image the image to modify
      * @param context context of Activity
