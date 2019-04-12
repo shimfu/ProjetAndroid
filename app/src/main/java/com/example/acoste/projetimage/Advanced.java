@@ -8,7 +8,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.util.Log;
 import com.example.acoste.projetimage.Simple;
-
+import java.lang.Math.*;
 import com.android.rssample.ScriptC_linearContrast;
 import com.android.rssample.ScriptC_medianFilter;
 import com.example.acoste.projetimage.Convolution; // we don't know why it works without those two imports
@@ -23,6 +23,8 @@ import com.android.rssample.ScriptC_colorPartition;
 import com.android.rssample.ScriptC_drawOutline;
 import com.android.rssample.ScriptC_blendDivide;
 import com.android.rssample.ScriptC_pixelise;
+
+import static java.lang.StrictMath.pow;
 
 /**
  * Created by acoste on 08/02/19.
@@ -264,7 +266,7 @@ public class Advanced{
      * @param mask_line_length the length if each line used to simulate a 2D array mask
      * @param norm the value used to normalize
      */
-    static void convolution_RS(Bitmap image, Context context, int[] mask, int mask_line_length, int norm) {
+    static void convolution_RS(Bitmap image, Context context, float[] mask, int mask_line_length, float norm) {
 
         if (mask.length % mask_line_length != 0 && (mask.length / mask_line_length)%2 !=0 && mask_line_length%2 !=0){
             Log.e("ERROR","Wrong arguments in convolution_RS");
@@ -283,7 +285,7 @@ public class Advanced{
 
         Allocation img_alloc = Allocation.createFromBitmap(rs, res);
 
-        Allocation mask_alloc = Allocation.createSized(rs, Element.I32(rs), mask.length);
+        Allocation mask_alloc = Allocation.createSized(rs, Element.F32(rs), mask.length);
         mask_alloc.copyFrom(mask);
         convolutionScript.bind_mask(mask_alloc);
 
@@ -727,7 +729,7 @@ public class Advanced{
         if (intensity< 0){
             intensity = 0;
         }
-        int[] mask = new int[(intensity*2+1)*(intensity*2+1)];
+        float[] mask = new float[(intensity*2+1)*(intensity*2+1)];
         for (int i = 0 ; i < mask.length ; i++){
             mask[i] = 1;
         }
@@ -744,21 +746,27 @@ public class Advanced{
      * apply a gaussian blur mask of size 5x5 to image
      * @param image the image to modify
      * @param context context of Activity
+     * @param intensity define the size of the mask to apply (intensity * intensity)
      */
-    static void blur_gaussian5x5_RS(Bitmap image, Context context){
+    static void blur_gaussian_RS(Bitmap image, Context context, int intensity){
 
-        int[] mask = new int[25];
+        float[] mask = new float[(2*intensity+1)*(2*intensity+1)];
 
-        mask[0] = mask[4] = mask[20] = mask[24] = 1;
-        mask[1] = mask[3] = mask[5] = mask[9] = mask[15] = mask[19] = mask[21] = mask[23] = 4;
-        mask[2] = mask[10] = mask[14] = mask[22] = 7;
-        mask[6] = mask[8] = mask[16] = mask[18] = 16;
-        mask[7] = mask[11] = mask[13] = mask[17] = 26;
-        mask[12] = 41;
+        float sigma = ((float)intensity)/3;
 
-        int norm = 273;
+        float norm = 0.0f;
 
-        int mask_line_length = 5;
+        for (int i = 0 ; i < 2*intensity+1 ; i++){
+            for (int j = 0 ; j < 2*intensity+1 ; j++){
+                float new_value = (float)((1/(sigma*Math.sqrt(2*Math.PI)))*Math.pow(Math.E,
+                        (-(1/(2*Math.pow(sigma,2.0)))*(Math.sqrt(Math.pow(i-intensity-1, 2.0)+Math.pow(j-intensity-1,2.0))))));
+
+                mask[i*(2*intensity+1) + j] = new_value;
+                norm = norm + new_value;
+            }
+        }
+
+        int mask_line_length = 2*intensity+1;
 
         convolution_RS(image, context, mask, mask_line_length, norm);
 
@@ -771,7 +779,7 @@ public class Advanced{
      */
     static void sobel_horizontal_RS(Bitmap image, Context context){
 
-        int[] mask = new int[9];
+        float[] mask = new float[9];
 
         mask[0] =  mask[6] = 1;
         mask[3] = 2;
@@ -793,7 +801,7 @@ public class Advanced{
      */
     static void sobel_vertical_RS(Bitmap image, Context context){
 
-        int[] mask = new int[9];
+        float[] mask = new float[9];
 
         mask[0] = mask[2] = 1;
         mask[1] = 2;
@@ -815,7 +823,7 @@ public class Advanced{
      */
     static void laplacian_mask_RS(Bitmap image, Context context){
 
-        int[] mask = new int[9];
+        float[] mask = new float[9];
 
         mask[0] = mask[1] = mask[2] = mask[3] = mask[5] = mask[6] = mask[7] = mask[8] = 1;
         mask[4] = -8;
@@ -826,4 +834,6 @@ public class Advanced{
 
         convolution_RS(image, context, mask, mask_line_length, norm);
     }
+
+
 }
