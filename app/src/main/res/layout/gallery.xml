@@ -10,16 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteX="66dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gallery"
-            android:textSize="35dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/textView2">
+            android:text="Gallery"
+            android:textSize="35dp">
 
         </TextView>
 
@@ -29,8 +29,7 @@
             android:layout_height="300dp"
             android:layout_below="@+id/textView2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="18dp"
-            />
+            android:layout_marginTop="18dp" />
 
         <ImageView
             android:id="@+id/camera_gallery"
@@ -59,9 +58,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/effects_gallery"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginStart="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,13 +74,13 @@
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="Effects"
-            android:textSize="15dp"
-            android:id="@+id/textView3" />
+            android:textSize="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,6 +93,14 @@
             android:text="Camera"
             android:textSize="15dp" />
 
+        <ImageView
+            android:id="@+id/rotate"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/camera_gallery"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/camera_gallery"
+            android:layout_marginTop="11dp" />
 
 
     </RelativeLayout>
