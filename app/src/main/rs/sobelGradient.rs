@@ -20,11 +20,21 @@ uchar4  RS_KERNEL  outline(uchar4  in, uint32_t x, uint32_t y) {
     float4 pixel_h = rsUnpackColor8888(in);
     float4 pixel_v = rsUnpackColor8888(data[y*width + x]);
 
-    float gradient = sqrt(pixel_h.r*pixel_h.r + pixel_v.r*pixel_v.r);//we compute gradient from 2 enhanced image by sobel mask (horizontal and vertical)
-    if(gradient > 1.0){
-        gradient = 1.0;//we don't want value above 1.0
+    float gradient_r = sqrt(pixel_h.r*pixel_h.r + pixel_v.r*pixel_v.r);//we compute red gradient from 2 enhanced image by sobel mask (horizontal and vertical)
+    if(gradient_r > 1.0){
+        gradient_r = 1.0;//we don't want value above 1.0
     }
-    gradient = 1.0 - gradient;// we negate image to have black edge on white
+    float gradient_g = sqrt(pixel_h.g*pixel_h.g + pixel_v.r*pixel_v.g);//we compute green gradient from 2 enhanced image by sobel mask (horizontal and vertical)
+    if(gradient_g > 1.0){
+        gradient_g = 1.0;//we don't want value above 1.0
+    }
+    float gradient_b = sqrt(pixel_h.b*pixel_h.b + pixel_v.b*pixel_v.b);//we compute blue gradient from 2 enhanced image by sobel mask (horizontal and vertical)
+    if(gradient_b > 1.0){
+        gradient_b = 1.0;//we don't want value above 1.0
+    }
+    gradient_r = 1.0 - gradient_r;// we negate image to have black edge on white
+    gradient_g = 1.0 - gradient_g;// we negate image to have black edge on white
+    gradient_b = 1.0 - gradient_b;// we negate image to have black edge on white
 
-    return rsPackColorTo8888(gradient , gradient ,gradient, 1.0);
+    return rsPackColorTo8888(gradient_r , gradient_g ,gradient_b, pixel_h.a);
 }
