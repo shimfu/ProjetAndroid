@@ -170,8 +170,8 @@ public class Effects {
         Advanced.blur_moy_RS(getCurrentImg(), context, param);
     }
 
-    public void blur_gaussian5x5_RS(Context context){
-        Advanced.blur_gaussian5x5_RS(getCurrentImg(), context);
+    public void blur_gaussian_RS(Context context, int intensity){
+        Advanced.blur_gaussian_RS(getCurrentImg(),context,intensity);
     }
 
     public void sobel_horizontal_RS(Context context){
