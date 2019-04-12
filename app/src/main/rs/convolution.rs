@@ -6,8 +6,8 @@
 
 uint32_t mask_line_length;//lenght of the line of the mask
 uint32_t mask_collumn_height;//lenght of the collumn of the mask
-int32_t *mask;// 1D array wich contain all the values of the mask
-uint32_t norm = 1;//the number we use to normalize the mask, it has to be differant of 0 so it is init to 1
+float *mask;// 1D array wich contain all the values of the mask
+float norm = 1.0f;//the number we use to normalize the mask, it has to be differant of 0 so it is init to 1
 
 int32_t width;//width of the Bitmap image
 int32_t height;//height of the Bitmap image
