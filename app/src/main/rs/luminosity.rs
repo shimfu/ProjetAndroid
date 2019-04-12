@@ -10,11 +10,11 @@ uchar4  RS_KERNEL  luminosity(uchar4  in) {
 
     float4  pixelf = rsUnpackColor8888(in);
 
-    float rb = pixelf.r;
+    float rb = pixelf.r;//getting RGB components
     float gb = pixelf.g;
     float bb = pixelf.b;
 
-    float cMax = fmax(rb,fmax(gb,bb));
+    float cMax = fmax(rb,fmax(gb,bb));//start of RGB to HSV transformation
     float cMin = fmin(rb,fmin(gb,bb));
     float delta = cMax - cMin;
 
@@ -36,9 +36,9 @@ uchar4  RS_KERNEL  luminosity(uchar4  in) {
         s = 1 - cMin/cMax;
     }
 
-    float v = cMax;
+    float v = cMax;//end of RGB to HSV transformation
 
-    v = v + (2.0*intensity - 1.0);// intensity = 0.5 mean no change, less than it make image darker and more make it lighter
+    v = v + (2.0*intensity - 1.0);// intensity = 0.5 mean no change, less than it make image darker (0.0 is pure black) and more make it lighter (1.0 is pure white)
 
     if(v > 1.0f){
         v = 1.0f;

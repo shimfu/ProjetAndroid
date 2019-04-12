@@ -23,7 +23,7 @@ uchar4  RS_KERNEL  randomHue(uchar4  in) {
         s = 1 - cMin/cMax;
     }
 
-    float v = cMax;//getting value
+    float v = cMax;//getting value ; HSV conversion is done
 
     int ti = ((int)(hue/60))%6;//getting new rgb using my hue parameter
     float f = (float)(hue)/60 - ti;

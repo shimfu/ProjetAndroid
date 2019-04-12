@@ -10,7 +10,7 @@ int32_t width;//width of the Bitmap image
 int32_t height;//height of the Bitmap image
 float4 *lut;// 1D array wich contain all the values of each pixel of the Bitmap
 
-void map_lut(rs_allocation bmp, rs_allocation lut) {//this function fill dada with the values of the Bitmap
+void map_lut(rs_allocation bmp, rs_allocation lut) {//this function compute the LUT with the Bitmap
 
     uchar4 data_in;//the pixel as uchar4 we are working on
     float4 data;//the same pixel as float4 we will use to compute the allocation "lut"
@@ -34,15 +34,15 @@ void map_lut(rs_allocation bmp, rs_allocation lut) {//this function fill dada wi
     }
 }
 
-uchar4 RS_KERNEL compute_data(uchar4 in, uint32_t x, uint32_t y) {//For each pixel at once
+uchar4 RS_KERNEL compute_data(uchar4 in, uint32_t x, uint32_t y) {//For each pixel
 
     float4 pixelin = rsUnpackColor8888(in);
 
-    uint32_t x_pixel = x/pixel_size;
+    uint32_t x_pixel = x/pixel_size;//calcul of the new coordanate is the virtualy pixeled image
     uint32_t y_pixel = y/pixel_size;
-    uint32_t position = y_pixel*(width/pixel_size) + x_pixel;
-    //rsDebug("HEYHEY",lut[position]);
-    uchar4 new_pixel = rsPackColorTo8888(lut[position]);
+    uint32_t position = y_pixel*(width/pixel_size) + x_pixel;//position of the pixel in the 1D LUT
+
+    uchar4 new_pixel = rsPackColorTo8888(lut[position]);//pixel is set with LUT
 
     return new_pixel;
 

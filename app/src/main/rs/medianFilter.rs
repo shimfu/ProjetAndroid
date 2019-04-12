@@ -40,7 +40,7 @@ static float grey(float4 color){
 
 static void merge(float4 list[],int i1,int j1,int i2,int j2)
 {
-	float4 temp[(2*intensity + 1)*(2*intensity + 1)];	//array used for merging
+	float4 temp[(2*intensity + 1)*(2*intensity + 1)];//array used for merging
 	int i=i1;	//beginning of the first list
 	int j=i2;	//beginning of the second list
 	int k=0;
@@ -68,10 +68,9 @@ static void merge(float4 list[],int i1,int j1,int i2,int j2)
 		k = k+1;
 		j = j+1;
 	}
-	//Transfer elements from temp[] back to a[]
+	//Transfer elements from temp[] back to list[]
 
 	for(i=i1,j=0;i<=j2;i++,j++){
-	//rsDebug("HEY!!!!!",0.000000);
 		list[i]=temp[j];
 	}
 }

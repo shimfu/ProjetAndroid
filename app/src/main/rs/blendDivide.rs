@@ -23,20 +23,20 @@ uchar4 RS_KERNEL compute_data(uchar4 in, uint32_t x, uint32_t y) {//This is work
     float4 pixelin;
 
     pixelin = rsUnpackColor8888(in);
-    pixelDivider = rsUnpackColor8888(data[y*width + x]);//we get the values of 1 pixel in the mask
+    pixelDivider = rsUnpackColor8888(data[y*width + x]);//we get the values of corresponding divider pixel
 
     if(pixelDivider.r > 0.0f){
-        pixelin.r = pixelin.r/(1.0 - pixelDivider.r);//computing the next values to add,
+        pixelin.r = pixelin.r/(1.0 - pixelDivider.r);//computing the next red value
     }else{
         pixelin.r = 1.0f;
     }
     if(pixelDivider.g > 0.0f){
-        pixelin.g = pixelin.g/(1.0 - pixelDivider.g);//computing the next values to add,
+        pixelin.g = pixelin.g/(1.0 - pixelDivider.g);//computing the next  green value
     }else{
         pixelin.g = 1.0f;
     }
     if(pixelDivider.b > 0.0f){
-        pixelin.b = pixelin.b/(1.0 - pixelDivider.b);//computing the next values to add,
+        pixelin.b = pixelin.b/(1.0 - pixelDivider.b);//computing the next  blue value
     }else{
         pixelin.b = 1.0f;
     }

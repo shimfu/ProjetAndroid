@@ -18,10 +18,10 @@ void map_img(rs_allocation bmp, rs_allocation data) {//this function fill dada w
 
 uchar4  RS_KERNEL draw(uchar4  in, uint32_t x, uint32_t y) {
 
-    float4 pixelin = rsUnpackColor8888(in);
-    float4 pixel_edge = rsUnpackColor8888(data[y*width + x]);
+    float4 pixelin = rsUnpackColor8888(in);//pixel from image to modify
+    float4 pixel_edge = rsUnpackColor8888(data[y*width + x]);//we get the corresponding edge pixel
 
-    if(pixel_edge.r > edge_intensity){
+    if(pixel_edge.r > edge_intensity){//if edge is enough black(hard) we use it instead of original color
         return rsPackColorTo8888(pixelin.r , pixelin.g ,pixelin.b, pixelin.a);
     }else{
         return rsPackColorTo8888( 0.0 , 0.0 ,0.0, pixelin.a);

@@ -45,7 +45,7 @@ uchar4  RS_KERNEL create_histog(uchar4 in, uint32_t x, uint32_t y) {
 
     float v = cMax;//getting value
 
-    int32_t value = (int32_t)(v*1000);
+    int32_t value = (int32_t)(v*999);
     if(value < mini){
         mini = value;
 
@@ -70,7 +70,7 @@ uchar4  RS_KERNEL  apply_contrast(uchar4  in) {
      float s = pixelf.g;
      float v = pixelf.b;
 
-     float value = (float)(lut[(int32_t)(v*999)])/1000;
+     float value = (float)(lut[(int32_t)(v*999)])/999;
 
      float r ; float g ; float b;
 
@@ -115,7 +115,7 @@ uchar4  RS_KERNEL  apply_contrast(uchar4  in) {
 
 void createLut(){
     for (int i = 0; i < 1000; i++) {
-        lut[i] =(int)( ((new_max)*(i - mini) + new_min) / (maxi - mini) );
+        lut[i] =(int)( ((new_max - new_min)*(i - mini)) / (maxi - mini) + new_min );//formula for LUT
     }
 }
 
