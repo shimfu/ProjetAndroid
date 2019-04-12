@@ -232,6 +232,9 @@ public class Effects {
         Advanced.cartoon_RS(getCurrentImg(),context,first_medianfilter_size,minfilter_size,
                 final_medianfilter_size,edge_precision,outline_size,color_precision,shade_precision,color_shift);
     }
-
+    
+    public void sobelGradientColored_RS(Context context){
+        Advanced.sobelGradientColored_RS(getCurrentImg(), context);
+    }
 
 }
