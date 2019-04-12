@@ -19,10 +19,12 @@ public class Gallery extends AppCompatActivity{
 
     private ImageView img_gallery = null;
     private ImageView img_camera = null;
+    private ImageView img_rotate = null;
     private ImageView img_effects = null;
     private ImageView img_menu = null;
 
     private Bitmap bitmap_gallery = null;
+    private Bitmap bitmap_rotate = null;
     private Bitmap bitmap_camera = null;
     private Bitmap bitmap_effects = null;
     private Bitmap bitmap_menu = null;
@@ -44,6 +46,12 @@ public class Gallery extends AppCompatActivity{
         //Initializing button to launch gallery
         img_gallery = findViewById(R.id.gallery);
         img_gallery.setOnClickListener(listener_gallery);
+
+        //Initializing button to rotate image
+        img_rotate = findViewById(R.id.rotate);
+        img_rotate.setOnClickListener(listener_rotate);
+        bitmap_rotate = BitmapFactory.decodeResource(getResources(), R.drawable.fleche);
+        img_rotate.setImageBitmap(bitmap_rotate);
 
         //Initializing button to launch effect activity
         img_effects = findViewById(R.id.effects_gallery);
@@ -125,6 +133,16 @@ public class Gallery extends AppCompatActivity{
                 intent.putExtra("imageGallery", byteArray);
             }
             startActivity(intent);
+        }
+    };
+
+    /***
+     * Rotates the image 90 degrees
+     */
+    private View.OnClickListener listener_rotate = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            img_gallery.setRotation(img_gallery.getRotation()+90);
         }
     };
 
