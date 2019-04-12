@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +33,7 @@ import java.util.Date;
 
 
 
-public class EffectsActivity extends AppCompatActivity{
+public class EffectsActivity extends AppCompatActivity {
 
     private ImageView img_gallery = null;
     private ImageView img_rotate = null;
@@ -51,6 +53,7 @@ public class EffectsActivity extends AppCompatActivity{
     private Bitmap bmpResize = null;
     private Bitmap bmp;
     private int[] save;
+    private int progress1=0;
 
     private ImageView img_greyRS;
     private ImageView img_keepColorRS;
@@ -64,10 +67,17 @@ public class EffectsActivity extends AppCompatActivity{
     private ImageView img_medianFilterRS;
     private ImageView img_minFilterRS;
     private ImageView img_sobelGradientRS;
+    private ImageView img_luminosityRS;
+    private ImageView img_pixeliseRS;
+    private ImageView img_negativeRS;
+    private ImageView img_pencilRS;
+    private ImageView img_cartoonRS;
+    private ImageView img_sobelGradientColoredRS;
 
-    private TextView textView5, textView6 ;
-    private SeekBar seekbar, seekbar2 ;
+    private TextView textView5, textView6;
+    private SeekBar seekbar;
 
+    String effect_name, name_parameter;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +89,7 @@ public class EffectsActivity extends AppCompatActivity{
         /***************************************
          Initialisation des boutons de navigation
          ***************************************/
-        img_camera =  findViewById(R.id.camera);
+        img_camera = findViewById(R.id.camera);
         img_camera.setOnClickListener(listener_camera);
         bitmap_camera = BitmapFactory.decodeResource(getResources(), R.drawable.apps_camera_icon);
         img_camera.setImageBitmap(bitmap_camera);
@@ -103,7 +113,7 @@ public class EffectsActivity extends AppCompatActivity{
 
         //Récupère l'Uri envoyé via Camera.activity et le convertit en bitmap
         Uri photoUri;
-        if(getIntent().getStringExtra("imageUri") != null){
+        if (getIntent().getStringExtra("imageUri") != null) {
             photoUri = Uri.parse(getIntent().getStringExtra("imageUri"));
             try {
                 bmpInit = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
@@ -113,7 +123,7 @@ public class EffectsActivity extends AppCompatActivity{
 
         }
         //Récupère le tableau de byte envoyé via Gallery.activity et le convertit en bitmap
-        else if(getIntent().getByteArrayExtra("imageGallery") != null){
+        else if (getIntent().getByteArrayExtra("imageGallery") != null) {
             byte[] byteArray = getIntent().getByteArrayExtra("imageGallery");
             bmpInit = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         }
@@ -125,7 +135,6 @@ public class EffectsActivity extends AppCompatActivity{
 
 
         effectImage = new Effects(bmpInit);
-
 
 
         bmpResize = Bitmap.createScaledBitmap(bmpInit, 100, 100, false);
@@ -142,78 +151,68 @@ public class EffectsActivity extends AppCompatActivity{
         /***************************************
          Initialisation des boutons des différents effets
          ***************************************/
-        img_greyRS =  findViewById(R.id.img_greyRS);
+        img_greyRS = findViewById(R.id.img_greyRS);
         img_greyRS.setOnClickListener(listener_greyRS);
-        effectButton.toGreyRS(getApplicationContext());
-        img_greyRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_keepColorRS =  findViewById(R.id.img_keepColorRS);
+
+        img_keepColorRS = findViewById(R.id.img_keepColorRS);
         img_keepColorRS.setOnClickListener(listener_keepColorRS);
-        effectButton.keepColorRS(40, getApplicationContext());
-        img_keepColorRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_bilateralRS =  findViewById(R.id.img_bilateralRS);
+        img_bilateralRS = findViewById(R.id.img_bilateralRS);
         img_bilateralRS.setOnClickListener(listener_bilateralRS);
-        effectButton.bilateral_filter_RS(getApplicationContext(), 1);
-        img_bilateralRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_randomHueRS =  findViewById(R.id.img_randomHueRS);
+
+        img_randomHueRS = findViewById(R.id.img_randomHueRS);
         img_randomHueRS.setOnClickListener(listener_randomHueRS);
-        effectButton.randomHueRS(getApplicationContext());
-        img_randomHueRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_blurRS =  findViewById(R.id.img_blurRS);
+
+        img_blurRS = findViewById(R.id.img_blurRS);
         img_blurRS.setOnClickListener(listener_blur_moy_RS);
-        effectButton.blur_moy_RS(getApplicationContext(), 3);
-        img_blurRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_colorPartitionRS =  findViewById(R.id.img_colorPartitionRS);
+
+        img_colorPartitionRS = findViewById(R.id.img_colorPartitionRS);
         img_colorPartitionRS.setOnClickListener(listener_colorPartition_RS);
-        effectButton.colorPartition_RS(getApplicationContext(), 9 , 3 ,0);
-        img_colorPartitionRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_drawOutlineRS =  findViewById(R.id.img_drawOutlineRS);
+        img_drawOutlineRS = findViewById(R.id.img_drawOutlineRS);
         img_drawOutlineRS.setOnClickListener(listener_drawOutline_RS);
-        effectButton.drawOutline_RS(getApplicationContext(), 0.3f, 40);
-        img_drawOutlineRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_histEqRS =  findViewById(R.id.img_histEqRS);
+
+        img_histEqRS = findViewById(R.id.img_histEqRS);
         img_histEqRS.setOnClickListener(listener_equalizationContrastRS);
-        effectButton.equalization_contrast_RS(getApplicationContext(), 0.3f);
-        img_histEqRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_linearContrastRS =  findViewById(R.id.img_linearContrastRS);
+
+        img_linearContrastRS = findViewById(R.id.img_linearContrastRS);
         img_linearContrastRS.setOnClickListener(listener_linearContrastRS);
-        effectButton.linearContrastRS(getApplicationContext(), 0, 3);
-        img_linearContrastRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_medianFilterRS =  findViewById(R.id.img_medianFilterRS);
+
+        img_medianFilterRS = findViewById(R.id.img_medianFilterRS);
         img_medianFilterRS.setOnClickListener(listener_medianfilter_RS);
-        effectButton.medianfilter_RS(getApplicationContext(),6);
-        img_medianFilterRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_minFilterRS =  findViewById(R.id.img_minFilterRS);
+
+        img_minFilterRS = findViewById(R.id.img_minFilterRS);
         img_minFilterRS.setOnClickListener(listener_minfilter_RS);
-        effectButton.minfilter_RS(getApplicationContext(), 2);
-        img_minFilterRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
-        img_sobelGradientRS =  findViewById(R.id.img_sobelGradientRS);
+
+        img_sobelGradientRS = findViewById(R.id.img_sobelGradientRS);
         img_sobelGradientRS.setOnClickListener(listener_sobelGradient_RS);
-        effectButton.sobelGradient_RS(getApplicationContext());
-        img_sobelGradientRS.setImageBitmap(effectButton.getCurrentImg());
-        effectButton.reset();
 
+        img_luminosityRS = findViewById(R.id.img_luminosityRS);
+        img_luminosityRS.setOnClickListener(listener_luminosityRS);
+
+        img_pixeliseRS = findViewById(R.id.img_pixeliseRS);
+        img_pixeliseRS.setOnClickListener(listener_pixeliseRS);
+
+        img_negativeRS = findViewById(R.id.img_negativeRS);
+        img_negativeRS.setOnClickListener(listener_negativeRS);
+
+        img_pencilRS = findViewById(R.id.img_pencilRS);
+        img_pencilRS.setOnClickListener(listener_pencilRS);
+
+        img_cartoonRS = findViewById(R.id.img_cartoonRS);
+        img_cartoonRS.setOnClickListener(listener_cartoonRS);
+
+        img_sobelGradientColoredRS = findViewById(R.id.img_sobelGradientColoredRS);
+        img_sobelGradientColoredRS.setOnClickListener(listener_sobelGradientColoredRS);
 
         Button button_reset = findViewById(R.id.reset);
         button_reset.setOnClickListener(listener_reset);
@@ -224,51 +223,33 @@ public class EffectsActivity extends AppCompatActivity{
         seekbar = findViewById(R.id.seekBar);
         textView5 = findViewById(R.id.textView5);
 
-        seekbar2 = findViewById(R.id.seekBar2);
-        textView6 = findViewById(R.id.textView6);
 
-        hide_param(false, false);
+        hide_param(true);
+        update_preview();
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                progress = progressValue;
-                textView5.setText("Progress: " + progressValue + "/" + seekBar.getMax());
-                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+                progress1 = progressValue;
+                textView5.setText(name_parameter + " : " + progressValue + "/" + seekBar.getMax());
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
-            }
-        });
+                if ((effect_name.equals("drawOutline_RS") ) || (effect_name.equals("luminosity_RS") )){
 
-
-        seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                progress = progressValue;
-                textView6.setText("Progress: " + progressValue + "/" + seekBar.getMax());
-                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+                    float param_drawOutlineRS = (float) progress1;
+                    param_drawOutlineRS = param_drawOutlineRS/100.0f;
+                    Log.e("float", Float.toString(param_drawOutlineRS) );
+                    switch_effects(effect_name, 0, 0, 0, param_drawOutlineRS);
+                }
+                else
+                    switch_effects(effect_name,progress1,0,0,0);
             }
         });
 
@@ -281,6 +262,7 @@ public class EffectsActivity extends AppCompatActivity{
             effectImage.reset();
             img.setImageBitmap(effectImage.getInitialImg());
             update_preview();
+            hide_param(true);
         }
     };
 
@@ -288,18 +270,18 @@ public class EffectsActivity extends AppCompatActivity{
         @Override
         public void onClick(View v) {
 
-            startSave(bmp);
+            startSave(effectImage.getCurrentImg());
         }
     };
 
-    private View.OnClickListener listener_zoom= new View.OnClickListener() {
+    private View.OnClickListener listener_zoom = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(EffectsActivity.this);
             View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
             PhotoView photoView = mView.findViewById(R.id.imageView);
             photoView.setImageResource(R.drawable.test0);
-            photoView.setImageBitmap(bmp);
+            photoView.setImageBitmap(effectImage.getCurrentImg());
             mBuilder.setView(mView);
             AlertDialog mDialog = mBuilder.create();
             mDialog.show();
@@ -322,19 +304,31 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_rotate = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            img.setRotation(img.getRotation()+90);
-            img_greyRS.setRotation(img_greyRS.getRotation()+90);;
-            img_keepColorRS.setRotation(img_keepColorRS.getRotation()+90);;
-            img_bilateralRS.setRotation(img_bilateralRS.getRotation()+90);;
-            img_randomHueRS.setRotation(img_randomHueRS.getRotation()+90);;
-            img_blurRS.setRotation(img_blurRS.getRotation()+90);;
-            img_colorPartitionRS.setRotation(img_colorPartitionRS.getRotation()+90);;
-            img_drawOutlineRS.setRotation(img_drawOutlineRS.getRotation()+90);;
-            img_histEqRS.setRotation(img_histEqRS.getRotation()+90);;
-            img_linearContrastRS.setRotation(img_linearContrastRS.getRotation()+90);;
-            img_medianFilterRS.setRotation(img_medianFilterRS.getRotation()+90);;
-            img_minFilterRS.setRotation(img_minFilterRS.getRotation()+90);;
-            img_sobelGradientRS.setRotation(img_sobelGradientRS.getRotation()+90);;
+            img.setRotation(img.getRotation() + 90);
+            img_greyRS.setRotation(img_greyRS.getRotation() + 90);
+            ;
+            img_keepColorRS.setRotation(img_keepColorRS.getRotation() + 90);
+            ;
+            img_bilateralRS.setRotation(img_bilateralRS.getRotation() + 90);
+            ;
+            img_randomHueRS.setRotation(img_randomHueRS.getRotation() + 90);
+            ;
+            img_blurRS.setRotation(img_blurRS.getRotation() + 90);
+            ;
+            img_colorPartitionRS.setRotation(img_colorPartitionRS.getRotation() + 90);
+            ;
+            img_drawOutlineRS.setRotation(img_drawOutlineRS.getRotation() + 90);
+            ;
+            img_histEqRS.setRotation(img_histEqRS.getRotation() + 90);
+            ;
+            img_linearContrastRS.setRotation(img_linearContrastRS.getRotation() + 90);
+            ;
+            img_medianFilterRS.setRotation(img_medianFilterRS.getRotation() + 90);
+            ;
+            img_minFilterRS.setRotation(img_minFilterRS.getRotation() + 90);
+            ;
+            img_sobelGradientRS.setRotation(img_sobelGradientRS.getRotation() + 90);
+            ;
         }
     };
 
@@ -364,8 +358,9 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_greyRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            switch_effects("toGreyRS", 0, 0, 0, 0);
+            hide_param(true);
+            effect_name = "toGreyRS";
+            switch_effects(effect_name, 0, 0, 0, 0);
 
         }
     };
@@ -373,7 +368,9 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_keepColorRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("keepColorRs", 40, 0, 0, 0);
+            effect_name = "keepColorRS";
+            name_parameter = "Color";
+            show_param(true,0 , 360);
         }
     };
 
@@ -388,28 +385,37 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_drawOutline_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("drawOutline_RS", 0, 0, 0, 0.3f);
+            effect_name = "drawOutline_RS";
+            name_parameter = "Intensity";
+            show_param(true, 0, 100);
         }
     };
 
     private View.OnClickListener listener_colorPartition_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("colorPartition_RS", 9, 3, 0, 0);
-
+            effect_name = "colorPartition_RS";
+            name_parameter = "Color";
+            show_param(true, 0, 360 ) ;
         }
     };
 
     private View.OnClickListener listener_bilateralRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("bilateral_filter_RS", 1, 0, 0, 0);
-
+            effect_name = "bilateral_filter_RS";
+            name_parameter = "Intensity";
+            show_param(true, 1, 3 );
         }
     };
+
     private View.OnClickListener listener_sobelGradient_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            hide_param(true);
+
+            effect_name = "sobelGradient_RS";
+
             switch_effects("sobelGradient_RS", 0, 0, 0, 0);
 
         }
@@ -418,22 +424,28 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_medianfilter_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("medianfilter_RS", 5, 0, 0, 0);
-
+            effect_name = "medianfilter_RS";
+            name_parameter = "Intensity";
+            show_param(true, 0 , 30 ) ;
         }
     };
 
     private View.OnClickListener listener_minfilter_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("minfilter_RS", 1, 0, 0, 0);
-
+            effect_name = "minfilter_RS";
+            name_parameter = "Intensity";
+            show_param(true, 0 , 30 );
         }
     };
 
     private View.OnClickListener listener_randomHueRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            hide_param(true);
+
+            effect_name = "randomHueRS";
+
             switch_effects("randomHueRS", 0, 0, 0, 0);
 
         }
@@ -443,38 +455,106 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_linearContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("linearContrastRS", 0, 0, 0, 0);
+            hide_param(true);
 
+            effect_name = "linearContrastRS";
+            name_parameter = "Brightness";
+            show_param(true, 100, 1000);
         }
     };
 
     private View.OnClickListener listener_equalizationContrastRS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("equalization_contrast_RS", 0, 0, 0, 0);
+            hide_param(true);
 
+            effect_name = "equalization_contrast_RS";
+
+            switch_effects("equalization_contrast_RS", 0, 0, 0, 0);
         }
     };
 
     private View.OnClickListener listener_blur_moy_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("blur_moy_RS", 3, 0, 0, 0);
+            effect_name = "blur_moy_RS";
+            name_parameter = "Intensity";
+            show_param(true,0, 30);
+        }
+    };
 
+    private View.OnClickListener listener_luminosityRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect_name = "luminosity_RS";
+            name_parameter = "Intensity";
+            show_param(true, 0, 100);
+        }
+    };
+
+    private View.OnClickListener listener_pixeliseRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect_name = "pixelise_RS";
+            name_parameter = "SizePixel";
+            show_param(true, 1, 20);
+        }
+    };
+
+    private View.OnClickListener listener_negativeRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            hide_param(true);
+
+            effect_name = "negative_RS";
+
+            switch_effects("negative_RS", 0, 0, 0, 0);
+        }
+    };
+
+    private View.OnClickListener listener_pencilRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect_name = "pencil_RS";
+            name_parameter = "Intensity";
+            show_param(true, 1, 30);
+        }
+    };
+
+    private View.OnClickListener listener_cartoonRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            effect_name = "cartoon_RS";
+            name_parameter = "filter size";
+            show_param(true, 1, 30);
+        }
+    };
+
+    private View.OnClickListener listener_sobelGradientColoredRS = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            hide_param(true);
+
+            effect_name = "sobelGradientColored_RS";
+
+            switch_effects("sobelGradientColored_RS", 0, 0, 0, 0);
         }
     };
 
     private View.OnClickListener listener_blur_gaussian5x5_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch_effects("blur_gaussian5x5_RS", 0, 0, 0, 0);
+            effect_name = "blur_gaussian5x5_RS";
 
+            switch_effects("blur_gaussian5x5_RS", 0, 0, 0, 0);
         }
     };
 
     private View.OnClickListener listener_sobel_horizontal_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            effect_name = "sobel_horizontal_RS";
+
             switch_effects("sobel_horizontal_RS", 0, 0, 0, 0);
 
         }
@@ -483,6 +563,8 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_sobel_vertical_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            effect_name = "sobel_vertical_RS";
+
             switch_effects("sobel_vertical_RS", 0, 0, 0, 0);
 
         }
@@ -491,104 +573,125 @@ public class EffectsActivity extends AppCompatActivity{
     private View.OnClickListener listener_laplacian_mask_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            effect_name = "laplacian_mask_RS";
+
             switch_effects("laplacian_mask_RS", 0, 0, 0, 0);
 
         }
     };
 
-    public void startSave (Bitmap bitmap) {
+    public void startSave(Bitmap bitmap) {
 
         int check = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (check != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024);
         }
         FileOutputStream fileOutputStream = null;
         File file = getDisc();
         Log.i("Path : ", "Storage = " + file.toString());
-        if(!file.exists() && !file.mkdirs()){
+        if (!file.exists() && !file.mkdirs()) {
             Toast.makeText(this, "Can't create directory to save image", Toast.LENGTH_SHORT).show();
             return;
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
         String date = simpleDateFormat.format(new Date());
-        String name = "Img"+date+".jpg";
-        String file_name = file.getAbsolutePath()+"/"+name;
-        File new_file = new File (file_name);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024 );
+        String name = "Img" + date + ".jpg";
+        String file_name = file.getAbsolutePath() + "/" + name;
+        File new_file = new File(file_name);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024);
         try {
             fileOutputStream = new FileOutputStream(new_file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
             Toast.makeText(this, "Save image succes", Toast.LENGTH_SHORT).show();
             fileOutputStream.flush();
             fileOutputStream.close();
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         refreshGallery(new_file);
     }
-    public void refreshGallery(File file){
+
+    public void refreshGallery(File file) {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(file));
         sendBroadcast(intent);
     }
+
     private File getDisc() {
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         return new File(file, "Photo Fun");
     }
 
-    public void switch_effects(String name_effect, int param_1, int param_2, int param_3, float param_f){
-        switch(name_effect){
-            case "toGreyRS" :
+    public void switch_effects(String name_effect, int param_1, int param_2, int param_3, float param_f) {
+        switch (name_effect) {
+            case "toGreyRS":
                 effectImage.toGreyRS(getApplicationContext());
                 break;
-            case "keepColorRS" :
+            case "keepColorRS":
                 effectImage.keepColorRS(param_1, getApplicationContext());
                 break;
-            case "randomHueRS" :
+            case "randomHueRS":
                 effectImage.randomHueRS(getApplicationContext());
                 break;
-            case "linearContrastRS" :
-                effectImage.linearContrastRS(getApplicationContext(), 0, 3);
+            case "linearContrastRS":
+                effectImage.linearContrastRS(getApplicationContext(), param_2, param_1);
                 break;
             case "equalization_contrast_RS":
-                effectImage.equalization_contrast_RS(getApplicationContext(), 0.3f);
+                effectImage.equalization_contrast_RS(getApplicationContext(), param_f);
                 break;
-            case "blur_moy_RS" :
+            case "blur_moy_RS":
                 effectImage.blur_moy_RS(getApplicationContext(), param_1);
                 break;
-            case "blur_gaussian5x5_RS" :
+            case "blur_gaussian5x5_RS":
                 effectImage.blur_gaussian5x5_RS(getApplicationContext());
                 break;
-            case "sobel_horizontal_RS" :
+            case "sobel_horizontal_RS":
                 effectImage.sobel_horizontal_RS(getApplicationContext());
                 break;
-            case "sobel_vertical_RS" :
+            case "sobel_vertical_RS":
                 effectImage.sobel_vertical_RS(getApplicationContext());
                 break;
-            case "laplacian_mask_RS" :
+            case "laplacian_mask_RS":
                 effectImage.laplacian_mask_RS(getApplicationContext());
                 break;
-            case "bilateral_filter_RS" :
+            case "bilateral_filter_RS":
                 effectImage.bilateral_filter_RS(getApplicationContext(), param_1);
                 break;
-            case "drawOutline_RS" :
-                effectImage.drawOutline_RS(getApplicationContext(), param_f, param_1);
+            case "drawOutline_RS":
+                effectImage.drawOutline_RS(getApplicationContext(), param_f, 1);
                 break;
-            case "sobelGradient_RS" :
+            case "sobelGradient_RS":
                 effectImage.sobelGradient_RS(getApplicationContext());
                 break;
-            case "medianfilter_RS" :
+            case "medianfilter_RS":
                 effectImage.medianfilter_RS(getApplicationContext(), param_1);
                 break;
-            case "minfilter_RS" :
+            case "minfilter_RS":
                 effectImage.minfilter_RS(getApplicationContext(), param_1);
                 break;
-            case "colorPartition_RS" :
+            case "colorPartition_RS":
                 effectImage.colorPartition_RS(getApplicationContext(), param_1, param_2, param_3);
                 break;
-
+            case "luminosity_RS":
+                effectImage.luminosity_RS(getApplicationContext(), param_f);
+                break;
+            case "pixelise_RS":
+                effectImage.pixelise_RS(getApplicationContext(), param_1);
+                break;
+            case "negative_RS":
+                effectImage.negative_RS(getApplicationContext());
+                break;
+            case "pencil_RS":
+                effectImage.pencil_RS(getApplicationContext(), param_1);
+                break;
+            case "cartoon_RS":
+                effectImage.cartoon_RS(getApplicationContext(), param_1, 1, param_1, 0.8f, 1, 24, 4, 0 );
+                break;
+            case "sobelGradientColored_RS":
+                effectImage.sobelGradientColored_RS(getApplicationContext());
+                break;
 
         }
         img.setImageBitmap(effectImage.getCurrentImg());
@@ -597,10 +700,10 @@ public class EffectsActivity extends AppCompatActivity{
 
     }
 
-    public void update_preview(){
+    public void update_preview() {
 
-        //effectButton.set_Init(Bitmap.createScaledBitmap(effectImage.getCurrentImg(), 100, 100, true));
-        Effects  effectButton = new Effects(effectImage.getCurrentImg());
+        effectButton.setInitialImg(Bitmap.createScaledBitmap(effectImage.getCurrentImg(), 100, 100, true));
+        Effects effectButton = new Effects(effectImage.getCurrentImg());
 
         effectButton.toGreyRS(getApplicationContext());
         img_greyRS.setImageBitmap(effectButton.getCurrentImg());
@@ -624,12 +727,12 @@ public class EffectsActivity extends AppCompatActivity{
         effectButton.reset();
 
 
-        effectButton.colorPartition_RS(getApplicationContext(), 9 , 3 ,0);
+        effectButton.colorPartition_RS(getApplicationContext(), 9, 3, 0);
         img_colorPartitionRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
 
-        effectButton.drawOutline_RS(getApplicationContext(), 0.3f, 40);
+        effectButton.drawOutline_RS(getApplicationContext(), 0.3f, 0);
         img_drawOutlineRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
@@ -638,12 +741,12 @@ public class EffectsActivity extends AppCompatActivity{
         img_histEqRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
-        effectButton.linearContrastRS(getApplicationContext(), 0 , 3);
+        effectButton.linearContrastRS(getApplicationContext(), 0, 500);
         img_linearContrastRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
 
-        effectButton.medianfilter_RS(getApplicationContext(),6);
+        effectButton.medianfilter_RS(getApplicationContext(), 6);
         img_medianFilterRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
 
@@ -656,30 +759,51 @@ public class EffectsActivity extends AppCompatActivity{
         effectButton.sobelGradient_RS(getApplicationContext());
         img_sobelGradientRS.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
+
+        effectButton.luminosity_RS(getApplicationContext(),0.3f);
+        img_luminosityRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.pixelise_RS(getApplicationContext(), 5);
+        img_pixeliseRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.negative_RS(getApplicationContext());
+        img_negativeRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.pencil_RS(getApplicationContext(), 25);
+        img_pencilRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.cartoon_RS(getApplicationContext(), 2, 1, 2, 0.8f, 1, 24, 4, 0);
+        img_cartoonRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.sobelGradientColored_RS(getApplicationContext());
+        img_sobelGradientColoredRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
     }
 
-    public void hide_param (boolean visible, boolean visible_2){
-        if (!visible) {
+    public void hide_param(boolean visible) {
+        if (visible) {
             seekbar.setVisibility(View.INVISIBLE);
             textView5.setVisibility(View.INVISIBLE);
-        }
-        else if (visible){
+        } else if (!visible) {
             seekbar.setVisibility(View.VISIBLE);
             textView5.setVisibility(View.VISIBLE);
         }
 
-        if (!visible_2) {
-
-            seekbar2.setVisibility(View.INVISIBLE);
-            textView6.setVisibility(View.INVISIBLE);
-        }
-        else if (visible_2){
-            seekbar2.setVisibility(View.VISIBLE);
-            textView6.setVisibility(View.VISIBLE);
-        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void show_param(boolean b1, int min, int max) {
+        if(b1){
+            hide_param(false);
+            seekbar.setMin(min);
+            seekbar.setMax(max);
+        }
 
 
-
+    }
 }
