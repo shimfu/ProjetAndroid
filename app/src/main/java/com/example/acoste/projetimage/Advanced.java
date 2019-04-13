@@ -678,7 +678,7 @@ public class Advanced{
 
         Simple.negativeRS(inv_div_copy, context);
 
-        Advanced.blur_moy_RS(inv_div_copy,context,blur_intensity);
+        Advanced.blur_gaussian_RS(inv_div_copy,context,blur_intensity);
 
         blendDivide_RS( image,context,inv_div_copy);
 

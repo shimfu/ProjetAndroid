@@ -73,6 +73,7 @@ public class EffectsActivity extends AppCompatActivity {
     private ImageView img_pencilRS;
     private ImageView img_cartoonRS;
     private ImageView img_sobelGradientColoredRS;
+    private ImageView img_gaussian_blur;
 
     private TextView textView5, textView6;
     private SeekBar seekbar;
@@ -214,6 +215,9 @@ public class EffectsActivity extends AppCompatActivity {
         img_sobelGradientColoredRS = findViewById(R.id.img_sobelGradientColoredRS);
         img_sobelGradientColoredRS.setOnClickListener(listener_sobelGradientColoredRS);
 
+        img_gaussian_blur = findViewById(R.id.img_gaussian_blur);
+        img_gaussian_blur.setOnClickListener(listener_blur_gaussian_RS);
+
         Button button_reset = findViewById(R.id.reset);
         button_reset.setOnClickListener(listener_reset);
 
@@ -328,7 +332,27 @@ public class EffectsActivity extends AppCompatActivity {
             img_minFilterRS.setRotation(img_minFilterRS.getRotation() + 90);
             ;
             img_sobelGradientRS.setRotation(img_sobelGradientRS.getRotation() + 90);
-            ;
+
+            img_gaussian_blur.setRotation(img_gaussian_blur.getRotation() + 90);
+
+            img_pixeliseRS.setRotation(img_pixeliseRS.getRotation() + 90);
+
+            img_luminosityRS.setRotation(img_luminosityRS.getRotation() + 90);
+
+            img_negativeRS.setRotation(img_negativeRS.getRotation() + 90);
+
+            img_pencilRS.setRotation(img_pencilRS.getRotation() + 90);
+
+
+            img_cartoonRS.setRotation(img_cartoonRS.getRotation() + 90);
+
+
+            img_sobelGradientColoredRS.setRotation(img_sobelGradientColoredRS.getRotation() + 90);
+
+
+
+
+
         }
     };
 
@@ -541,12 +565,13 @@ public class EffectsActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener listener_blur_gaussian5x5_RS = new View.OnClickListener() {
+    private View.OnClickListener listener_blur_gaussian_RS = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            effect_name = "blur_gaussian5x5_RS";
+            effect_name = "blur_gaussian_RS";
+            name_parameter = "Intensity";
+            show_param(true, 1, 30);
 
-            switch_effects("blur_gaussian5x5_RS", 0, 0, 0, 0);
         }
     };
 
@@ -644,8 +669,8 @@ public class EffectsActivity extends AppCompatActivity {
             case "blur_moy_RS":
                 effectImage.blur_moy_RS(getApplicationContext(), param_1);
                 break;
-            case "blur_gaussian5x5_RS":
-                effectImage.blur_gaussian5x5_RS(getApplicationContext());
+            case "blur_gaussian_RS":
+                effectImage.blur_gaussian_RS(getApplicationContext(), param_1);
                 break;
             case "sobel_horizontal_RS":
                 effectImage.sobel_horizontal_RS(getApplicationContext());
@@ -782,6 +807,10 @@ public class EffectsActivity extends AppCompatActivity {
 
         effectButton.sobelGradientColored_RS(getApplicationContext());
         img_sobelGradientColoredRS.setImageBitmap(effectButton.getCurrentImg());
+        effectButton.reset();
+
+        effectButton.blur_gaussian_RS(getApplicationContext(), 2);
+        img_gaussian_blur.setImageBitmap(effectButton.getCurrentImg());
         effectButton.reset();
     }
 
