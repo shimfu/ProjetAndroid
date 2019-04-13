@@ -13,15 +13,12 @@ uchar4 *data;// 1D array wich contain all the values of each pixel of the Bitmap
 
 
 void map_img(rs_allocation bmp, rs_allocation data) {//this function fill dada with the values of the Bitmap
-    rsDebug("START MAPPING", 0.000000000000000);
     for(int i = 0 ; i<width ; i++){//for each collumn
         for(int j = 0 ; j<height ; j++){//for each line
             uchar4 copy = rsGetElementAt_uchar4(bmp, i, j);//we get the Bitmap "bmp" value (Bitmap "bmp" has 2 Dimension)
             rsSetElementAt_uchar4(data, copy, j*width + i);//we copy it in data (data has 1 Dimension)
         }
     }
-    rsDebug("END MAPPING", 0.000000000000000);
-
 }
 
 static float4 min4(float4 in, float4 neighbour){
